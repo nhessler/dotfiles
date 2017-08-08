@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #/ This script draws heavily from Mike McQuaid's Strap project
 #/
 #/ Bootstrap system with dependencies
