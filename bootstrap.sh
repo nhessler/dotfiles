@@ -11,7 +11,7 @@ logk()  { STEP="";   echo "OK"; }
 cleanup() {
   set +e
 
-  if [-s "$SUCCESS"]; then
+  if [-z "$SUCCESS"]; then
     if [ -n "$STEP" ]; then
       echo "!!! $STEP FAILED" >&2
     else
