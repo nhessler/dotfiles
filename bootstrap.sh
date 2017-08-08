@@ -24,11 +24,12 @@ cleanup() {
 trap "cleanup" EXIT
 
 # Install the Xcode Command Line Tools.
-log "Installing the Xcode Command Line Tools:"
+log "Checking Xcode Command Line Tools:"
 DEVELOPER_DIR=$("xcode-select" -print-path 2>/dev/null || true)
 if [ -z "$DEVELOPER_DIR" ] || ! [ -f "$DEVELOPER_DIR/usr/bin/git" ] \
                            || ! [ -f "/usr/include/iconv.h" ]
 then
+  log "Installing Xcode Command Line Tools"
   CLT_PLACEHOLDER="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
   sudo touch "$CLT_PLACEHOLDER"
   CLT_PACKAGE=$(softwareupdate -l | \
@@ -39,16 +40,31 @@ then
   if ! [ -f "/usr/include/iconv.h" ]; then
     xcode-select --install
   fi
+else
+  log "Xcode Command Line Tools up to date"
+fi
+logk
+
+# Install any remaining software updates.
+log "Checking remaining software updates:"
+UPTODATE=$(softwareupdate -l 2>&1 | grep $Q "No new software available.")
+if [ -z "$UPTODATE" ]; then
+  log "Installing remaining software udpates:" 
+  sudo softwareupdate --install --all
+else
+  log "Remaining software up to date"
 fi
 logk
 
 # Agree to Xcode license.
-log "Agreeing to Xcode license:"
+log "Checking to Xcode license agreement:"
 if /usr/bin/xcrun clang 2>&1 | grep $Q license; then
+  log "Agreeing to Xcode license agreement:"
   sudo xcodebuild -license
+else
+  log "Xcode license agreement accepted:"
 fi
 logk
-
 
 # Install Homebrew.
 # log "Installing Homebrew:"
@@ -58,14 +74,7 @@ logk
 # fi
 # logk
 
-# # Install any remaining software updates.
-# log "Installing software updates:"
-# UPTODATE=$(softwareupdate -l 2>&1 | grep $Q "No new software available.")
-# if [ -z $UPTODATE ]; then
-#   sudo softwareupdate --install --all
-#   xcode_license
-# fi
-# logk
+
 
 # DONE! No More Bash!
 SUCCESS="1"
