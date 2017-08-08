@@ -7,7 +7,6 @@ set -e
 
 abort() { STEP="";   echo "!!! $*" >&2; exit 1; }
 log()   { STEP="$*"; echo "--> $*"; }
-logn()  { STEP="$*"; printf -- "--> %s " "$*"; }
 logk()  { STEP="";   echo "OK"; echo; }
 
 cleanup() {
@@ -38,21 +37,29 @@ then
   sudo softwareupdate -i "$CLT_PACKAGE"
   sudo rm -f "$CLT_PLACEHOLDER"
   if ! [ -f "/usr/include/iconv.h" ]; then
-    logn "Requesting user install of Xcode Command Line Tools:"
     xcode-select --install
   fi
   logk
 fi
 
-# Install Homebrew
+# Agree to Xcode license.
+log "Agreeing to Xcode license:"
+if /usr/bin/xcrun clang 2>&1 | grep $Q license; then
+  sudo xcodebuild -license
+fi
+logk
+
+
+# Install Homebrew.
 # log "Installing Homebrew:"
-
-
-
+# HOMEBREW_PRESENT=$(which brew)
+# if [ -z $HOMEBREW_PRESENT ]; then
+#   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# fi
 # logk
 
 # # Install any remaining software updates.
-# logn "Installing software updates:"
+# log "Installing software updates:"
 # UPTODATE=$(softwareupdate -l 2>&1 | grep $Q "No new software available.")
 # if [ -z $UPTODATE ]; then
 #   sudo softwareupdate --install --all
