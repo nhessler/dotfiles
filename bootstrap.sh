@@ -47,7 +47,7 @@ logk
 
 # Install any remaining software updates.
 log "Checking remaining software updates:"
-UPTODATE=$(softwareupdate -l 2>&1 | grep -q "No new software available.")
+UPTODATE=$(softwareupdate -l 2>&1 | grep "No new software available.")
 if [ -z "$UPTODATE" ]; then
   log "Installing remaining software udpates:" 
   sudo softwareupdate --install --all
@@ -58,7 +58,7 @@ logk
 
 # Agree to Xcode license.
 log "Checking to Xcode license agreement:"
-if /usr/bin/xcrun clang 2>&1 | grep -q license; then
+if /usr/bin/xcrun clang 2>&1 | grep license; then
   log "Agreeing to Xcode license agreement:"
   sudo xcodebuild -license
 else
