@@ -39,8 +39,8 @@ then
   if ! [ -f "/usr/include/iconv.h" ]; then
     xcode-select --install
   fi
-  logk
 fi
+logk
 
 # Agree to Xcode license.
 log "Agreeing to Xcode license:"
