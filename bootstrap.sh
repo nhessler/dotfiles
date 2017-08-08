@@ -8,7 +8,7 @@ set -e
 abort() { STEP="";   echo "!!! $*" >&2; exit 1; }
 log()   { STEP="$*"; echo "--> $*"; }
 logn()  { STEP="$*"; printf -- "--> %s " "$*"; }
-logk()  { STEP="";   echo "OK"; echo }
+logk()  { STEP="";   echo "OK"; echo; }
 
 cleanup() {
   set +e
