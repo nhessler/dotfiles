@@ -1,3 +1,3 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby
+#!/bin/sh
 
 echo "hello"
