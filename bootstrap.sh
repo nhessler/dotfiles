@@ -45,16 +45,6 @@ else
 fi
 logk
 
-# Agree to Xcode license.
-log "Checking to Xcode license agreement:"
-if /usr/bin/xcrun clang 2>&1 | grep -q "license"; then
-  log "Agreeing to Xcode license agreement:"
-  sudo xcodebuild -license
-else
-  log "No need to accept Xcode license agreement"
-fi
-logk
-
 # Install any remaining software updates.
 log "Checking remaining software updates:"
 if $(softwareupdate -l 2>&1 | grep -q "No new software available."); then
@@ -65,16 +55,34 @@ else
 fi
 logk
 
+# Agree to Xcode license.
+log "Checking to Xcode license agreement:"
+if /usr/bin/xcrun clang 2>&1 | grep -q "license"; then
+  log "Agreeing to Xcode license agreement:"
+  sudo xcodebuild -license
+else
+  log "No need to accept Xcode license agreement"
+fi
+logk
 
-# Install Homebrew.
-# log "Installing Homebrew:"
-# HOMEBREW_PRESENT=$(which brew)
-# if [ -z $HOMEBREW_PRESENT ]; then
-#   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-# fi
-# logk
+#Install and Update Homebrew along with taps.
+log "Checking Homebrew installation:"
+if [ -z $(which brew) ]; then
+  log "Installing Homebrew"
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
+log "Updating Homebrew:"
+brew update
 
+# Install Homebrew Bundle, Cask and Services tap.
+log "Installing Homebrew taps and extensions:"
+brew bundle --file=- <<EOF
+tap 'caskroom/cask'
+tap 'homebrew/core'
+tap 'homebrew/services'
+EOF
+logk
 
 # DONE! No More Bash!
 SUCCESS="1"
