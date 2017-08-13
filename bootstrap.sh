@@ -45,6 +45,16 @@ else
 fi
 logk
 
+# Agree to Xcode license.
+log "Checking to Xcode license agreement:"
+if /usr/bin/xcrun clang 2>&1 | grep -q "license"; then
+  log "Agreeing to Xcode license agreement:"
+  sudo xcodebuild -license
+else
+  log "Xcode license agreement accepted:"
+fi
+logk
+
 # Install any remaining software updates.
 log "Checking remaining software updates:"
 UPTODATE="$(softwareupdate -l 2>&1 | grep -q "No new software available.")"
@@ -56,15 +66,6 @@ else
 fi
 logk
 
-# Agree to Xcode license.
-log "Checking to Xcode license agreement:"
-if /usr/bin/xcrun clang 2>&1 | grep -q "license"; then
-  log "Agreeing to Xcode license agreement:"
-  sudo xcodebuild -license
-else
-  log "Xcode license agreement accepted:"
-fi
-logk
 
 # Install Homebrew.
 # log "Installing Homebrew:"
