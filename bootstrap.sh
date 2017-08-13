@@ -51,13 +51,13 @@ if /usr/bin/xcrun clang 2>&1 | grep -q "license"; then
   log "Agreeing to Xcode license agreement:"
   sudo xcodebuild -license
 else
-  log "Xcode license agreement accepted:"
+  log "No need to accept Xcode license agreement"
 fi
 logk
 
 # Install any remaining software updates.
 log "Checking remaining software updates:"
-UPTODATE="$(softwareupdate -l 2>&1 | grep -q "No new software available.")"
+UPTODATE="$(softwareupdate -l 2>&1 | grep -q 'No new software available.')"
 if [ -z "$UPTODATE" ]; then
   log "Installing remaining software udpates:" 
   sudo softwareupdate --install --all
