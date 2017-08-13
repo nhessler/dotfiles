@@ -57,12 +57,11 @@ logk
 
 # Install any remaining software updates.
 log "Checking remaining software updates:"
-UPTODATE="$(softwareupdate -l 2>&1 | grep -q 'No new software available.')"
-if [ -z "$UPTODATE" ]; then
+if $(softwareupdate -l 2>&1 | grep -q "No new software available."); then
+  log "Remaining software up to date"
+else  
   log "Installing remaining software udpates:" 
   sudo softwareupdate --install --all
-else
-  log "Remaining software up to date"
 fi
 logk
 
