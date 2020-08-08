@@ -14,10 +14,12 @@ cask 1password
 cask aerial
 cask alfred
 cask authy
+cask bartender
 cask brave-browser
 cask caffeine
 cask choosy
 cask doxie
+cask dropbox
 cask emacs
 cask firefox
 cask fluid
@@ -25,6 +27,7 @@ cask keybase
 cask nordvpn
 cask notion
 cask postman
+cask sizeup
 cask skype
 cask spotify
 cask zoom
