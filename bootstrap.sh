@@ -49,8 +49,8 @@ logk
 log "Checking remaining software updates:"
 if $(softwareupdate -l 2>&1 | grep -q "No new software available."); then
   log "Remaining software up to date"
-else  
-  log "Installing remaining software udpates:" 
+else
+  log "Installing remaining software udpates:"
   sudo softwareupdate --install --all
 fi
 logk
@@ -78,11 +78,24 @@ brew update
 # Install Homebrew Bundle, Cask and Services tap.
 log "Installing Homebrew taps and extensions:"
 brew bundle --file=- <<EOF
-tap 'caskroom/cask'
+tap 'homebrew/cask'
 tap 'homebrew/core'
 tap 'homebrew/services'
 EOF
 logk
+
+# Install ASDF Version Manager
+log "Checking ASDF Version Manager"
+if [ ! [ -f "$HOME/.asdf/.gitignore"]; then
+  log "Installing ASDF:"
+  git clone "https://github.com/asdf-vm/asdf.git" $HOME/.asdf
+fi
+logk
+
+log "Please Create a Github SSH key for this machine and upload the public key"
+if [-z $(ssh -T git@github.com | grep -q "Permission Denied"
+logk
+
 
 # DONE! No More Bash!
 SUCCESS="1"
