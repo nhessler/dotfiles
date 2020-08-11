@@ -1,0 +1,16 @@
+[color]
+  ui = true
+[push]
+  default = simple
+[merge]
+  tool = ediff
+[mergetool "ediff"]
+  cmd = emacsclient -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+[alias]
+  sign = "!f() { git config --local user.name \"Nathan Hessler\" && git config --local user.email $1; }; f"
+[core]
+  editor = emacs
+[github]
+	user = nhessler
+[pull]
+	ff = only
