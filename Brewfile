@@ -1,9 +1,12 @@
+tap "homebrew/cask-fonts"
+
 brew "dtach"
 brew "fish"
 brew "git"
 brew "htop"
 brew "mas"
 brew "mercurial"
+brew "starship"
 brew "the_silver_searcher"
 brew "tig"
 brew "tldr"
@@ -30,7 +33,10 @@ cask "postman"
 cask "sizeup"
 cask "skype"
 cask "spotify"
-cask "zoom"
+
+cask "font-droid-sans-mono-nerd-font"
+cask "font-fira-code-nerd-font"
+cask "font-meslo-lg-nerd-font"
 
 mas "Xcode",          id: 497799835
 mas "Slack",          id: 803453959
