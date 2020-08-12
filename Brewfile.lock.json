@@ -344,7 +344,7 @@
         }
       },
       "emacs": {
-        "version": "27.1",
+        "version": "27.1-1",
         "options": {
           "full_name": "emacs"
         }
@@ -374,7 +374,7 @@
         }
       },
       "notion": {
-        "version": "2.0.7",
+        "version": "2.0.8",
         "options": {
           "full_name": "notion"
         }
@@ -426,6 +426,12 @@
         "options": {
           "full_name": "font-meslo-lg-nerd-font"
         }
+      },
+      "dash": {
+        "version": "5.3.0",
+        "options": {
+          "full_name": "dash"
+        }
       }
     },
     "mas": {
@@ -448,7 +454,7 @@
     },
     "tap": {
       "homebrew/cask-fonts": {
-        "revision": "ce8f457dc66b69e0f6360fe4c064ce48c6751fc5"
+        "revision": "1c102bd187f23ff5a983a8f9d91c479d6214cb6e"
       }
     }
   },
@@ -457,7 +463,7 @@
       "catalina": {
         "HOMEBREW_VERSION": "2.4.11",
         "HOMEBREW_PREFIX": "/usr/local",
-        "Homebrew/homebrew-core": "8082e6f7a341817b19e6e64cb6e8f1d887974dd6",
+        "Homebrew/homebrew-core": "a645bdd42e8b8703edfa27d7f69611dc263e17fa",
         "CLT": "1103.0.32.62",
         "Xcode": "11.6",
         "macOS": "10.15.6"
