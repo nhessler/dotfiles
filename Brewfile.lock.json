@@ -432,6 +432,12 @@
         "options": {
           "full_name": "dash"
         }
+      },
+      "twitch": {
+        "version": "latest",
+        "options": {
+          "full_name": "twitch"
+        }
       }
     },
     "mas": {
@@ -454,7 +460,7 @@
     },
     "tap": {
       "homebrew/cask-fonts": {
-        "revision": "1c102bd187f23ff5a983a8f9d91c479d6214cb6e"
+        "revision": "7b8e417102f22f2ec8adab20ad8c92d9c1e66ecf"
       }
     }
   },
@@ -463,7 +469,7 @@
       "catalina": {
         "HOMEBREW_VERSION": "2.4.11",
         "HOMEBREW_PREFIX": "/usr/local",
-        "Homebrew/homebrew-core": "a645bdd42e8b8703edfa27d7f69611dc263e17fa",
+        "Homebrew/homebrew-core": "e81b89ee1df2f4daada9890565119be0e09253a1",
         "CLT": "1103.0.32.62",
         "Xcode": "11.6",
         "macOS": "10.15.6"

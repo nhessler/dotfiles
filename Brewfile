@@ -34,6 +34,7 @@ cask "postman"
 cask "sizeup"
 cask "skype"
 cask "spotify"
+cask "twitch"
 
 cask "font-droid-sans-mono-nerd-font"
 cask "font-fira-code-nerd-font"
