@@ -13,7 +13,6 @@ brew "tldr"
 brew "trash"
 brew "tree"
 
-cask "1password"
 cask "aerial"
 cask "alfred"
 cask "arduino"
@@ -37,7 +36,9 @@ cask "postman"
 cask "sizeup"
 cask "skype"
 cask "spotify"
+cask "steam"
 cask "twitch"
+cask "zoomus"
 
 cask "font-droid-sans-mono-nerd-font"
 cask "font-fira-code-nerd-font"
@@ -48,3 +49,4 @@ mas "Mactracker",     id: 430255202
 mas "Sip",            id: 507257563
 mas "Slack",          id: 803453959
 mas "Xcode",          id: 497799835
+mas "1password 7",    id: 1333542190
