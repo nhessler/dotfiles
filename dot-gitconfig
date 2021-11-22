@@ -11,6 +11,6 @@
 [core]
   editor = emacs
 [github]
-	user = nhessler
+  user = nhessler
 [pull]
-	ff = only
+  ff = only
