@@ -14,3 +14,5 @@
   user = nhessler
 [pull]
   ff = only
+[init]
+	defaultBranch = main
