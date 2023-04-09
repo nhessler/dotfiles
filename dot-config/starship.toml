@@ -1,4 +1,4 @@
-command_timeout = 600
+command_timeout = 650 
 
 [character]
 success_symbol = "[❯](bold green)"
