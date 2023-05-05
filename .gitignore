@@ -1,1 +1,5 @@
 dot-config/fish/completions/asdf.fish
+
+dot-emacs.d/auto-save-list/
+dot-emacs.d/elpa/
+dot-emacs.d/recentf
