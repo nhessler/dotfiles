@@ -2,8 +2,7 @@
 ;;;
 ;;; Commentary:
 ;;;
-;;; Code:
-
+;;; Code: 
 ; Appearance and Theming
 (setq inhibit-startup-message t) ; Don't show the splash screen
 
@@ -12,6 +11,10 @@
 (tooltip-mode -1)     ; Disable tooltips
 (set-fringe-mode 10)  ; Give some breaching room
 (menu-bar-mode -1)    ; Disable the menu bar
+(column-number-mode)  ; use column number mode
+
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
 
 (set-face-attribute 'default nil :font "MesloLGM Nerd Font Mono" :height 120)
 
@@ -44,6 +47,15 @@
   :bind ("C-s" . swiper)
   :config (ivy-mode 1))
 
+(use-package counsel
+  :bind (("M-x" . counsel-M-x)
+	 ("C-x b" . counsel-ibuffer)
+	 ("C-x C-f" . counsel-find-file)
+	 :map minibuffer-local-map
+	 ("C-x r" . 'counsel-minibuffer-history))
+  :config
+  (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
+
 (setq ivy-use-virtual-buffers t)
 
 (use-package counsel)
@@ -58,19 +70,19 @@
   (doom-themes-visual-bell-config))
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-height 15))
 
-;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(monokai-theme doom-modeline doom-themes use-package counsel command-log-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package which-key
+  :init (which-key-mode)
+  :config
+  (setq which-key-idle-delay 1))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
