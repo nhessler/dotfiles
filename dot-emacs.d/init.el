@@ -43,7 +43,6 @@
   :config
   (load-theme 'monokai t))
 
-
 (use-package command-log-mode)
 
 (use-package ivy
@@ -125,4 +124,7 @@
   :config (counsel-projectile-mode))
 
 (use-package magit)
+
+(use-package forge
+  :after magit)
 
