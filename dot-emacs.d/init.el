@@ -6,12 +6,15 @@
 ; Appearance and Theming
 (setq inhibit-startup-message t) ; Don't show the splash screen
 
-(scroll-bar-mode -1)  ; Disable visible scrollbar
-(tool-bar-mode -1 )   ; Disable the toolbar
-(tooltip-mode -1)     ; Disable tooltips
-(set-fringe-mode 10)  ; Give some breaching room
-(menu-bar-mode -1)    ; Disable the menu bar
-(column-number-mode)  ; use column number mode
+(scroll-bar-mode -1)     ; Disable visible scrollbar
+(blink-cursor-mode -1)   ; Disable blinking on cursor
+(tool-bar-mode -1 )      ; Disable the toolbar1
+(tooltip-mode -1)        ; Disable tooltips
+(set-fringe-mode 10)     ; Give some breaching room
+(menu-bar-mode -1)       ; Disable the menu bar
+(line-number-mode t)     ; show line number in mode line
+(column-number-mode t)   ; show column number in mode line
+(size-indication-mode t) ; show file size in mode line
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
@@ -65,7 +68,8 @@
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
   ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config))
+  (doom-themes-visual-bell-config)
+  (load-theme 'doom-monokai-classic t))
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
@@ -104,4 +108,21 @@
   ([remap describe-key] . helpful-key))
 
 (use-package general)
+
+(use-package hydra)
+
+(use-package projectile
+  :bind-keymap
+  ("s-p" . projectile-command-map)
+  ("C-c p" . projectile-command-map)
+  :config (projectile-mode)
+  :init
+  (when (file-directory-p "~/Projects")
+    (setq projectile-project-search-path '("~/Projects"))))
+
+(use-package counsel-projectile
+  :after (projectile counsel)
+  :config (counsel-projectile-mode))
+
+(use-package magit)
 
