@@ -52,13 +52,11 @@
 	 ("C-x b" . counsel-ibuffer)
 	 ("C-x C-f" . counsel-find-file)
 	 :map minibuffer-local-map
-	 ("C-x r" . 'counsel-minibuffer-history))
+	 ("C-r" . 'counsel-minibuffer-history))
   :config
   (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
 
 (setq ivy-use-virtual-buffers t)
-
-(use-package counsel)
 
 (use-package doom-themes
   :config
@@ -77,6 +75,15 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package dash-at-point
+  :init
+  (autoload 'dash-at-point "dash-at-point"
+    "Search the word at point with Dash." t nil)
+  (add-to-list 'dash-at-point-mode-alist '(emacs-lisp-mode . "elisp"))
+  :bind
+  ("C-c d" . dash-at-point)
+  ("C-c e" . dash-at-point-with-docset))
+
 (use-package which-key
   :init (which-key-mode)
   :config
@@ -85,4 +92,16 @@
 (use-package ivy-rich
   :init
   (ivy-rich-mode 1))
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+
+(use-package general)
 
