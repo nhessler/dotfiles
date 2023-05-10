@@ -1,0 +1,58 @@
+* First Heading
+
+* M-<RET> Heading
+
+** Second Subheading
+*** Hello
+**** A
+***** B
+****** C
+******* D
+******** E
+
+  Some content with a link [[https://orgmode.org/][Org Mode Homepage]]
+  *bold*
+  /italic/
+
+  * Unordered list
+  * of things
+  * as you would like
+  
+  | Name   | Age | Location   |
+  | Nathan |  44 | Austin, TX |
+  | Kat    |  43 | Austin, TX |
+  |        |     |            |
+
+  + [ ] This is a check list
+  + [X] This has ben checked
+  + [ ] This is unchecked
+  + [ ] 
+
+
+** Subheading
+
+  Adding more content
+
+  1. This is a numbered list
+  2. second item
+  3. and so on
+     
+  #+begin_src emacs-lisp
+    (+ 1 2 3)
+  #+end_src
+
+  - another unordered list
+  - next item
+
+
+  * [ ] inline task
+  * [ ] another inline tasks
+    
+* C-<RET> Heading
+
+* Second Heading
+
+* TODO a task
+
+* DONE a done task
+

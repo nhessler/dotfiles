@@ -18,7 +18,6 @@
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
-
 (set-face-attribute 'default nil :font "MesloLGM Nerd Font Mono" :height 120)
 
 ; Package Management
@@ -125,6 +124,43 @@
 
 (use-package magit)
 
+(use-package sqlite3)
 (use-package forge
-  :after magit)
+  :after (magit sqlite3))
 
+(use-package org
+  :hook (org-mode . visual-line-mode)
+  :config
+  (org-indent-mode t)
+  (setq org-ellipsis " "))
+
+(use-package org-superstar
+ :after org
+ :hook (org-mode . org-superstar-mode)
+ :custom
+ (org-superstar-leading-bullet ?\s)
+ (org-superstar-special-todo-items t)
+ (org-superstar-headline-bullets-list '("" "" "" "" "" "" "")))
+
+(defun nh/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+	visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+    
+(use-package visual-fill-column
+  :hook (org-mode . nh/org-mode-visual-fill))
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(sqlite3 which-key visual-fill-column use-package rainbow-delimiters org-superstar org-bullets monokai-theme ivy-rich hydra helpful general forge doom-themes doom-modeline dash-at-point counsel-projectile command-log-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
