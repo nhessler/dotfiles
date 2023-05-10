@@ -21,7 +21,7 @@ curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bootstrap.
 * Install Command Line Tools
 * Install Software Updates
 * Install Homebrew
-* Install ASIDE
+* Install ASDF
 * Setup Project Space
 * Validate necessary security keys exist
   - Github
