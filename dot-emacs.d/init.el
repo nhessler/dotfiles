@@ -17,6 +17,8 @@
 (size-indication-mode t) ; show file size in mode line
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))
+(add-hook 'prog-mode-hook (lambda () (visual-line-mode -1)))
 
 (set-face-attribute 'default nil :font "MesloLGM Nerd Font Mono" :height 120)
 
@@ -39,8 +41,11 @@
 (setq use-package-always-ensure t)
 
 (use-package monokai-theme
+  :config (load-theme 'monokai t))
+
+(use-package darkokai-theme
   :config
-  (load-theme 'monokai t))
+  (setq darkokai-mode-line-padding 1))
 
 (use-package command-log-mode)
 
@@ -66,8 +71,7 @@
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
   ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  (load-theme 'doom-monokai-classic t))
+  (doom-themes-visual-bell-config))
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
