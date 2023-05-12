@@ -136,7 +136,17 @@
   :hook (org-mode . visual-line-mode)
   :config
   (org-indent-mode t)
-  (setq org-ellipsis " "))
+  (setq org-ellipsis " ")
+  (org-babel-do-load-languages
+   'org-babel-load-laguages
+   '((emacs-lisp . t)
+     (ruby . t)
+     (elixir . t)))
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("rb" . "src ruby"))
+  (add-to-list 'org-structure-template-alist '("ex" . "src elixir")))
+
 
 (use-package org-superstar
  :after org
@@ -146,25 +156,28 @@
  (org-superstar-special-todo-items t)
  (org-superstar-headline-bullets-list '("" "" "" "" "" "" "")))
 
-(defun nh/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
+(use-package markdown-mode
+  :mode ("README\\.md\\'" . gfm-mode)
+  :hook (markdown-mode . visual-line-mode)
+  :init
+  (setq markdown-command "multimarkdown")
+  (setq markdown-list-indent-width 2)
+  :bind (:map markdown-mode-map ("C-c C-e" . markdown-do)))
+
+(defun nh/doc-mode-visual-fill ()
+  (setq visual-fill-column-width 120
 	visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
     
 (use-package visual-fill-column
-  :hook (org-mode . nh/org-mode-visual-fill))
+  :hook
+  (org-mode . nh/doc-mode-visual-fill)
+  (markdown-mode . nh/doc-mode-visual-fill))
 
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l") ;; or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(sqlite3 which-key visual-fill-column use-package rainbow-delimiters org-superstar org-bullets monokai-theme ivy-rich hydra helpful general forge doom-themes doom-modeline dash-at-point counsel-projectile command-log-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
