@@ -120,7 +120,7 @@
   :config (projectile-mode)
   :init
   (when (file-directory-p "~/Projects")
-    (setq projectile-project-search-path '("~/Projects"))))
+    (setq projectile-project-search-path '(("~/Projects" . 2)))))
 
 (use-package counsel-projectile
   :after (projectile counsel)
