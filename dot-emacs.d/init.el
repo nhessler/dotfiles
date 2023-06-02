@@ -22,6 +22,13 @@
 
 (set-face-attribute 'default nil :font "MesloLGM Nerd Font Mono" :height 120)
 
+
+(require 'windmove)
+(windmove-default-keybindings)
+(global-set-key (kbd "C-<tab>") 'other-window)
+
+
+
 ; Package Management
 (require 'package)
 
@@ -86,6 +93,8 @@
   (autoload 'dash-at-point "dash-at-point"
     "Search the word at point with Dash." t nil)
   (add-to-list 'dash-at-point-mode-alist '(emacs-lisp-mode . "elisp"))
+  (add-to-list 'dash-at-point-mode-alist '(elixir-mode . "elixir"))
+  (add-to-list 'dash-at-point-mode-alist '(ruby-mode . "ruby"))
   :bind
   ("C-c d" . dash-at-point)
   ("C-c e" . dash-at-point-with-docset))
@@ -181,3 +190,25 @@
   :config
   (lsp-enable-which-key-integration t))
 
+(use-package exercism
+  :custom
+  (exercism-directory "~/Projects/nhessler/exercism")
+  :bind ("C-c C-x" . exercism))
+
+(use-package buffer-flip
+  :bind  (("M-<tab>" . buffer-flip)
+          :map buffer-flip-map
+          ( "M-<tab>" .   buffer-flip-forward) 
+          ( "M-S-<tab>" . buffer-flip-backward) 
+          ( "M-ESC" .     buffer-flip-abort))
+  :config
+  (setq buffer-flip-skip-patterns
+        '("^\\*helm\\b"
+          "^\\*swiper\\*$")))
+
+(use-package elixir-mode
+  :bind (:map elixir-mode-map
+	      ("C-c C-f" . elixir-format)))
+
+(use-package ace-window
+  :bind ("M-o" . ace-window))
