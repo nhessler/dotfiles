@@ -1,10 +1,13 @@
 tap "homebrew/cask-fonts"
 
+brew "curl"
 brew "dtach"
+brew "emacs-plus@29"
 brew "fish"
-brew "git"
 brew "gh"
+brew "git"
 brew "htop"
+brew "jq"
 brew "mas"
 brew "mercurial"
 brew "starship"
@@ -13,6 +16,7 @@ brew "tig"
 brew "tldr"
 brew "trash"
 brew "tree"
+brew "tree-sitter"
 
 cask "aerial"
 cask "alfred"
@@ -25,9 +29,11 @@ cask "chrysalis"
 cask "coherence x"
 cask "dash"
 cask "discord"
+cask "docker"
 cask "doxie"
 cask "dropbox"
-cask "emacs"
+cask "elgato-wave-link"
+cask "figma"
 cask "firefox"
 cask "fluid"
 cask "gog-galaxy"
@@ -35,10 +41,12 @@ cask "google-chrome"
 cask "hammerspoon"
 cask "istat-menus"
 cask "keybase"
+cask "kiwi-for-gmail"
 cask "miro"
 cask "nordvpn"
 cask "notion"
 cask "postman"
+cask "shortcat"
 cask "sizeup"
 cask "skype"
 cask "spotify"
@@ -102,12 +110,16 @@ cask "font-ubuntu-nerd-font"
 cask "font-victor-mono-nerd-font"
 
 mas "feedly",         id: 865500966
-mas "Kindle",         id: 405399194
-mas "Kiwi for Gmail", id: 986304488
+mas "Keynote",        id: 409183694
+mas "Kindle Classic", id: 405399194
+mas "iMovie",         id: 408981434
 mas "Mactracker",     id: 430255202
 mas "Notability",     id: 360593530
+mas "Numbers",        id: 409203825
 mas "OmniFocus",      id: 1346203938
+mas "Pages",          id: 409201541
 mas "Sip",            id: 507257563
 mas "Slack",          id: 803453959
+mas "Twitter",        id: 1482454543
 mas "Xcode",          id: 497799835
 mas "1password 7",    id: 1333542190

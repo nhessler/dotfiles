@@ -3,7 +3,10 @@ dot-config/fish/completions/asdf.fish
 
 dot-emacs.d/auto-save-list/
 dot-emacs.d/elpa/
-dot-emacs.d/recentf
-dot-emacs.d/projectile-bookmarks.eld
 dot-emacs.d/forge-database.sqlite
+dot-emacs.d/persist/
+dot-emacs.d/projectile-bookmarks.eld
+dot-emacs.d/projectile.cache
+dot-emacs.d/recentf
+dot-emacs.d/request/
 dot-emacs.d/transient/
