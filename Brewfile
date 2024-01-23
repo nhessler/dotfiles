@@ -3,6 +3,7 @@ tap "d12frosted/emacs-plus"
 
 brew "curl"
 brew "dtach"
+brew "direnv"
 brew "emacs-plus@29"
 brew "fish"
 brew "gh"
