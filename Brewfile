@@ -1,6 +1,7 @@
 tap "homebrew/cask-fonts"
 tap "d12frosted/emacs-plus"
 
+brew "bat"
 brew "curl"
 brew "dtach"
 brew "direnv"
