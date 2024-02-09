@@ -206,9 +206,34 @@
         '("^\\*helm\\b"
           "^\\*swiper\\*$")))
 
+(use-package smartparens :ensure t
+  :config
+  (require 'smartparens-rust)
+  (require 'smartparens-elixir)
+  (require 'smartparens-ruby))
+
 (use-package elixir-mode
   :bind (:map elixir-mode-map
 	      ("C-c C-f" . elixir-format)))
 
+(defun nh/rust/mode-hook ()
+  "My Rust Mode Hook"
+  ;; Style per the Rust Style Guide:
+  ;; https://github.com/rust-lang-nursery/fmt-rfcs/blob/master/guide/guide.md
+  (smartparens-mode)
+  (setq indent-tabs-mode nil
+	tab-width 4
+	c-basic-offset 4
+	fill-column 100))
+
+(use-package rust-mode
+  :hook (rust-mode . nh/rust/mode-hook)
+  :config
+  (let ((dot-cargo-bin (expand-file-name "~/.asdf/shims/")))
+    (setq rust-rustfmt-bin (concat dot-cargo-bin "rustfmt")
+          rust-cargo-bin (concat dot-cargo-bin "cargo")
+          rust-format-on-save t)))
+
 (use-package ace-window
   :bind ("M-o" . ace-window))
+
