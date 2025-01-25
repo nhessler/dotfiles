@@ -1,0 +1,33 @@
+#!/usr/bin/env fish
+
+function _git-secure -a name email key -d "set local config to used signed keys for all commits"
+  argparse --name=git-secure 'h/help' 'n/name=' 'e/email=' 'k/key=' -- $argv
+
+  if set -q _flag_help
+    echo "HELP SECTION"
+    return 0
+  end
+  
+  if not string match -q "true" (git rev-parse --is-inside-work-tree 2>/dev/null)
+    echo "ERROR: git-secure must be run in the working tree of a git repo"
+    return 1
+  end
+  
+  if test -z "$_flag_name"; or test -z "$_flag_email"; or test -z "$_flag_key"
+    echo "ERROR: please provide the NAME, EMAIL, and KEY used to secure this repo"
+    return 1
+  end
+
+  git config --local user.name "$_flag_name"
+  git config --local user.email "$_flag_email"
+  git config --local user.signingkey "$_flag_key"
+  git config --local user.gpgsign true
+
+  set -l name       (git config get user.name)
+  set -l email      (git config get user.email)
+  set -l signingkey (git config get user.signingkey)
+  set -l gpgsign    (git config get user.gpgsign)
+  echo "updated git config user.name to \"$name\", user.email to \"$email\", user.signingkey to \"$signingkey\", user.gpgsign to $gpgsign"
+end
+
+_git-secure $argv

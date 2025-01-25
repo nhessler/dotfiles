@@ -54,6 +54,15 @@
   :config
   (setq darkokai-mode-line-padding 1))
 
+(use-package time
+  :init
+  (setq display-time-day-and-date t
+        display-time-24hr-format t
+        display-time-use-mail-icon t
+        display-time-interval 10)
+  :config
+  (display-time))
+
 (use-package command-log-mode)
 
 (use-package ivy
@@ -233,6 +242,15 @@
     (setq rust-rustfmt-bin (concat dot-cargo-bin "rustfmt")
           rust-cargo-bin (concat dot-cargo-bin "cargo")
           rust-format-on-save t)))
+
+(use-package fish-mode
+  :config
+  (setq fish-indent-offset 2))
+
+(use-package git-modes
+  :mode
+  ("/dot-gitconfig$" . gitconfig-mode)
+  ("/.dockerignore\\'" . gitignore-mode))
 
 (use-package ace-window
   :bind ("M-o" . ace-window))

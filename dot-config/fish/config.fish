@@ -4,6 +4,9 @@ set --global --prepend fish_user_paths "/opt/homebrew/bin"
 set --global --prepend fish_user_paths "/opt/homebrew/opt/curl/bin"
 set --global --prepend fish_user_paths "/opt/homebrew/opt/postgresql@15/bin"
 
+# custom git commands
+set --global --append fish_user_paths "$HOME/.gitbin"
+
 # monokai theme setup
 source ~/.config/fish/color_syntax.fish
 
@@ -26,6 +29,12 @@ direnv hook fish | source
 # fzf setup
 fzf --fish | source
 
+# for future potential ENV_VAR needs -- https://stackoverflow.com/questions/25632846/how-to-set-environment-variables-in-fish-shell
+
+# set gpg to look at terminal for passphrase
+set -x GPG_TTY $(tty)
+
 # set -g direnv_fish_mode eval_on_arrow    # trigger direnv at prompt, and on every arrow-based directory change (default)
 # set -g direnv_fish_mode eval_after_arrow # trigger direnv at prompt, and only after arrow-based directory changes before executing command
 # set -g direnv_fish_mode disable_arrow    # trigger direnv at prompt only, this is similar functionality to the original behavior
+
