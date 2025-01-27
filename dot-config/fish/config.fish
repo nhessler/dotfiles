@@ -13,6 +13,9 @@ source ~/.config/fish/color_syntax.fish
 # asdf setup
 source ~/.asdf/asdf.fish
 
+# Don't forget to manually link asdf completions 
+# $> ln -s ~/.asdf/completions/asdf.fish ~/.config/fish/completions
+
 # Enable IEx shell history
 # set -Ux ERL_AFLAGS '-kernel shell_history enabled'
 
