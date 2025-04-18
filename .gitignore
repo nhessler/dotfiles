@@ -10,3 +10,5 @@ dot-emacs.d/projectile.cache
 dot-emacs.d/recentf
 dot-emacs.d/request/
 dot-emacs.d/transient/
+
+caddy/Caddyfile
