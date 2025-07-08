@@ -131,6 +131,8 @@
 	ohYYWE5TT2JqZWN0CBEaJCkyN0lMUVNXXWRqd36nqauwu8TMzwAAAAAAAAEBAAAAAAAA
 	ABkAAAAAAAAAAAAAAAAAAADY
 	</data>
+	<key>Bell</key>
+	<false/>
 	<key>CursorBlink</key>
 	<true/>
 	<key>CursorColor</key>
@@ -168,6 +170,8 @@
 	Y3QIERokKTI3SUxRU1ddZGp3fp2foaaxusLFAAAAAAAAAQEAAAAAAAAAGQAAAAAAAAAA
 	AAAAAAAAAM4=
 	</data>
+	<key>StrictVTKeypad</key>
+	<false/>
 	<key>TextBoldColor</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS

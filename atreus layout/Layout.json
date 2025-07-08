@@ -345,7 +345,7 @@
       {"code": 40, "label": {"base": "Enter"}},
       {"code": 44, "label": {"base": "Space"}},
       {"code": 39, "label": {"base": "0", "shifted": ")"}},
-      {"code": 55, "label": {"base": ".", "shifted": ">"}},
+      {"code": 99, "label": {"base": "."}, "location": "numpad"},
       {"code": 46, "label": {"base": "=", "shifted": "+"}},
       {
         "code": 88,
