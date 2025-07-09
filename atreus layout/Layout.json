@@ -993,14 +993,22 @@
     ],
     [
       {
-        "code": 18846,
-        "label": {"base": {"full": "Lock Screen", "1u": "Lock"}},
-        "categories": ["platform_apple"]
+        "code": 18543,
+        "label": {
+          "hint": {"full": "Brightness", "1u": "Brght."},
+          "base": {"full": "Up", "1u": "🔆"}
+        },
+        "categories": ["consumer"]
       },
       {
-        "code": 19106,
-        "label": {"base": {"full": "Mission Control", "1u": "Mission"}},
-        "categories": ["platform_apple"]
+        "code": 18614,
+        "label": {"base": {"full": "Previous track", "1u": "⏮"}},
+        "categories": ["consumer"]
+      },
+      {
+        "code": 18637,
+        "label": {"base": {"full": "Play / pause", "1u": "⏯"}},
+        "categories": ["consumer"]
       },
       {
         "code": 18613,
@@ -1016,14 +1024,6 @@
         "categories": ["consumer"]
       },
       {
-        "code": 18543,
-        "label": {
-          "hint": {"full": "Brightness", "1u": "Brght."},
-          "base": {"full": "Up", "1u": "🔆"}
-        },
-        "categories": ["consumer"]
-      },
-      {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
@@ -1034,48 +1034,44 @@
         "categories": ["platform_apple"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {"code": 41, "label": {"base": "Esc"}},
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 19103,
-        "label": {"base": {"full": "Exposé"}},
-        "categories": ["platform_apple"]
-      },
-      {
-        "code": 18614,
-        "label": {"base": {"full": "Previous track", "1u": "⏮"}},
-        "categories": ["consumer"]
-      },
-      {
-        "code": 18666,
+        "code": 20517,
         "label": {
-          "hint": {"full": "Volume", "1u": "Vol."},
-          "base": {"full": "Down", "1u": "🔉"}
+          "hint": {"full": "Mouse Warp", "1u": "Warp"},
+          "base": {"full": "North-West", "1u": "NW"}
         },
-        "categories": ["consumer"]
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20552,
+        "label": {
+          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
+          "base": "Back"
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20548,
+        "label": {
+          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
+          "base": "Middle"
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20560,
+        "label": {
+          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
+          "base": "Forward"
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20521,
+        "label": {
+          "hint": {"full": "Mouse Warp", "1u": "Warp"},
+          "base": {"full": "North-East", "1u": "NE"}
+        },
+        "categories": ["mousekeys"]
       },
       {
         "code": 18544,
@@ -1086,56 +1082,111 @@
         "categories": ["consumer"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 19106,
+        "label": {"base": {"full": "Mission Control", "1u": "Mission"}},
+        "categories": ["platform_apple"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 20497,
+        "label": {"hint": {"full": "Mouse Wheel", "1u": "M.Whl"}, "base": "Up"},
+        "categories": ["mousekeys"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 19103,
+        "label": {"base": {"full": "Exposé"}},
+        "categories": ["platform_apple"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {"code": 18615, "label": {"base": "Stop"}, "categories": ["consumer"]},
-      {
-        "code": 18637,
-        "label": {"base": {"full": "Play / pause", "1u": "⏯"}},
+        "code": 18666,
+        "label": {
+          "hint": {"full": "Volume", "1u": "Vol."},
+          "base": {"full": "Down", "1u": "🔉"}
+        },
         "categories": ["consumer"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 20518,
+        "label": {
+          "hint": {"full": "Mouse Warp", "1u": "Warp"},
+          "base": {"full": "South-West", "1u": "SW"}
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20545,
+        "label": {
+          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
+          "base": "Left"
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20481,
+        "label": {"hint": "Mouse", "base": "Up"},
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20546,
+        "label": {
+          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
+          "base": "Right"
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20522,
+        "label": {
+          "hint": {"full": "Mouse Warp", "1u": "Warp"},
+          "base": {"full": "South-East", "1u": "SE"}
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 20500,
+        "label": {
+          "hint": {"full": "Mouse Wheel", "1u": "M.Whl"},
+          "base": "Left"
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20498,
+        "label": {
+          "hint": {"full": "Mouse Wheel", "1u": "M.Whl"},
+          "base": "Down"
+        },
+        "categories": ["mousekeys"]
+      },
+      {
+        "code": 20504,
+        "label": {
+          "hint": {"full": "Mouse Wheel", "1u": "M.Whl"},
+          "base": "Right"
+        },
+        "categories": ["mousekeys"]
       },
       {"code": 18658, "label": {"base": "Mute"}, "categories": ["consumer"]},
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 17413,
+        "label": {"hint": "LockTo", "base": "#5"},
+        "target": 5,
+        "rangeStart": 17408,
+        "categories": ["layer", "locktolayer"]
       },
       {
         "code": 65535,
@@ -1148,24 +1199,19 @@
         "categories": ["blanks"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 20484,
+        "label": {"hint": "Mouse", "base": "Left"},
+        "categories": ["mousekeys"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 20482,
+        "label": {"hint": "Mouse", "base": "Down"},
+        "categories": ["mousekeys"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 20488,
+        "label": {"hint": "Mouse", "base": "Right"},
+        "categories": ["mousekeys"]
       },
       {
         "code": 65535,
@@ -1195,9 +1241,9 @@
         "categories": ["blanks"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 18846,
+        "label": {"base": {"full": "Lock Screen", "1u": "Lock"}},
+        "categories": ["platform_apple"]
       },
       {
         "code": 65535,
@@ -1905,7 +1951,7 @@
   "palette": [],
   "deviceConfiguration": {
     "escape_oneshot.cancel_key": "41",
-    "keymap.custom": "52 54 55 19 28 0 0 9 10 6 21 15 49429 49187 49689 49961 12 0 0 7 49948 49704 49186 49447 51 20 13 14 27 42 52539 5 16 26 25 29 41 65535 17454 17453 44 51517 51770 44 17453 17454 65535 45 17409 65535 65535 65535 65535 2087 225 2086 36 37 38 2087 225 224 226 227 65535 65535 65535 87 33 34 35 85 65535 65535 65535 65535 65535 65535 52581 86 30 31 32 84 17492 65535 65535 65535 65535 65535 51818 65535 52084 52341 46 17498 2086 2095 2097 2096 2087 49 47 65535 65535 65535 65535 17410 49 47 82 48 56 45 80 65535 231 226 228 229 45 80 81 79 2104 2101 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 51527 65535 65535 65535 65535 65535 17498 4 18 8 24 65535 225 224 65535 11 23 17 22 225 224 226 227 65535 4 22 65535 231 226 228 229 4 22 7 9 65535 65535 65535 65535 13 14 15 51 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 65535 65535 65535 65535 65535 225 224 65535 65535 65535 65535 65535 225 224 226 227 65535 58 59 65535 231 226 228 229 58 59 60 61 62 63 52562 65 66 67 68 69 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 18846 19106 18613 18665 18543 65535 19106 65535 65535 65535 65535 41 65535 19103 18614 18666 18544 65535 65535 65535 65535 65535 65535 65535 65535 18615 18637 18658 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 20 26 8 21 23 29 27 28 24 12 18 19 49429 49191 49688 49946 10 17492 65535 11 49950 49695 49184 49476 29 27 6 25 5 42 52539 17 16 54 55 56 17492 65535 17454 17453 44 51517 51770 44 17453 17454 65535 45 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535",
+    "keymap.custom": "52 54 55 19 28 0 0 9 10 6 21 15 49429 49187 49689 49961 12 0 0 7 49948 49704 49186 49447 51 20 13 14 27 42 52539 5 16 26 25 29 41 65535 17454 17453 44 51517 51770 44 17453 17454 65535 45 17409 65535 65535 65535 65535 2087 225 2086 36 37 38 2087 225 224 226 227 65535 65535 65535 87 33 34 35 85 65535 65535 65535 65535 65535 65535 52581 86 30 31 32 84 17492 65535 65535 65535 65535 65535 51818 65535 52084 52341 46 17498 2086 2095 2097 2096 2087 49 47 65535 65535 65535 65535 17410 49 47 82 48 56 45 80 65535 231 226 228 229 45 80 81 79 2104 2101 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 51527 65535 65535 65535 65535 65535 17498 4 18 8 24 65535 225 224 65535 11 23 17 22 225 224 226 227 65535 4 22 65535 231 226 228 229 4 22 7 9 65535 65535 65535 65535 13 14 15 51 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 65535 65535 65535 65535 65535 225 224 65535 65535 65535 65535 65535 225 224 226 227 65535 58 59 65535 231 226 228 229 58 59 60 61 62 63 52562 65 66 67 68 69 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 18543 18614 18637 18613 18665 65535 19106 20517 20552 20548 20560 20521 18544 19106 20497 19103 18666 65535 65535 20518 20545 20481 20546 20522 65535 20500 20498 20504 18658 17413 65535 65535 20484 20482 20488 65535 17492 65535 65535 65535 18846 65535 65535 65535 65535 65535 65535 17498 20 26 8 21 23 29 27 28 24 12 18 19 49429 49191 49688 49946 10 17492 65535 11 49950 49695 49184 49476 29 27 6 25 5 42 52539 17 16 54 55 56 17492 65535 17454 17453 44 51517 51770 44 17453 17454 65535 45 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535",
     "layernames": {
       "storageSize": 63,
       "names": ["#0", "#1", "#2", "#3", "#4", "#5", "#6", "#7", "#8"]
