@@ -104,11 +104,12 @@
       {"code": 27, "label": {"base": "x", "shifted": "X"}},
       {"code": 42, "label": {"base": {"full": "Backspace", "1u": "Bksp"}}},
       {
-        "code": 17455,
-        "label": {"hint": "ShiftTo", "base": "#5"},
+        "code": 52539,
+        "baseCode": 41,
+        "label": {"hint": "Layer #5/", "base": "Esc"},
         "target": 5,
-        "rangeStart": 17450,
-        "categories": ["layer", "shifttolayer"]
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
       },
       {"code": 5, "label": {"base": "b", "shifted": "B"}},
       {"code": 16, "label": {"base": "m", "shifted": "M"}},
@@ -122,9 +123,11 @@
         "categories": ["blanks"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 17454,
+        "label": {"hint": "ShiftTo", "base": "#4"},
+        "target": 4,
+        "rangeStart": 17450,
+        "categories": ["layer", "shifttolayer"]
       },
       {
         "code": 17453,
@@ -159,9 +162,11 @@
         "categories": ["layer", "shifttolayer"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 17454,
+        "label": {"hint": "ShiftTo", "base": "#4"},
+        "target": 4,
+        "rangeStart": 17450,
+        "categories": ["layer", "shifttolayer"]
       },
       {
         "code": 65535,
@@ -200,7 +205,7 @@
       },
       {
         "code": 2087,
-        "label": {"hint": null, "base": ")"},
+        "label": {"hint": {"full": "", "1u": ""}, "base": ")"},
         "categories": ["with-modifiers", "shift"],
         "baseCode": 39
       },
@@ -212,7 +217,7 @@
       },
       {
         "code": 2086,
-        "label": {"hint": null, "base": "("},
+        "label": {"hint": {"full": "", "1u": ""}, "base": "("},
         "categories": ["with-modifiers", "shift"],
         "baseCode": 38
       },
@@ -221,7 +226,7 @@
       {"code": 38, "label": {"base": "9", "shifted": "("}},
       {
         "code": 2087,
-        "label": {"hint": null, "base": ")"},
+        "label": {"hint": {"full": "", "1u": ""}, "base": ")"},
         "categories": ["with-modifiers", "shift"],
         "baseCode": 39
       },
@@ -245,7 +250,7 @@
       },
       {
         "code": 227,
-        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "Cm"}},
+        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "⌘"}},
         "location": "left",
         "categories": ["modifier"]
       },
@@ -255,10 +260,9 @@
         "categories": ["blanks"]
       },
       {
-        "code": 2085,
-        "label": {"hint": null, "base": "*"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 37
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
         "code": 65535,
@@ -301,9 +305,15 @@
         "categories": ["blanks"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 52581,
+        "baseCode": 83,
+        "label": {
+          "hint": "Layer #5/",
+          "base": {"full": "Num Lock", "1u": "Num"}
+        },
+        "target": 5,
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
       },
       {"code": 86, "label": {"base": "-"}, "location": "numpad"},
       {"code": 30, "label": {"base": "1", "shifted": "!"}},
@@ -342,54 +352,77 @@
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
       },
-      {"code": 40, "label": {"base": "Enter"}},
-      {"code": 44, "label": {"base": "Space"}},
-      {"code": 39, "label": {"base": "0", "shifted": ")"}},
-      {"code": 99, "label": {"base": "."}, "location": "numpad"},
-      {"code": 46, "label": {"base": "=", "shifted": "+"}},
       {
-        "code": 88,
-        "label": {"base": {"full": "Enter", "1u": "Ent"}},
-        "location": "numpad"
-      }
-    ],
-    [
-      {
-        "code": 2086,
-        "label": {"hint": null, "base": "("},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 38
-      },
-      {
-        "code": 2095,
-        "label": {"hint": null, "base": "{"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 47
-      },
-      {
-        "code": 2097,
-        "label": {"hint": null, "base": "|"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 49
-      },
-      {
-        "code": 2096,
-        "label": {"hint": null, "base": "}"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 48
-      },
-      {
-        "code": 2087,
-        "label": {"hint": null, "base": ")"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 39
+        "code": 51818,
+        "baseCode": 88,
+        "label": {"hint": "Layer #2/", "base": {"full": "Enter", "1u": "Ent"}},
+        "target": 2,
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
       },
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
       },
+      {
+        "code": 52084,
+        "baseCode": 98,
+        "label": {"hint": "Layer #3/", "base": "0"},
+        "target": 3,
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
+      },
+      {
+        "code": 52341,
+        "baseCode": 99,
+        "label": {"hint": "Layer #4/", "base": "."},
+        "target": 4,
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
+      },
+      {"code": 46, "label": {"base": "=", "shifted": "+"}},
+      {
+        "code": 17498,
+        "label": {"hint": "MoveTo", "base": "#6"},
+        "target": 6,
+        "rangeStart": 17492,
+        "categories": ["layer", "movetolayer"]
+      }
+    ],
+    [
+      {
+        "code": 2086,
+        "label": {"hint": {"full": "", "1u": ""}, "base": "("},
+        "categories": ["with-modifiers", "shift"],
+        "baseCode": 38
+      },
+      {
+        "code": 2095,
+        "label": {"hint": {"full": "", "1u": ""}, "base": "{"},
+        "categories": ["with-modifiers", "shift"],
+        "baseCode": 47
+      },
+      {
+        "code": 2097,
+        "label": {"hint": {"full": "", "1u": ""}, "base": "|"},
+        "categories": ["with-modifiers", "shift"],
+        "baseCode": 49
+      },
+      {
+        "code": 2096,
+        "label": {"hint": {"full": "", "1u": ""}, "base": "}"},
+        "categories": ["with-modifiers", "shift"],
+        "baseCode": 48
+      },
+      {
+        "code": 2087,
+        "label": {"hint": {"full": "", "1u": ""}, "base": ")"},
+        "categories": ["with-modifiers", "shift"],
+        "baseCode": 39
+      },
       {"code": 49, "label": {"base": "\\", "shifted": "|"}},
+      {"code": 47, "label": {"base": "[", "shifted": "{"}},
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
@@ -422,18 +455,8 @@
       {"code": 82, "label": {"base": {"full": "Up Arrow", "1u": "↑"}}},
       {"code": 48, "label": {"base": "]", "shifted": "}"}},
       {"code": 56, "label": {"base": "/", "shifted": "?"}},
-      {
-        "code": 229,
-        "label": {"base": "Shift"},
-        "location": "right",
-        "categories": ["modifier"]
-      },
-      {
-        "code": 2097,
-        "label": {"hint": null, "base": "|"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 49
-      },
+      {"code": 45, "label": {"base": "-", "shifted": "_"}},
+      {"code": 80, "label": {"base": {"full": "Left Arrow", "1u": "←"}}},
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
@@ -441,7 +464,7 @@
       },
       {
         "code": 231,
-        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "Cm"}},
+        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "⌘"}},
         "location": "right",
         "categories": ["modifier"]
       },
@@ -469,13 +492,13 @@
       {"code": 79, "label": {"base": {"full": "Right Arrow", "1u": "→"}}},
       {
         "code": 2104,
-        "label": {"hint": null, "base": "?"},
+        "label": {"hint": {"full": "", "1u": ""}, "base": "?"},
         "categories": ["with-modifiers", "shift"],
         "baseCode": 56
       },
       {
         "code": 2101,
-        "label": {"hint": null, "base": "~"},
+        "label": {"hint": {"full": "", "1u": ""}, "base": "~"},
         "categories": ["with-modifiers", "shift"],
         "baseCode": 53
       },
@@ -517,25 +540,33 @@
         "categories": ["layer", "movetolayer"]
       },
       {
-        "code": 2102,
-        "label": {"hint": null, "base": "<"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 54
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
-        "code": 2093,
-        "label": {"hint": null, "base": "_"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 45
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
-        "code": 2103,
-        "label": {"hint": null, "base": ">"},
-        "categories": ["with-modifiers", "shift"],
-        "baseCode": 55
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
-      {"code": 44, "label": {"base": "Space"}},
-      {"code": 53, "label": {"base": "`", "shifted": "~"}},
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 51527,
+        "baseCode": 53,
+        "label": {"hint": "Layer #1/", "base": "`"},
+        "target": 1,
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
+      },
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
@@ -562,28 +593,14 @@
         "categories": ["blanks"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 17498,
+        "label": {"hint": "MoveTo", "base": "#6"},
+        "target": 6,
+        "rangeStart": 17492,
+        "categories": ["layer", "movetolayer"]
       }
     ],
     [
-      {"code": 58, "label": {"base": "F1"}},
-      {"code": 59, "label": {"base": "F2"}},
-      {"code": 60, "label": {"base": "F3"}},
-      {"code": 61, "label": {"base": "F4"}},
-      {"code": 62, "label": {"base": "F5"}},
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {"code": 4, "label": {"base": "a", "shifted": "A"}},
-      {"code": 65, "label": {"base": "F8"}},
-      {"code": 66, "label": {"base": "F9"}},
-      {"code": 67, "label": {"base": "F10"}},
-      {"code": 68, "label": {"base": "F11"}},
-      {"code": 69, "label": {"base": "F12"}},
       {"code": 4, "label": {"base": "a", "shifted": "A"}},
       {"code": 18, "label": {"base": "o", "shifted": "O"}},
       {"code": 8, "label": {"base": "e", "shifted": "E"}},
@@ -594,14 +611,16 @@
         "categories": ["blanks"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 225,
+        "label": {"base": "Shift"},
+        "location": "left",
+        "categories": ["modifier"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 224,
+        "label": {"base": {"full": "Control", "1u": "Ctrl"}},
+        "location": "left",
+        "categories": ["modifier"]
       },
       {
         "code": 65535,
@@ -632,7 +651,7 @@
       },
       {
         "code": 227,
-        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "Cm"}},
+        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "⌘"}},
         "location": "left",
         "categories": ["modifier"]
       },
@@ -641,8 +660,8 @@
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
       },
-      {"code": 63, "label": {"base": "F6"}},
-      {"code": 64, "label": {"base": "F7"}},
+      {"code": 4, "label": {"base": "a", "shifted": "A"}},
+      {"code": 22, "label": {"base": "s", "shifted": "S"}},
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
@@ -650,7 +669,7 @@
       },
       {
         "code": 231,
-        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "Cm"}},
+        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "⌘"}},
         "location": "right",
         "categories": ["modifier"]
       },
@@ -672,156 +691,10 @@
         "location": "right",
         "categories": ["modifier"]
       },
-      {
-        "code": 17492,
-        "label": {"hint": "MoveTo", "base": "#0"},
-        "target": 0,
-        "rangeStart": 17492,
-        "categories": ["layer", "movetolayer"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      }
-    ],
-    [
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
+      {"code": 4, "label": {"base": "a", "shifted": "A"}},
       {"code": 22, "label": {"base": "s", "shifted": "S"}},
+      {"code": 7, "label": {"base": "d", "shifted": "D"}},
+      {"code": 9, "label": {"base": "f", "shifted": "F"}},
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
@@ -842,76 +715,10 @@
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
       },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
+      {"code": 13, "label": {"base": "j", "shifted": "J"}},
+      {"code": 14, "label": {"base": "k", "shifted": "K"}},
+      {"code": 15, "label": {"base": "l", "shifted": "L"}},
+      {"code": 51, "label": {"base": ";", "shifted": ":"}},
       {
         "code": 17492,
         "label": {"hint": "MoveTo", "base": "#0"},
@@ -948,255 +755,6 @@
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      }
-    ],
-    [
-      {
-        "code": 18846,
-        "label": {"base": {"full": "Lock Screen", "1u": "Lock"}},
-        "categories": ["platform_apple"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 18613,
-        "legacyCode": 22709,
-        "label": {"base": {"full": "Next track", "1u": "⏭"}},
-        "categories": ["consumer"]
-      },
-      {
-        "code": 18665,
-        "legacyCode": 23785,
-        "label": {
-          "hint": {"full": "Volume", "1u": "Vol."},
-          "base": {"full": "Up", "1u": "🔊"}
-        },
-        "categories": ["consumer"]
-      },
-      {
-        "code": 18543,
-        "legacyCode": 23663,
-        "label": {
-          "hint": {"full": "Brightness", "1u": "Brght."},
-          "base": {"full": "Up", "1u": "🔆"}
-        },
-        "categories": ["consumer"]
-      },
-      {"code": 19, "label": {"base": "p", "shifted": "P"}},
-      {
-        "code": 49429,
-        "baseCode": 4,
-        "label": {"hint": "Shift/", "base": "a"},
-        "modifier": "Shift",
-        "rangeStart": 49169,
-        "categories": ["modifier", "dualuse", "shift"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 20545,
-        "label": {
-          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
-          "base": "Left"
-        },
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 20548,
-        "label": {
-          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
-          "base": "Middle"
-        },
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 20546,
-        "label": {
-          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
-          "base": "Right"
-        },
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 19103,
-        "label": {"base": {"full": "Exposé"}},
-        "categories": ["platform_apple"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 18637,
-        "legacyCode": 22733,
-        "label": {"base": {"full": "Play / pause", "1u": "⏯"}},
-        "categories": ["consumer"]
-      },
-      {
-        "code": 18658,
-        "legacyCode": 19682,
-        "label": {"base": "Mute"},
-        "categories": ["consumer"]
-      },
-      {
-        "code": 18544,
-        "legacyCode": 23664,
-        "label": {
-          "hint": {"full": "Brightness", "1u": "Brght."},
-          "base": {"full": "Down", "1u": "🔅"}
-        },
-        "categories": ["consumer"]
-      },
-      {
-        "code": 49476,
-        "baseCode": 51,
-        "label": {"hint": "Shift/", "base": ";"},
-        "modifier": "Shift",
-        "rangeStart": 49169,
-        "categories": ["modifier", "dualuse", "shift"]
-      },
-      {"code": 29, "label": {"base": "z", "shifted": "Z"}},
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 20552,
-        "label": {
-          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
-          "base": "Back"
-        },
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 20481,
-        "label": {"hint": "Mouse", "base": "Up"},
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 20560,
-        "label": {
-          "hint": {"full": "Mouse Button", "1u": "M.Btn"},
-          "base": "Forward"
-        },
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 19106,
-        "label": {"base": {"full": "Mission Control", "1u": "Mission"}},
-        "categories": ["platform_apple"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 18614,
-        "legacyCode": 22710,
-        "label": {"base": {"full": "Previous track", "1u": "⏮"}},
-        "categories": ["consumer"]
-      },
-      {
-        "code": 18666,
-        "legacyCode": 23786,
-        "label": {
-          "hint": {"full": "Volume", "1u": "Vol."},
-          "base": {"full": "Down", "1u": "🔉"}
-        },
-        "categories": ["consumer"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 17455,
-        "label": {"hint": "ShiftTo", "base": "#5"},
-        "target": 5,
-        "rangeStart": 17450,
-        "categories": ["layer", "shifttolayer"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 20484,
-        "label": {"hint": "Mouse", "base": "Left"},
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 20482,
-        "label": {"hint": "Mouse", "base": "Down"},
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 20488,
-        "label": {"hint": "Mouse", "base": "Right"},
-        "categories": ["mousekeys"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 17492,
-        "label": {"hint": "MoveTo", "base": "#0"},
-        "target": 0,
-        "rangeStart": 17492,
-        "categories": ["layer", "movetolayer"]
       },
       {
         "code": 65535,
@@ -1224,6 +782,156 @@
         "target": 6,
         "rangeStart": 17492,
         "categories": ["layer", "movetolayer"]
+      }
+    ],
+    [
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 225,
+        "label": {"base": "Shift"},
+        "location": "left",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 224,
+        "label": {"base": {"full": "Control", "1u": "Ctrl"}},
+        "location": "left",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 225,
+        "label": {"base": "Shift"},
+        "location": "left",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 224,
+        "label": {"base": {"full": "Control", "1u": "Ctrl"}},
+        "location": "left",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 226,
+        "label": {"base": "Alt"},
+        "location": "left",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 227,
+        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "⌘"}},
+        "location": "left",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {"code": 58, "label": {"base": "F1"}},
+      {"code": 59, "label": {"base": "F2"}},
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 231,
+        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "⌘"}},
+        "location": "right",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 226,
+        "label": {"base": "Alt"},
+        "location": "left",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 228,
+        "label": {"base": {"full": "Control", "1u": "Ctrl"}},
+        "location": "right",
+        "categories": ["modifier"]
+      },
+      {
+        "code": 229,
+        "label": {"base": "Shift"},
+        "location": "right",
+        "categories": ["modifier"]
+      },
+      {"code": 58, "label": {"base": "F1"}},
+      {"code": 59, "label": {"base": "F2"}},
+      {"code": 60, "label": {"base": "F3"}},
+      {"code": 61, "label": {"base": "F4"}},
+      {"code": 62, "label": {"base": "F5"}},
+      {"code": 63, "label": {"base": "F6"}},
+      {
+        "code": 52562,
+        "baseCode": 64,
+        "label": {"hint": "Layer #5/", "base": "F7"},
+        "target": 5,
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
+      },
+      {"code": 65, "label": {"base": "F8"}},
+      {"code": 66, "label": {"base": "F9"}},
+      {"code": 67, "label": {"base": "F10"}},
+      {"code": 68, "label": {"base": "F11"}},
+      {"code": 69, "label": {"base": "F12"}},
+      {
+        "code": 17492,
+        "label": {"hint": "MoveTo", "base": "#0"},
+        "target": 0,
+        "rangeStart": 17492,
+        "categories": ["layer", "movetolayer"]
       },
       {
         "code": 65535,
@@ -1254,6 +962,279 @@
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 17498,
+        "label": {"hint": "MoveTo", "base": "#6"},
+        "target": 6,
+        "rangeStart": 17492,
+        "categories": ["layer", "movetolayer"]
+      }
+    ],
+    [
+      {
+        "code": 18846,
+        "label": {"base": {"full": "Lock Screen", "1u": "Lock"}},
+        "categories": ["platform_apple"]
+      },
+      {
+        "code": 19106,
+        "label": {"base": {"full": "Mission Control", "1u": "Mission"}},
+        "categories": ["platform_apple"]
+      },
+      {
+        "code": 18613,
+        "label": {"base": {"full": "Next track", "1u": "⏭"}},
+        "categories": ["consumer"]
+      },
+      {
+        "code": 18665,
+        "label": {
+          "hint": {"full": "Volume", "1u": "Vol."},
+          "base": {"full": "Up", "1u": "🔊"}
+        },
+        "categories": ["consumer"]
+      },
+      {
+        "code": 18543,
+        "label": {
+          "hint": {"full": "Brightness", "1u": "Brght."},
+          "base": {"full": "Up", "1u": "🔆"}
+        },
+        "categories": ["consumer"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 19106,
+        "label": {"base": {"full": "Mission Control", "1u": "Mission"}},
+        "categories": ["platform_apple"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {"code": 41, "label": {"base": "Esc"}},
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 19103,
+        "label": {"base": {"full": "Exposé"}},
+        "categories": ["platform_apple"]
+      },
+      {
+        "code": 18614,
+        "label": {"base": {"full": "Previous track", "1u": "⏮"}},
+        "categories": ["consumer"]
+      },
+      {
+        "code": 18666,
+        "label": {
+          "hint": {"full": "Volume", "1u": "Vol."},
+          "base": {"full": "Down", "1u": "🔉"}
+        },
+        "categories": ["consumer"]
+      },
+      {
+        "code": 18544,
+        "label": {
+          "hint": {"full": "Brightness", "1u": "Brght."},
+          "base": {"full": "Down", "1u": "🔅"}
+        },
+        "categories": ["consumer"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {"code": 18615, "label": {"base": "Stop"}, "categories": ["consumer"]},
+      {
+        "code": 18637,
+        "label": {"base": {"full": "Play / pause", "1u": "⏯"}},
+        "categories": ["consumer"]
+      },
+      {"code": 18658, "label": {"base": "Mute"}, "categories": ["consumer"]},
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 17492,
+        "label": {"hint": "MoveTo", "base": "#0"},
+        "target": 0,
+        "rangeStart": 17492,
+        "categories": ["layer", "movetolayer"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 17498,
+        "label": {"hint": "MoveTo", "base": "#6"},
+        "target": 6,
+        "rangeStart": 17492,
+        "categories": ["layer", "movetolayer"]
       }
     ],
     [
@@ -1262,16 +1243,8 @@
       {"code": 8, "label": {"base": "e", "shifted": "E"}},
       {"code": 21, "label": {"base": "r", "shifted": "R"}},
       {"code": 23, "label": {"base": "t", "shifted": "T"}},
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
+      {"code": 29, "label": {"base": "z", "shifted": "Z"}},
+      {"code": 27, "label": {"base": "x", "shifted": "X"}},
       {"code": 28, "label": {"base": "y", "shifted": "Y"}},
       {"code": 24, "label": {"base": "u", "shifted": "U"}},
       {"code": 12, "label": {"base": "i", "shifted": "I"}},
@@ -1311,9 +1284,9 @@
       },
       {"code": 10, "label": {"base": "g", "shifted": "G"}},
       {
-        "code": 17497,
-        "label": {"hint": "MoveTo", "base": "#5"},
-        "target": 5,
+        "code": 17492,
+        "label": {"hint": "MoveTo", "base": "#0"},
+        "target": 0,
         "rangeStart": 17492,
         "categories": ["layer", "movetolayer"]
       },
@@ -1362,11 +1335,12 @@
       {"code": 5, "label": {"base": "b", "shifted": "B"}},
       {"code": 42, "label": {"base": {"full": "Backspace", "1u": "Bksp"}}},
       {
-        "code": 17455,
-        "label": {"hint": "ShiftTo", "base": "#5"},
+        "code": 52539,
+        "baseCode": 41,
+        "label": {"hint": "Layer #5/", "base": "Esc"},
         "target": 5,
-        "rangeStart": 17450,
-        "categories": ["layer", "shifttolayer"]
+        "rangeStart": 51218,
+        "categories": ["layer", "dualuse"]
       },
       {"code": 17, "label": {"base": "n", "shifted": "N"}},
       {"code": 16, "label": {"base": "m", "shifted": "M"}},
@@ -1386,14 +1360,16 @@
         "categories": ["blanks"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 17454,
+        "label": {"hint": "ShiftTo", "base": "#4"},
+        "target": 4,
+        "rangeStart": 17450,
+        "categories": ["layer", "shifttolayer"]
       },
       {
-        "code": 17457,
-        "label": {"hint": "ShiftTo", "base": "#7"},
-        "target": 7,
+        "code": 17453,
+        "label": {"hint": "ShiftTo", "base": "#3"},
+        "target": 3,
         "rangeStart": 17450,
         "categories": ["layer", "shifttolayer"]
       },
@@ -1416,16 +1392,18 @@
       },
       {"code": 44, "label": {"base": "Space"}},
       {
-        "code": 17457,
-        "label": {"hint": "ShiftTo", "base": "#7"},
-        "target": 7,
+        "code": 17453,
+        "label": {"hint": "ShiftTo", "base": "#3"},
+        "target": 3,
         "rangeStart": 17450,
         "categories": ["layer", "shifttolayer"]
       },
       {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
+        "code": 17454,
+        "label": {"hint": "ShiftTo", "base": "#4"},
+        "target": 4,
+        "rangeStart": 17450,
+        "categories": ["layer", "shifttolayer"]
       },
       {
         "code": 65535,
@@ -1435,30 +1413,6 @@
       {"code": 45, "label": {"base": "-", "shifted": "_"}}
     ],
     [
-      {"code": 58, "label": {"base": "F1"}},
-      {"code": 59, "label": {"base": "F2"}},
-      {"code": 60, "label": {"base": "F3"}},
-      {"code": 61, "label": {"base": "F4"}},
-      {"code": 62, "label": {"base": "F5"}},
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {"code": 65, "label": {"base": "F8"}},
-      {"code": 66, "label": {"base": "F9"}},
-      {"code": 67, "label": {"base": "F10"}},
-      {"code": 68, "label": {"base": "F11"}},
-      {"code": 69, "label": {"base": "F12"}},
-      {"code": 4, "label": {"base": "a", "shifted": "A"}},
-      {"code": 22, "label": {"base": "s", "shifted": "S"}},
-      {"code": 7, "label": {"base": "d", "shifted": "D"}},
-      {"code": 9, "label": {"base": "f", "shifted": "F"}},
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
@@ -1479,69 +1433,70 @@
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
       },
-      {"code": 13, "label": {"base": "j", "shifted": "J"}},
-      {"code": 14, "label": {"base": "k", "shifted": "K"}},
-      {"code": 15, "label": {"base": "l", "shifted": "L"}},
-      {"code": 51, "label": {"base": ";", "shifted": ":"}},
-      {
-        "code": 225,
-        "label": {"base": "Shift"},
-        "location": "left",
-        "categories": ["modifier"]
-      },
-      {
-        "code": 224,
-        "label": {"base": {"full": "Control", "1u": "Ctrl"}},
-        "location": "left",
-        "categories": ["modifier"]
-      },
-      {
-        "code": 226,
-        "label": {"base": "Alt"},
-        "location": "left",
-        "categories": ["modifier"]
-      },
-      {
-        "code": 227,
-        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "Cm"}},
-        "location": "left",
-        "categories": ["modifier"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {"code": 63, "label": {"base": "F6"}},
-      {"code": 64, "label": {"base": "F7"}},
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
       },
       {
-        "code": 231,
-        "label": {"base": {"full": "Command", "1u": "Cmd", "short": "Cm"}},
-        "location": "right",
-        "categories": ["modifier"]
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
-        "code": 226,
-        "label": {"base": "Alt"},
-        "location": "left",
-        "categories": ["modifier"]
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
-        "code": 228,
-        "label": {"base": {"full": "Control", "1u": "Ctrl"}},
-        "location": "right",
-        "categories": ["modifier"]
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
-        "code": 229,
-        "label": {"base": "Shift"},
-        "location": "right",
-        "categories": ["modifier"]
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
         "code": 17492,
@@ -1549,6 +1504,101 @@
         "target": 0,
         "rangeStart": 17492,
         "categories": ["layer", "movetolayer"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
         "code": 65535,
@@ -1632,97 +1682,6 @@
         "label": {"base": {"full": "Transparent", "1u": " "}},
         "categories": ["blanks"]
       },
-      {"code": 51, "label": {"base": ";", "shifted": ":"}},
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
-      {
-        "code": 65535,
-        "label": {"base": {"full": "Transparent", "1u": " "}},
-        "categories": ["blanks"]
-      },
       {
         "code": 65535,
         "label": {"base": {"full": "Transparent", "1u": " "}},
@@ -1789,6 +1748,101 @@
         "target": 0,
         "rangeStart": 17492,
         "categories": ["layer", "movetolayer"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
+      },
+      {
+        "code": 65535,
+        "label": {"base": {"full": "Transparent", "1u": " "}},
+        "categories": ["blanks"]
       },
       {
         "code": 65535,
@@ -1848,5 +1902,67 @@
     ]
   ],
   "colormaps": [],
-  "palette": []
+  "palette": [],
+  "deviceConfiguration": {
+    "escape_oneshot.cancel_key": "41",
+    "keymap.custom": "52 54 55 19 28 0 0 9 10 6 21 15 49429 49187 49689 49961 12 0 0 7 49948 49704 49186 49447 51 20 13 14 27 42 52539 5 16 26 25 29 41 65535 17454 17453 44 51517 51770 44 17453 17454 65535 45 17409 65535 65535 65535 65535 2087 225 2086 36 37 38 2087 225 224 226 227 65535 65535 65535 87 33 34 35 85 65535 65535 65535 65535 65535 65535 52581 86 30 31 32 84 17492 65535 65535 65535 65535 65535 51818 65535 52084 52341 46 17498 2086 2095 2097 2096 2087 49 47 65535 65535 65535 65535 17410 49 47 82 48 56 45 80 65535 231 226 228 229 45 80 81 79 2104 2101 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 51527 65535 65535 65535 65535 65535 17498 4 18 8 24 65535 225 224 65535 11 23 17 22 225 224 226 227 65535 4 22 65535 231 226 228 229 4 22 7 9 65535 65535 65535 65535 13 14 15 51 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 65535 65535 65535 65535 65535 225 224 65535 65535 65535 65535 65535 225 224 226 227 65535 58 59 65535 231 226 228 229 58 59 60 61 62 63 52562 65 66 67 68 69 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 18846 19106 18613 18665 18543 65535 19106 65535 65535 65535 65535 41 65535 19103 18614 18666 18544 65535 65535 65535 65535 65535 65535 65535 65535 18615 18637 18658 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17498 20 26 8 21 23 29 27 28 24 12 18 19 49429 49191 49688 49946 10 17492 65535 11 49950 49695 49184 49476 29 27 6 25 5 42 52539 17 16 54 55 56 17492 65535 17454 17453 44 51517 51770 44 17453 17454 65535 45 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 17492 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535 65535",
+    "layernames": {
+      "storageSize": 63,
+      "names": ["#0", "#1", "#2", "#3", "#4", "#5", "#6", "#7", "#8"]
+    },
+    "keymap.onlyCustom": true,
+    "macros.map": "255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+    "mousekeys.accel_duration": "1000",
+    "mousekeys.base_speed": "50",
+    "mousekeys.init_speed": "1",
+    "mousekeys.scroll_interval": "50",
+    "oneshot.auto_layers": "0",
+    "oneshot.auto_mods": "0",
+    "oneshot.double_tap_timeout": "-1",
+    "oneshot.hold_timeout": "250",
+    "oneshot.stickable_keys": "65535",
+    "oneshot.timeout": "2500",
+    "settings.defaultLayer": "0",
+    "spacecadet.mode": "1",
+    "spacecadet.timeout": "200",
+    "help": [
+      "keymap.custom",
+      "keymap.default",
+      "keymap.onlyCustom",
+      "help",
+      "device.reset",
+      "plugins",
+      "settings.defaultLayer",
+      "settings.valid?",
+      "settings.version",
+      "settings.crc",
+      "eeprom.contents",
+      "eeprom.free",
+      "eeprom.erase",
+      "version",
+      "keymap.layerNames",
+      "spacecadet.mode",
+      "spacecadet.timeout",
+      "oneshot.timeout",
+      "oneshot.hold_timeout",
+      "oneshot.double_tap_timeout",
+      "oneshot.stickable_keys",
+      "oneshot.auto_mods",
+      "oneshot.auto_layers",
+      "escape_oneshot.cancel_key",
+      "macros.map",
+      "macros.trigger",
+      "mousekeys.scroll_interval",
+      "mousekeys.init_speed",
+      "mousekeys.base_speed",
+      "mousekeys.accel_duration",
+      "mousekeys.warp_grid_size"
+    ],
+    "version": "0.92.6+116",
+    "plugins": "EEPROMKeymap\r\nLayerNames\r\nQukeys\r\nSpaceCadet\r\nOneShot\r\nOneShotConfig\r\nEscapeOneShot\r\nMacros\r\nDynamicMacros\r\nMouseKeys",
+    "eeprom.free": "24",
+    "settings.valid?": "true",
+    "settings.version": "1",
+    "settings.crc": "43881/43881"
+  }
 }
