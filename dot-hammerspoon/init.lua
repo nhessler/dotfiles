@@ -30,7 +30,7 @@ end)
 function appException()
 
   local appName       = hs.window.focusedWindow():application():name()
-  local appExceptions = {"Authy Desktop", "System Preferences", "System Settings", "FaceTime", "OpenVPN Connect"}
+  local appExceptions = {"Authy Desktop", "System Preferences", "System Settings", "FaceTime", "OpenVPN Connect", "Unite", "Calculator"}
   local result = false
 
   for _i, appException in ipairs(appExceptions) do
