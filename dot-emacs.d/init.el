@@ -22,12 +22,19 @@
 
 (set-face-attribute 'default nil :font "MesloLGM Nerd Font Mono" :height 120)
 
-
+(require 'tramp)
 (require 'windmove)
 (windmove-default-keybindings)
 (global-set-key (kbd "C-<tab>") 'other-window)
 
+;; store all backup and autosave files in the tmp dir
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
+;; revert buffers automatically when underlying files are changed externally
+(global-auto-revert-mode t)
 
 ; Package Management
 (require 'package)
@@ -254,4 +261,3 @@
 
 (use-package ace-window
   :bind ("M-o" . ace-window))
-
