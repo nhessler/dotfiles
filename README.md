@@ -40,6 +40,23 @@ cd ~/projects/nhessler/dotfiles && setup.sh | sh
 * Install Command Line Tools
 * Deploy Configs
 
+## Helpers
+
+Install all nerd fonts [nerd-fonts gist](https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e)
+
+```shell
+brew search '/font-.*-nerd-font/' | awk '{ print $1 }' | xargs -I{} brew install --cask {} || true
+```
+
+Running multiple postgres via docker: 
+* don't forget to setup volumes
+* update to correct version for the postgres you want.
+[postgres via docker inspiration](https://simondosda.github.io/posts/2021-05-24-docker-postgres.html)
+
+``` shell
+docker run --rm --name postgres-15 -p 127.0.0.1:5432:5432 -v $HOME/docker/volumes/postgres-15:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres -d postgres:15-alpine
+```
+
 ## Inspirations
 * [Strap](https://github.com/MikeMcQuaid/strap)
 * [Github Does Dotfiles](https://dotfiles.github.io/)
