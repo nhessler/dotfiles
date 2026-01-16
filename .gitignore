@@ -1,12 +1,15 @@
 dot-config/exercism
 dot-config/fish/completions/asdf.fish
+dot-config/git/allowed_signers
 
 dot-emacs.d/auto-save-list/
+dot-emacs.d/eln-cache/
 dot-emacs.d/elpa/
 dot-emacs.d/forge-database.sqlite
 dot-emacs.d/persist/
 dot-emacs.d/projectile-bookmarks.eld
 dot-emacs.d/projectile.cache
+dot-emacs.d/projects
 dot-emacs.d/recentf
 dot-emacs.d/request/
 dot-emacs.d/transient/
@@ -15,6 +18,14 @@ dot-emacs.d/%backup%~
 
 caddy/Caddyfile
 
+dot-claude/cache/
+dot-claude/debug/
+dot-claude/file-history/
+dot-claude/history.jsonl
+dot-claude/paste-cache/
+dot-claude/plugins/
 dot-claude/projects/
+dot-claude/shell-snapshots/
+dot-claude/stats-cache.json
 dot-claude/statsig/
 dot-claude/todos/
