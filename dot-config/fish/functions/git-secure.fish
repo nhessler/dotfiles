@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-function _git-secure -a name email key -d "set local config to used signed keys for all commits"
+function git-secure -a name email key -d "set local config to used signed keys for all commits"
   argparse --name=git-secure 'h/help' 'n/name=' 'e/email=' 'k/key=' 'f/format=' -- $argv
   
   if set -q _flag_help
@@ -90,5 +90,3 @@ function _git-secure -a name email key -d "set local config to used signed keys 
   echo ""
   echo "updated git config user.name to \"$cfg_name\", user.email to \"$cfg_email\", user.signingkey to \"$cfg_signingkey\", commit.gpgsign to $cfg_gpgsign and gpg.format to $cfg_gpgformat"
 end
-
-_git-secure $argv
