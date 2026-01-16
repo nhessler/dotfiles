@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Personal dotfiles repository for macOS development environment. Files use a `dot-` prefix convention (e.g., `dot-config`, `dot-emacs.d`) to organize dotfiles that will be symlinked to their `~/.` equivalents.
+Personal dotfiles repository for macOS development environment. Files use a `dot-` prefix convention (e.g., `dot-config`, `dot-hammerspoon`) to organize dotfiles that will be symlinked to their `~/.` equivalents.
 
 ## Key Commands
 
@@ -53,8 +53,7 @@ source ~/.config/fish/functions/<name>.fish
 ## Architecture
 
 ### Directory Structure
-- `dot-config/` → `~/.config/` - XDG config (fish, git, starship, ghostty, bat, gh, homebrew)
-- `dot-emacs.d/` → `~/.emacs.d/` - Emacs configuration with use-package
+- `dot-config/` → `~/.config/` - XDG config (fish, git, starship, ghostty, bat, gh, homebrew, emacs)
 - `dot-hammerspoon/` → `~/.hammerspoon/` - macOS window management automation
 - `dot-claude/` → Claude Code CLI settings (access restricted in settings.json)
 - `caddy/` → Local development web server config (gitignored, per-machine)

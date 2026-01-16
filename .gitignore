@@ -2,19 +2,19 @@ dot-config/exercism
 dot-config/fish/completions/asdf.fish
 dot-config/git/allowed_signers
 
-dot-emacs.d/auto-save-list/
-dot-emacs.d/eln-cache/
-dot-emacs.d/elpa/
-dot-emacs.d/forge-database.sqlite
-dot-emacs.d/persist/
-dot-emacs.d/projectile-bookmarks.eld
-dot-emacs.d/projectile.cache
-dot-emacs.d/projects
-dot-emacs.d/recentf
-dot-emacs.d/request/
-dot-emacs.d/transient/
-dot-emacs.d/tramp
-dot-emacs.d/%backup%~
+dot-config/emacs/auto-save-list/
+dot-config/emacs/eln-cache/
+dot-config/emacs/elpa/
+dot-config/emacs/forge-database.sqlite
+dot-config/emacs/persist/
+dot-config/emacs/projectile-bookmarks.eld
+dot-config/emacs/projectile.cache
+dot-config/emacs/projects
+dot-config/emacs/recentf
+dot-config/emacs/request/
+dot-config/emacs/transient/
+dot-config/emacs/tramp
+dot-config/emacs/%backup%~
 
 caddy/Caddyfile
 
