@@ -5,9 +5,11 @@
 # https://github.com/nhessler/dotfiles
 #
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bootstrap.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bin/bootstrap.sh | bash
 #   or
-#   ./bootstrap.sh
+#   ./bin/bootstrap.sh
+#
+# After bootstrap completes, run bin/install.sh to install packages and languages.
 
 set -e
 
@@ -20,9 +22,6 @@ DOTFILES_DIR="${DOTFILES_DIR:-$HOME/Projects/nhessler/dotfiles}"
 # Homebrew paths by architecture
 HOMEBREW_PREFIX_ARM64="/opt/homebrew"
 HOMEBREW_PREFIX_INTEL="/usr/local"
-
-# ASDF plugins to install (order matters: erlang before elixir)
-ASDF_PLUGINS="ruby erlang elixir nodejs"
 
 # Minimum macOS version for TouchID sudo_local (Sonoma = 14.0)
 TOUCHID_SUDO_LOCAL_MIN="14"
@@ -365,87 +364,6 @@ install_asdf() {
   logk
 }
 
-install_asdf_plugins() {
-  log "Installing ASDF plugins and languages:"
-
-  local brew_prefix
-  brew_prefix=$(homebrew_prefix)
-
-  # Ensure Homebrew and ASDF are available
-  eval "$("$brew_prefix/bin/brew" shellenv)"
-
-  # Install build dependencies for Ruby, Erlang, and other languages
-  echo "    Installing build dependencies..."
-  brew install libyaml openssl readline fop unixodbc openjdk wxwidgets
-
-  # Source ASDF for this session
-  local asdf_sh
-  if [ -f "$brew_prefix/opt/asdf/libexec/asdf.sh" ]; then
-    asdf_sh="$brew_prefix/opt/asdf/libexec/asdf.sh"
-  else
-    warn "ASDF not found, skipping plugin installation"
-    logk
-    return
-  fi
-
-  # shellcheck source=/dev/null
-  . "$asdf_sh"
-
-  for plugin in $ASDF_PLUGINS; do
-    echo "    Setting up $plugin..."
-
-    # Add plugin if not already added
-    if ! asdf plugin list 2>/dev/null | grep -q "^$plugin$"; then
-      echo "      Adding plugin..."
-      asdf plugin add "$plugin"
-    fi
-
-    # Install latest version
-    echo "      Installing latest version..."
-    local latest
-    latest=$(asdf latest "$plugin")
-    if [ -n "$latest" ]; then
-      if ! asdf list "$plugin" 2>/dev/null | grep -q "$latest"; then
-        asdf install "$plugin" "$latest"
-      fi
-      # Set as home default
-      asdf set --home "$plugin" "$latest"
-      echo "      Set $plugin $latest as home default"
-    else
-      warn "Could not determine latest version for $plugin"
-    fi
-  done
-
-  logk
-}
-
-install_brewfile() {
-  log "Installing Brewfile packages:"
-
-  local brewfile="$DOTFILES_DIR/dot-config/homebrew/Brewfile"
-
-  if [ ! -f "$brewfile" ]; then
-    warn "Brewfile not found at $brewfile"
-    logk
-    return
-  fi
-
-  local brew_prefix
-  brew_prefix=$(homebrew_prefix)
-
-  if [ ! -x "$brew_prefix/bin/brew" ]; then
-    abort "Homebrew not installed, cannot install Brewfile"
-  fi
-
-  # Ensure Homebrew is in PATH
-  eval "$("$brew_prefix/bin/brew" shellenv)"
-
-  echo "    Running brew bundle (this may take a while)..."
-  brew bundle --file="$brewfile" --no-lock || warn "Some Brewfile items may have failed"
-
-  logk
-}
-
 #
 # Configuration Functions
 #
@@ -508,45 +426,6 @@ create_symlinks() {
   logk
 }
 
-set_default_shell() {
-  log "Setting default shell to Fish:"
-
-  local fish_path
-  fish_path=$(which fish 2>/dev/null || echo "")
-
-  if [ -z "$fish_path" ]; then
-    # Try common Homebrew locations
-    local brew_prefix
-    brew_prefix=$(homebrew_prefix)
-    if [ -x "$brew_prefix/bin/fish" ]; then
-      fish_path="$brew_prefix/bin/fish"
-    else
-      warn "Fish not found, skipping shell change"
-      logk
-      return
-    fi
-  fi
-
-  # Check if Fish is already the default shell
-  if [ "$SHELL" = "$fish_path" ]; then
-    echo "    Fish is already the default shell"
-    logk
-    return
-  fi
-
-  # Add Fish to /etc/shells if not present
-  if ! grep -q "^$fish_path$" /etc/shells; then
-    echo "    Adding $fish_path to /etc/shells"
-    echo "$fish_path" | sudo tee -a /etc/shells >/dev/null
-  fi
-
-  # Change default shell
-  echo "    Changing default shell to $fish_path"
-  chsh -s "$fish_path"
-
-  logk
-}
-
 install_software_updates() {
   log "Checking for software updates:"
 
@@ -600,19 +479,12 @@ main() {
   # Phase 4: Package Management
   install_homebrew
   install_asdf
-  install_asdf_plugins
 
   # Phase 5: Dotfiles Setup
   setup_directories
   create_symlinks
 
-  # Phase 6: Package Installation (Brewfile)
-  install_brewfile
-
-  # Phase 7: Shell Configuration
-  set_default_shell
-
-  # Phase 8: Software Updates (last - may require restart)
+  # Phase 6: Software Updates (last - may require restart)
   install_software_updates
 
   # Success!
@@ -623,12 +495,11 @@ main() {
   echo "   Bootstrap Complete!"
   echo "========================================"
   echo ""
-  echo "Next steps:"
-  echo "  1. Restart your terminal (or run: exec fish)"
-  echo "  2. Generate SSH key: ssh-keygen -t ed25519"
-  echo "  3. Add SSH key to GitHub: gh auth login"
+  echo "Next step:"
+  echo "  Run the install script to set up packages and languages:"
+  echo "    $DOTFILES_DIR/bin/install.sh"
   echo ""
-  echo "If FileVault was enabled, a restart may be required."
+  echo "If FileVault was enabled, a restart may be required first."
   echo ""
 }
 
