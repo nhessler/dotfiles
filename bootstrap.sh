@@ -374,9 +374,9 @@ install_asdf_plugins() {
   # Ensure Homebrew and ASDF are available
   eval "$("$brew_prefix/bin/brew" shellenv)"
 
-  # Install build dependencies for Ruby and other languages
+  # Install build dependencies for Ruby, Erlang, and other languages
   echo "    Installing build dependencies..."
-  brew install libyaml openssl readline
+  brew install libyaml openssl readline fop unixodbc openjdk wxwidgets
 
   # Source ASDF for this session
   local asdf_sh
