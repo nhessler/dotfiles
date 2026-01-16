@@ -264,7 +264,8 @@
 
 (use-package git-modes
   :mode
-  ("/dot-gitconfig$" . gitconfig-mode)
+  (".gitconfig" . gitconfig-mode)
+  ("/git/config$" . gitconfig-mode)
   ("/.dockerignore\\'" . gitignore-mode))
 
 (use-package ace-window

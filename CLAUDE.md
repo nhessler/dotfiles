@@ -16,7 +16,7 @@ Installs: Xcode CLI tools, software updates, Homebrew, ASDF version manager, pro
 
 ### Install Homebrew Packages
 ```shell
-brew bundle --file=dot-homebrew/Brewfile
+brew bundle --file=dot-config/homebrew/Brewfile
 ```
 
 ### Git Commit Signing Setup
@@ -53,9 +53,8 @@ source ~/.config/fish/functions/<name>.fish
 ## Architecture
 
 ### Directory Structure
-- `dot-config/` → `~/.config/` - XDG config (fish, git, starship, ghostty, bat, gh)
+- `dot-config/` → `~/.config/` - XDG config (fish, git, starship, ghostty, bat, gh, homebrew)
 - `dot-emacs.d/` → `~/.emacs.d/` - Emacs configuration with use-package
-- `dot-homebrew/` → Homebrew Brewfile
 - `dot-hammerspoon/` → `~/.hammerspoon/` - macOS window management automation
 - `dot-claude/` → Claude Code CLI settings (access restricted in settings.json)
 - `caddy/` → Local development web server config (gitignored, per-machine)
