@@ -33,6 +33,8 @@ brew "tree"
 brew "tree-sitter"
 brew "whalebrew"
 brew "wxwidgets"
+brew "zoxide"
+
 
 cask "aerial"
 cask "alfred"
@@ -70,6 +72,7 @@ cask "shortcat"
 cask "unite"
 cask "zen"
 cask "zoom"
+
 
 mas "1password 7",    id: 1333542190
 mas "feedly",         id: 865500966
