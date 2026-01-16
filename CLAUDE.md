@@ -36,6 +36,20 @@ brew search '/font-.*-nerd-font/' | awk '{ print $1 }' | xargs -I{} brew install
 docker run --rm --name postgres-15 -p 127.0.0.1:5432:5432 -v $HOME/docker/volumes/postgres-15:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres -d postgres:15-alpine
 ```
 
+## Working in This Repo
+
+**Always edit `dot-*` files**, not the symlinked files in `~/`. Edits take effect immediately since they're symlinked.
+
+**Fish function caching**: After editing fish functions, reload with:
+```shell
+source ~/.config/fish/functions/<name>.fish
+# or: functions -e <name>
+```
+
+**Prefer `dot-config/`** for new configurations when possible (XDG base directory spec). There's an ongoing effort to migrate configs into `dot-config/`.
+
+**`dot-claude/` is off-limits** - Claude Code's own config lives here. The user will edit these files manually.
+
 ## Architecture
 
 ### Directory Structure
