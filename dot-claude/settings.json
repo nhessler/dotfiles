@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bd prime"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bd prime"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash -c 'input=$(cat); echo \"$input\" >> /tmp/claude-status-debug.log; current_dir=$(echo \"$input\" | jq -r \".workspace.current_dir\"); model=$(echo \"$input\" | jq -r \".model.display_name\"); window_size=$(echo \"$input\" | jq -r \".context_window.context_window_size\"); current_usage=$(echo \"$input\" | jq \".context_window.current_usage\"); if [[ \"$current_dir\" =~ /Users/nathan/Projects/([^/]+)/([^/]+) ]]; then project=\"${BASH_REMATCH[1]}/${BASH_REMATCH[2]}\"; else project=$(basename \"$current_dir\"); fi; if git -C \"$current_dir\" rev-parse --is-inside-work-tree >/dev/null 2>&1; then branch=$(git -C \"$current_dir\" branch --show-current 2>/dev/null || echo \"detached\"); git_info=\" \\033[1;97mon\\033[0m \\033[1;95m${branch}\\033[0m\"; else git_info=\"\"; fi; if [ \"$current_usage\" != \"null\" ]; then input_tokens=$(echo \"$current_usage\" | jq \".input_tokens // 0\"); cache_creation=$(echo \"$current_usage\" | jq \".cache_creation_input_tokens // 0\"); cache_read=$(echo \"$current_usage\" | jq \".cache_read_input_tokens // 0\"); current_tokens=$((input_tokens + cache_creation + cache_read)); percent_used=$((current_tokens * 100 / window_size)); remaining_percent=$((100 - percent_used)); if [ $remaining_percent -lt 30 ]; then ctx_color=\"\\033[1;91m\"; elif [ $remaining_percent -le 40 ]; then ctx_color=\"\\033[1;93m\"; else ctx_color=\"\\033[1;92m\"; fi; bar_length=10; filled=$((remaining_percent * bar_length / 100)); bar=\"\"; i=0; while [ $i -lt $filled ]; do bar=\"${bar}█\"; i=$((i + 1)); done; while [ $i -lt $bar_length ]; do bar=\"${bar}░\"; i=$((i + 1)); done; context_display=\"${ctx_color}${bar} ${remaining_percent}%\\033[0m\"; else context_display=\"\\033[1;92m██████████ 100%\\033[0m\"; fi; echo -e \"\\033[1;38;2;0;255;255m${project}\\033[0m${git_info} \\033[97m|\\033[0m \\033[1;38;2;253;151;31m${model}\\033[0m \\033[97m|\\033[0m ${context_display}\"'"
+  },
+  "alwaysThinkingEnabled": true,
+  "feedbackSurveyState": {
+    "lastShownTime": 1754257352941
+  },
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Edit(**/.env)",
+      "Write(**/.env)",
+      "Read(**/.envrc)",
+      "Edit(**/.envrc)",
+      "Write(**/.envrc)"
+    ]
+  }
+}
+
