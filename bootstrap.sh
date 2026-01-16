@@ -408,9 +408,9 @@ install_asdf_plugins() {
       if ! asdf list "$plugin" 2>/dev/null | grep -q "$latest"; then
         asdf install "$plugin" "$latest"
       fi
-      # Set as global default
-      asdf global "$plugin" "$latest"
-      echo "      Set $plugin $latest as global"
+      # Set as home default
+      asdf set --home "$plugin" "$latest"
+      echo "      Set $plugin $latest as home default"
     else
       warn "Could not determine latest version for $plugin"
     fi
