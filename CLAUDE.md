@@ -10,9 +10,9 @@ Personal dotfiles repository for macOS development environment. Files use a `dot
 
 ### Initial Machine Setup
 ```shell
-curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bootstrap.sh | sh
+curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bootstrap.sh | bash
 ```
-Installs: Xcode CLI tools, software updates, Homebrew, ASDF version manager, project space setup.
+Bootstraps a new Mac with: Xcode CLI tools, security hardening (FileVault, firewall, TouchID sudo), Homebrew, ASDF, dotfile symlinks, Brewfile packages, Fish as default shell, and software updates.
 
 ### Install Homebrew Packages
 ```shell
