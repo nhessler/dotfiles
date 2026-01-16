@@ -50,6 +50,8 @@ source ~/.config/fish/functions/<name>.fish
 
 **`dot-claude/` is off-limits** - Claude Code's own config lives here. The user will edit these files manually.
 
+**Never push to GitHub** - Only commit locally. The user will decide when to push.
+
 ## Architecture
 
 ### Directory Structure
