@@ -9,7 +9,7 @@
 [alias]
   sign = "!f() { git config --local user.name \"Nathan Hessler\" && git config --local user.email $1; }; f"
   logg = "log --graph --oneline"
-  secure = !git-secure
+  secure = "!fish -c 'git-secure $argv' --"
 [core]
   editor = emacs
 [github]
