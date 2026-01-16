@@ -3,14 +3,14 @@ set --global --prepend fish_user_paths "/opt/homebrew/sbin"
 set --global --prepend fish_user_paths "/opt/homebrew/bin"
 set --global --prepend fish_user_paths "/opt/homebrew/opt/curl/bin"
 
-# custom git commands
-set --global --append fish_user_paths "$HOME/.gitbin"
-
 # monokai theme setup
 source ~/.config/fish/color_syntax.fish
 
 # direnv setup
 direnv hook fish | source
+
+# zoxide setup
+zoxide init fish | source
 
 # asdf setup
 # source ~/.asdf/asdf.fish
@@ -50,7 +50,12 @@ fzf --fish | source
 # set gpg to look at terminal for passphrase
 set -x GPG_TTY $(tty)
 
-# set -g direnv_fish_mode eval_on_arrow    # trigger direnv at prompt, and on every arrow-based directory change (default)
+#set gigalixir identity path
+set -Ux GIGALIXIR_IDENTITY_FILE "$HOME/.ssh/id_ed25519.gigalixir.convivialtech"
+
+# setup direnv
+direnv hook fish | source
+
+set -g direnv_fish_mode eval_on_arrow    # trigger direnv at prompt, and on every arrow-based directory change (default)
 # set -g direnv_fish_mode eval_after_arrow # trigger direnv at prompt, and only after arrow-based directory changes before executing command
 # set -g direnv_fish_mode disable_arrow    # trigger direnv at prompt only, this is similar functionality to the original behavior
-

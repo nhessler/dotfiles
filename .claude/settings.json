@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(dot-claude/**)",
+      "Edit(dot-claude/**)",
+      "Write(dot-claude/**)"
+    ]
+  }
+}
+
+    

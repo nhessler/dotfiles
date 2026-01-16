@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;; Init.el --- Nathan Hessler's Customizations
 ;;;
 ;;; Commentary:
@@ -54,12 +55,12 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(use-package monokai-theme
+ (use-package monokai-theme
   :config (load-theme 'monokai t))
 
-(use-package darkokai-theme
-  :config
-  (setq darkokai-mode-line-padding 1))
+; (use-package darkokai-theme
+;  :config
+;  (setq darkokai-mode-line-padding 1))
 
 (use-package time
   :init
@@ -111,6 +112,7 @@
   (add-to-list 'dash-at-point-mode-alist '(emacs-lisp-mode . "elisp"))
   (add-to-list 'dash-at-point-mode-alist '(elixir-mode . "elixir"))
   (add-to-list 'dash-at-point-mode-alist '(ruby-mode . "ruby"))
+  (add-to-list 'dash-at-point-mode-alist '(go-mode . "go"))
   :bind
   ("C-c d" . dash-at-point)
   ("C-c e" . dash-at-point-with-docset))
@@ -142,7 +144,8 @@
   :bind-keymap
   ("s-p" . projectile-command-map)
   ("C-c p" . projectile-command-map)
-  :config (projectile-mode)
+  :config
+  (projectile-mode)
   :init
   (when (file-directory-p "~/Projects")
     (setq projectile-project-search-path '(("~/Projects" . 2)))))
@@ -163,14 +166,16 @@
   (org-indent-mode t)
   (setq org-ellipsis " ")
   (org-babel-do-load-languages
-   'org-babel-load-laguages
+   'org-babel-load-languages
    '((emacs-lisp . t)
      (ruby . t)
-     (elixir . t)))
+     (elixir . t)
+     (go . t)))
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("rb" . "src ruby"))
-  (add-to-list 'org-structure-template-alist '("ex" . "src elixir")))
+  (add-to-list 'org-structure-template-alist '("ex" . "src elixir"))
+  (add-to-list 'org-structure-template-alist '("go" . "src go")))
 
 
 (use-package org-superstar
@@ -250,6 +255,9 @@
           rust-cargo-bin (concat dot-cargo-bin "cargo")
           rust-format-on-save t)))
 
+(use-package go-mode
+  :ensure t)
+
 (use-package fish-mode
   :config
   (setq fish-indent-offset 2))
@@ -261,3 +269,4 @@
 
 (use-package ace-window
   :bind ("M-o" . ace-window))
+
