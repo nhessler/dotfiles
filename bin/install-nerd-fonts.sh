@@ -32,7 +32,10 @@ font_count=$(echo "$fonts" | wc -l | tr -d ' ')
 echo "    Found $font_count fonts"
 echo "--> Installing (this may take a while)..."
 
-echo "$fonts" | xargs brew install --cask
+# Install each font individually, continue on failure
+for font in $fonts; do
+  brew install --cask "$font" || echo "    Warning: $font failed, continuing..."
+done
 
 echo ""
 echo "========================================"

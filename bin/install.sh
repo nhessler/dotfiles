@@ -240,8 +240,8 @@ main() {
   # Phase 3: Set default shell (Fish now installed via Brewfile)
   set_default_shell
 
-  # Phase 4: Nerd Fonts
-  "$DOTFILES_DIR/bin/install-nerd-fonts.sh"
+  # Phase 4: Nerd Fonts (nice to have, non-fatal)
+  "$DOTFILES_DIR/bin/install-nerd-fonts.sh" || warn "Nerd fonts installation had issues, continuing..."
 
   # Phase 5: macOS Defaults
   "$DOTFILES_DIR/bin/macos-defaults.sh"
