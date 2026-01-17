@@ -109,7 +109,13 @@ install_brewfile() {
   export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
   # Skip Mac App Store apps if requested (set by --skip-mas flag)
-  # DOTFILES_INSTALL_SKIP_MAS is checked in Brewfile via Ruby conditional
+  if [ -n "$DOTFILES_INSTALL_SKIP_MAS" ]; then
+    echo "    Skipping Mac App Store apps (--skip-mas)"
+    local brewfile="$XDG_CONFIG_HOME/homebrew/Brewfile"
+    local mas_apps
+    mas_apps=$(grep "^  mas\|^mas" "$brewfile" | sed 's/.*mas "\([^"]*\)".*/\1/' | tr '\n' ' ')
+    export HOMEBREW_BUNDLE_MAS_SKIP="$mas_apps"
+  fi
 
   # Uses XDG location: ~/.config/homebrew/Brewfile
   echo "    Running brew bundle (this may take a while)..."
