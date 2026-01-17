@@ -304,6 +304,26 @@ install_xcode_cli_tools() {
   logk
 }
 
+install_rosetta() {
+  # Only needed on Apple Silicon
+  if ! is_arm64; then
+    return
+  fi
+
+  log "Checking Rosetta:"
+
+  if /usr/bin/pgrep -q oahd; then
+    echo "    Already installed"
+    logk
+    return
+  fi
+
+  echo "    Installing Rosetta..."
+  softwareupdate --install-rosetta --agree-to-license
+
+  logk
+}
+
 install_homebrew() {
   log "Checking Homebrew:"
 
@@ -461,6 +481,7 @@ main() {
 
   # Phase 1: System Prerequisites (need git for cloning)
   install_xcode_cli_tools
+  install_rosetta
 
   # Phase 2: Get Dotfiles
   check_github_ssh
