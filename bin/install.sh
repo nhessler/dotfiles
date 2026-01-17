@@ -83,12 +83,6 @@ homebrew_prefix() {
 install_brewfile() {
   log "Installing Brewfile packages:"
 
-  local brewfile="$DOTFILES_DIR/dot-config/homebrew/Brewfile"
-
-  if [ ! -f "$brewfile" ]; then
-    abort "Brewfile not found at $brewfile"
-  fi
-
   local brew_prefix
   brew_prefix=$(homebrew_prefix)
 
@@ -99,8 +93,9 @@ install_brewfile() {
   # Ensure Homebrew is in PATH
   eval "$("$brew_prefix/bin/brew" shellenv)"
 
+  # Uses XDG location: ~/.config/homebrew/Brewfile
   echo "    Running brew bundle (this may take a while)..."
-  brew bundle --file="$brewfile"
+  brew bundle --global
 
   logk
 }
