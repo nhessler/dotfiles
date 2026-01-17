@@ -82,18 +82,20 @@ cask "zen"
 cask "zoom"
 
 
-mas "1password 7",    id: 1333542190
-mas "feedly",         id: 865500966
-mas "iMovie",         id: 408981434
-mas "Keynote",        id: 409183694
-mas "Kindle Classic", id: 405399194
-mas "Mactracker",     id: 430255202
-mas "Notability",     id: 360593530
-mas "Numbers",        id: 409203825
-mas "OmniFocus",      id: 1542143627
-mas "Pages",          id: 409201541
-mas "Perplexity",     id: 6714467650
-mas "Sip",            id: 507257563
-mas "Slack",          id: 803453959
-mas "Twitter",        id: 1482454543
-mas "Xcode",          id: 497799835
+unless ENV["DOTFILES_INSTALL_SKIP_MAS"]
+  mas "1password 7",    id: 1333542190
+  mas "feedly",         id: 865500966
+  mas "iMovie",         id: 408981434
+  mas "Keynote",        id: 409183694
+  mas "Kindle Classic", id: 405399194
+  mas "Mactracker",     id: 430255202
+  mas "Notability",     id: 360593530
+  mas "Numbers",        id: 409203825
+  mas "OmniFocus",      id: 1542143627
+  mas "Pages",          id: 409201541
+  mas "Perplexity",     id: 6714467650
+  mas "Sip",            id: 507257563
+  mas "Slack",          id: 803453959
+  mas "Twitter",        id: 1482454543
+  mas "Xcode",          id: 497799835
+end

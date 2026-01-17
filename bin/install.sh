@@ -4,7 +4,10 @@
 # Installs Brewfile packages, ASDF languages, and sets default shell.
 #
 # Usage:
-#   ./bin/install.sh
+#   ./bin/install.sh [--skip-mas]
+#
+# Options:
+#   --skip-mas    Skip Mac App Store apps (use if not signed in)
 #
 # Run this after bootstrap.sh completes.
 
@@ -14,6 +17,15 @@ set -e
 # Configuration
 #
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/Projects/nhessler/dotfiles}"
+
+# Parse arguments
+for arg in "$@"; do
+  case $arg in
+    --skip-mas)
+      export DOTFILES_INSTALL_SKIP_MAS=1
+      ;;
+  esac
+done
 
 # Homebrew paths by architecture
 HOMEBREW_PREFIX_ARM64="/opt/homebrew"
@@ -96,11 +108,8 @@ install_brewfile() {
   # Set XDG_CONFIG_HOME for brew bundle --global
   export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
-  # Check if signed in to Mac App Store
-  if ! mas account &>/dev/null; then
-    echo "    Not signed in to Mac App Store, skipping mas apps."
-    export HOMEBREW_BUNDLE_MAS_SKIP=1
-  fi
+  # Skip Mac App Store apps if requested (set by --skip-mas flag)
+  # DOTFILES_INSTALL_SKIP_MAS is checked in Brewfile via Ruby conditional
 
   # Uses XDG location: ~/.config/homebrew/Brewfile
   echo "    Running brew bundle (this may take a while)..."
