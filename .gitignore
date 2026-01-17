@@ -23,6 +23,7 @@ dot-claude/debug/
 dot-claude/file-history/
 dot-claude/history.jsonl
 dot-claude/paste-cache/
+dot-claude/plans/
 dot-claude/plugins/
 dot-claude/projects/
 dot-claude/shell-snapshots/

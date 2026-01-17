@@ -8,11 +8,25 @@ Personal dotfiles repository for macOS development environment. Files use a `dot
 
 ## Key Commands
 
-### Initial Machine Setup
+### Initial Machine Setup (Two Phases)
+
+**Phase 1: Bootstrap** (one-time, requires SSH key for GitHub)
 ```shell
-curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bootstrap.sh | sh
+curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bin/bootstrap.sh | bash
 ```
-Installs: Xcode CLI tools, software updates, Homebrew, ASDF version manager, project space setup.
+Sets up: Xcode CLI tools, clones dotfiles via SSH, security hardening (FileVault, firewall, TouchID sudo), Homebrew, ASDF (tool only), dotfile symlinks, software updates.
+
+**Phase 2: Install** (run after bootstrap completes)
+```shell
+~/Projects/nhessler/dotfiles/bin/install.sh
+```
+Installs: Brewfile packages, ASDF plugins and languages (ruby, erlang, elixir, nodejs), sets Fish as default shell.
+
+**Optional: macOS Defaults**
+```shell
+~/Projects/nhessler/dotfiles/bin/macos-defaults.sh
+```
+Applies preferred macOS system settings (edit before running).
 
 ### Install Homebrew Packages
 ```shell
@@ -50,13 +64,17 @@ source ~/.config/fish/functions/<name>.fish
 
 **`dot-claude/` is off-limits** - Claude Code's own config lives here. The user will edit these files manually.
 
+**Never push to GitHub** - Only commit locally. The user will decide when to push.
+
 ## Architecture
 
 ### Directory Structure
+- `bin/` - Setup scripts (bootstrap.sh, install.sh, macos-defaults.sh)
 - `dot-config/` → `~/.config/` - XDG config (fish, git, starship, ghostty, bat, gh, homebrew, emacs)
 - `dot-hammerspoon/` → `~/.hammerspoon/` - macOS window management automation
 - `dot-claude/` → Claude Code CLI settings (access restricted in settings.json)
 - `caddy/` → Local development web server config (gitignored, per-machine)
+- `docs/` → Documentation (ssh-setup.md, local-dev-setup.md)
 
 ### Shell Environment (Fish)
 The shell initializes in this order (`dot-config/fish/config.fish`):
