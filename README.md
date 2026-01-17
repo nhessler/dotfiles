@@ -1,73 +1,118 @@
-Dotfiles
---------
+# Dotfiles
 
-## Summary
+Personal macOS dotfiles.
 
-These are my dotfiles. There are many like them, but these or mine.
+## Quick Start
 
-## Prerequisites
-* Mac Setup
-* Apple Account Setup
-* [Github SSH Key Setup](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/)
+**Prerequisites:**
+- macOS (Apple Silicon or Intel)
+- SSH key for GitHub ([setup guide](docs/ssh-setup.md))
 
-## Bootstrap
-
-Get the bare minimum going to support a more complete install of all the things. This should only need to be run when first getting a machine setup. To that end, once baked, it shouldn't change much
-
+**Phase 1: Bootstrap** (one-time setup)
 ```shell
-curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bootstrap.sh | sh
+curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/main/bin/bootstrap.sh | bash
 ```
 
-* Install Command Line Tools
-* Install Software Updates
-* Install Homebrew
-* Install ASDF
-* Setup Project Space
-* Validate necessary security keys exist
-  - Github
-  - Heroku
-
-## Setup
-
-Idempotently setup, install, and deploy all the things. This will need to be run regularly as it will be
-
+**Phase 2: Install** (packages & languages)
 ```shell
-cd ~/projects/nhessler/dotfiles && setup.sh | sh
+~/Projects/nhessler/dotfiles/bin/install.sh
 ```
 
-* Set MacOS Defaults
-* Install Mac Apps
-* Install Command Line Tools
-* Deploy Configs
+Use `--skip-mas` if not signed into the App Store.
+
+## What Gets Installed
+
+### Bootstrap (Phase 1)
+- Xcode Command Line Tools
+- Rosetta 2 (Apple Silicon only)
+- Security hardening: FileVault check, firewall, TouchID sudo
+- Homebrew
+- ASDF version manager
+- Dotfile symlinks
+- Software updates
+
+### Install (Phase 2)
+- Brewfile packages (CLI tools, casks, App Store apps)
+- ASDF languages: Ruby, Erlang, Elixir, Node.js
+- Fish shell (set as default)
+- Nerd fonts
+- macOS system defaults
+
+## Directory Structure
+
+```
+dotfiles/
+├── bin/                    # Setup scripts
+│   ├── bootstrap.sh        # Phase 1: one-time setup
+│   ├── install.sh          # Phase 2: packages & languages
+│   ├── install-nerd-fonts.sh
+│   └── macos-defaults.sh
+├── dot-config/             # → ~/.config/
+│   ├── fish/               # Shell
+│   ├── git/                # Git config & hooks
+│   ├── homebrew/           # Brewfile
+│   ├── emacs/              # Editor
+│   ├── starship/           # Prompt
+│   └── ghostty/            # Terminal
+├── dot-hammerspoon/        # → ~/.hammerspoon/
+├── dot-claude/             # → ~/.claude/
+├── caddy/                  # Local dev server (gitignored)
+└── docs/                   # Additional guides
+```
 
 ## Helpers
 
-Install all nerd fonts [nerd-fonts gist](https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e)
+### Postgres via Docker
 
+Run multiple Postgres versions using Docker with persistent volumes. This makes it easy to switch versions or run multiple instances on different ports.
+
+**First-time setup** (create the volume directory):
 ```shell
-brew search '/font-.*-nerd-font/' | awk '{ print $1 }' | xargs -I{} brew install --cask {} || true
+mkdir -p ~/docker/volumes/postgres-17
 ```
 
-Running multiple postgres via docker: 
-* don't forget to setup volumes
-* update to correct version for the postgres you want.
-[postgres via docker inspiration](https://simondosda.github.io/posts/2021-05-24-docker-postgres.html)
+**Run Postgres:**
+```shell
+docker run --rm --name postgres-17 -p 127.0.0.1:5432:5432 \
+  -v $HOME/docker/volumes/postgres-17:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=postgres -d postgres:17-alpine
+```
 
-``` shell
-docker run --rm --name postgres-15 -p 127.0.0.1:5432:5432 -v $HOME/docker/volumes/postgres-15:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres -d postgres:15-alpine
+To run multiple versions, use different ports and volume directories:
+```shell
+# Postgres 15 on port 5433
+docker run --rm --name postgres-15 -p 127.0.0.1:5433:5432 \
+  -v $HOME/docker/volumes/postgres-15:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=postgres -d postgres:15-alpine
+```
+
+### Git Commit Signing
+
+Set up SSH commit signing for a repository:
+```shell
+git secure -n "Your Name" -e you@example.com -k ~/.ssh/id_ed25519
+```
+
+### Nerd Fonts
+
+Install all Nerd Fonts (run automatically by install.sh, or manually):
+```shell
+~/Projects/nhessler/dotfiles/bin/install-nerd-fonts.sh
 ```
 
 ## Inspirations
-* [Strap](https://github.com/MikeMcQuaid/strap)
-* [Github Does Dotfiles](https://dotfiles.github.io/)
 
+- [Strap](https://github.com/MikeMcQuaid/strap) - Mike McQuaid's macOS setup
+- [GitHub Does Dotfiles](https://dotfiles.github.io/)
 
 ## Password Security
-* [Diceware](https://theworld.com/~reinhold/diceware.html)
-* [EFF](https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases)
-* Wordlists
-* * [EFF 5](https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt)
-* * [EFF 4](https://www.eff.org/files/2016/09/08/eff_short_wordlist_1.txt)
-* * [Beale](https://theworld.com/~reinhold/beale.wordlist.asc)
-* * [Diceware](https://theworld.com/~reinhold/diceware.wordlist.asc)
-* * [Norvig](https://norvig.com/ngrams/count_1w.txt)
+
+Resources for generating strong passphrases:
+
+- [Diceware](https://theworld.com/~reinhold/diceware.html)
+- [EFF Passphrase Guide](https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases)
+- Word lists:
+  [EFF Large](https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt) ·
+  [EFF Short](https://www.eff.org/files/2016/09/08/eff_short_wordlist_1.txt) ·
+  [Beale](https://theworld.com/~reinhold/beale.wordlist.asc) ·
+  [Diceware](https://theworld.com/~reinhold/diceware.wordlist.asc)
