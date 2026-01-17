@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# Pre-commit hook to enforce commit identity and signing policy.
+#
+# Requires either:
+#   1. SSH commit signing configured, OR
+#   2. Explicit opt-out (commit.allowUnsigned=true)
+#
+# In both cases, user.name and user.email must be set locally.
+#
+# Setup:
+#   git secure -n "Name" -e email -k ~/.ssh/key   # SSH signing enabled
+#   git sign email                                 # signing disabled (opt-out)
+#
+
+# Check if user.name is set locally (not inherited from global)
+local_name=$(git config --local user.name 2>/dev/null)
+if [ -z "$local_name" ]; then
+  echo "ERROR: user.name is not set locally."
+  echo ""
+  echo "Run one of:"
+  echo "  git secure -n \"Your Name\" -e your@email.com -k ~/.ssh/id_ed25519"
+  echo "  git sign your@email.com"
+  echo ""
+  exit 1
+fi
+
+# Check if user.email is set locally
+local_email=$(git config --local user.email 2>/dev/null)
+if [ -z "$local_email" ]; then
+  echo "ERROR: user.email is not set locally."
+  echo ""
+  echo "Run one of:"
+  echo "  git secure -n \"Your Name\" -e your@email.com -k ~/.ssh/id_ed25519"
+  echo "  git sign your@email.com"
+  echo ""
+  exit 1
+fi
+
+# Check for SSH signing OR explicit opt-out
+gpg_format=$(git config --get gpg.format 2>/dev/null)
+gpgsign=$(git config --get commit.gpgsign 2>/dev/null)
+signingkey=$(git config --get user.signingkey 2>/dev/null)
+allow_unsigned=$(git config --local commit.allowUnsigned 2>/dev/null)
+
+if [ "$gpg_format" = "ssh" ] && [ "$gpgsign" = "true" ] && [ -n "$signingkey" ]; then
+  # SSH signing is configured, allow commit
+  exit 0
+fi
+
+if [ "$allow_unsigned" = "true" ]; then
+  # Explicit opt-out, allow commit
+  exit 0
+fi
+
+# Neither signing nor opt-out configured
+echo "ERROR: SSH commit signing is not configured and unsigned commits not allowed."
+echo ""
+echo "Run one of:"
+echo "  git secure -n \"Your Name\" -e your@email.com -k ~/.ssh/id_ed25519"
+echo "  git sign your@email.com"
+echo ""
+exit 1

@@ -7,7 +7,7 @@
 [mergetool "ediff"]
   cmd = emacsclient -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
 [alias]
-  sign = "!f() { git config --local user.name \"Nathan Hessler\" && git config --local user.email $1; }; f"
+  sign = "!f() { git config --local user.name \"Nathan Hessler\" && git config --local user.email $1 && git config --local commit.allowUnsigned true; }; f"
   logg = "log --graph --oneline"
   secure = "!fish -c 'git-secure $argv' --"
 [core]
@@ -18,3 +18,4 @@
   ff = only
 [init]
   defaultBranch = main
+  templateDir = ~/.config/git/template
