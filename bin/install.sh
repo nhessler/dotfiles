@@ -112,9 +112,9 @@ install_brewfile() {
   if [ -n "$DOTFILES_INSTALL_SKIP_MAS" ]; then
     echo "    Skipping Mac App Store apps (--skip-mas)"
     local brewfile="$XDG_CONFIG_HOME/homebrew/Brewfile"
-    local mas_apps
-    mas_apps=$(grep "^  mas\|^mas" "$brewfile" | sed 's/.*mas "\([^"]*\)".*/\1/' | tr '\n' ' ')
-    export HOMEBREW_BUNDLE_MAS_SKIP="$mas_apps"
+    local mas_ids
+    mas_ids=$(grep "^mas" "$brewfile" | sed 's/.*id: \([0-9]*\).*/\1/' | tr '\n' ' ')
+    export HOMEBREW_BUNDLE_MAS_SKIP="$mas_ids"
   fi
 
   # Uses XDG location: ~/.config/homebrew/Brewfile
