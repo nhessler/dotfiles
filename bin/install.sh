@@ -95,7 +95,7 @@ install_brewfile() {
 
   # Uses XDG location: ~/.config/homebrew/Brewfile
   echo "    Running brew bundle (this may take a while)..."
-  brew bundle --global
+  brew bundle upgrade --global
 
   logk
 }
