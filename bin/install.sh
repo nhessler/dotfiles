@@ -93,6 +93,9 @@ install_brewfile() {
   # Ensure Homebrew is in PATH
   eval "$("$brew_prefix/bin/brew" shellenv)"
 
+  # Set XDG_CONFIG_HOME for brew bundle --global
+  export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
   # Check if signed in to Mac App Store
   if ! mas account &>/dev/null; then
     echo "    Not signed in to Mac App Store, skipping mas apps."
