@@ -100,7 +100,7 @@ install_brewfile() {
   eval "$("$brew_prefix/bin/brew" shellenv)"
 
   echo "    Running brew bundle (this may take a while)..."
-  brew bundle --file="$brewfile" || warn "Some Brewfile items may have failed"
+  brew bundle --file="$brewfile"
 
   logk
 }
