@@ -5,7 +5,7 @@
 # https://github.com/nhessler/dotfiles
 #
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bin/bootstrap.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/main/bin/bootstrap.sh | bash
 #   or
 #   ./bin/bootstrap.sh
 #
@@ -126,11 +126,11 @@ check_github_ssh() {
   echo "Please set up SSH for GitHub before continuing:"
   echo ""
   echo "  1. Create an SSH key:"
-  echo "     https://github.com/nhessler/dotfiles/blob/master/docs/ssh-setup.md"
+  echo "     https://github.com/nhessler/dotfiles/blob/main/docs/ssh-setup.md"
   echo "     https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent"
   echo ""
   echo "  2. Configure SSH and add key to GitHub:"
-  echo "     https://github.com/nhessler/dotfiles/blob/master/docs/ssh-setup.md"
+  echo "     https://github.com/nhessler/dotfiles/blob/main/docs/ssh-setup.md"
   echo ""
   echo "  3. Re-run this script"
   echo ""

@@ -12,7 +12,7 @@ Personal dotfiles repository for macOS development environment. Files use a `dot
 
 **Phase 1: Bootstrap** (one-time, requires SSH key for GitHub)
 ```shell
-curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/master/bin/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/main/bin/bootstrap.sh | bash
 ```
 Sets up: Xcode CLI tools, clones dotfiles via SSH, security hardening (FileVault, firewall, TouchID sudo), Homebrew, ASDF (tool only), dotfile symlinks, software updates.
 
