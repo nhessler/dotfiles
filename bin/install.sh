@@ -240,6 +240,12 @@ main() {
   # Phase 3: Set default shell (Fish now installed via Brewfile)
   set_default_shell
 
+  # Phase 4: Nerd Fonts
+  "$DOTFILES_DIR/bin/install-nerd-fonts.sh"
+
+  # Phase 5: macOS Defaults
+  "$DOTFILES_DIR/bin/macos-defaults.sh"
+
   # Success!
   SUCCESS="1"
 
@@ -248,9 +254,7 @@ main() {
   echo "   Install Complete!"
   echo "========================================"
   echo ""
-  echo "Next steps:"
-  echo "  1. Restart your terminal (or run: exec fish)"
-  echo "  2. Optionally run bin/macos-defaults.sh for system preferences"
+  echo "Restart your terminal (or run: exec fish)"
   echo ""
 }
 
