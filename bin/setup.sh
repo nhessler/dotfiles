@@ -4,7 +4,7 @@
 # Installs Brewfile packages, ASDF languages, and sets default shell.
 #
 # Usage:
-#   ./bin/install.sh [--skip-mas]
+#   ./bin/setup.sh [--skip-mas]
 #
 # Options:
 #   --skip-mas    Skip Mac App Store apps (use if not signed in)

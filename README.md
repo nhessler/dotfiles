@@ -15,7 +15,7 @@ curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/main/bin/bootstra
 
 **Phase 2: Install** (packages & languages)
 ```shell
-~/Projects/nhessler/dotfiles/bin/install.sh
+~/Projects/nhessler/dotfiles/bin/setup.sh
 ```
 
 Use `--skip-mas` if not signed into the App Store.
@@ -44,7 +44,7 @@ Use `--skip-mas` if not signed into the App Store.
 dotfiles/
 ├── bin/                    # Setup scripts
 │   ├── bootstrap.sh        # Phase 1: one-time setup
-│   ├── install.sh          # Phase 2: packages & languages
+│   ├── setup.sh            # Phase 2: packages & languages
 │   ├── install-nerd-fonts.sh
 │   └── macos-defaults.sh
 ├── dot-config/             # → ~/.config/
@@ -95,7 +95,7 @@ git secure -n "Your Name" -e you@example.com -k ~/.ssh/id_ed25519
 
 ### Nerd Fonts
 
-Install all Nerd Fonts (run automatically by install.sh, or manually):
+Install all Nerd Fonts (run automatically by setup.sh, or manually):
 ```shell
 ~/Projects/nhessler/dotfiles/bin/install-nerd-fonts.sh
 ```

@@ -16,9 +16,9 @@ curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/main/bin/bootstra
 ```
 Sets up: Xcode CLI tools, clones dotfiles via SSH, security hardening (FileVault, firewall, TouchID sudo), Homebrew, ASDF (tool only), dotfile symlinks, software updates.
 
-**Phase 2: Install** (run after bootstrap completes)
+**Phase 2: Setup** (run after bootstrap completes)
 ```shell
-~/Projects/nhessler/dotfiles/bin/install.sh
+~/Projects/nhessler/dotfiles/bin/setup.sh
 ```
 Installs: Brewfile packages, ASDF plugins and languages (ruby, erlang, elixir, nodejs), sets Fish as default shell.
 
@@ -69,7 +69,7 @@ source ~/.config/fish/functions/<name>.fish
 ## Architecture
 
 ### Directory Structure
-- `bin/` - Setup scripts (bootstrap.sh, install.sh, macos-defaults.sh)
+- `bin/` - Setup scripts (bootstrap.sh, setup.sh, macos-defaults.sh)
 - `dot-config/` → `~/.config/` - XDG config (fish, git, starship, ghostty, bat, gh, homebrew, emacs)
 - `dot-hammerspoon/` → `~/.hammerspoon/` - macOS window management automation
 - `dot-claude/` → Claude Code CLI settings (access restricted in settings.json)

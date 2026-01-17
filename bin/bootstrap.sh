@@ -9,7 +9,7 @@
 #   or
 #   ./bin/bootstrap.sh
 #
-# After bootstrap completes, run bin/install.sh to install packages and languages.
+# After bootstrap completes, run bin/setup.sh to install packages and languages.
 
 set -e
 
@@ -521,7 +521,7 @@ main() {
   echo "     a. If updates are pending: System Settings → General → Software Update → Restart"
   echo "     b. Otherwise: restart normally"
   echo "  2. Run the install script:"
-  echo "       $DOTFILES_DIR/bin/install.sh"
+  echo "       $DOTFILES_DIR/bin/setup.sh"
   echo ""
 }
 
