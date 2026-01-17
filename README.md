@@ -13,12 +13,16 @@ Personal macOS dotfiles.
 curl -fsSL https://raw.githubusercontent.com/nhessler/dotfiles/main/bin/bootstrap.sh | bash
 ```
 
-**Phase 2: Install** (packages & languages)
+**Phase 2: Setup** (packages & languages)
 ```shell
 ~/Projects/nhessler/dotfiles/bin/setup.sh
 ```
 
 Use `--skip-mas` if not signed into the App Store.
+
+**Phase 3: Post-Setup** (manual steps)
+
+See [docs/post-setup.md](docs/post-setup.md) for app logins, license keys, and sync setup.
 
 ## What Gets Installed
 
@@ -31,7 +35,7 @@ Use `--skip-mas` if not signed into the App Store.
 - Dotfile symlinks
 - Software updates
 
-### Install (Phase 2)
+### Setup (Phase 2)
 - Brewfile packages (CLI tools, casks, App Store apps)
 - ASDF languages: Ruby, Erlang, Elixir, Node.js
 - Fish shell (set as default)
