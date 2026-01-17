@@ -173,20 +173,20 @@ sudo pmset -c sleep 0
 sudo pmset -a lidwake 1
 
 ###############################################################################
-# Safari                                                                      #
+# Safari (may fail if Safari hasn't been opened yet)                          #
 ###############################################################################
 echo "--> Configuring Safari..."
 
 # Show full URL in address bar
-defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true 2>/dev/null || true
 
 # Enable Develop menu
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true 2>/dev/null || true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true 2>/dev/null || true
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true 2>/dev/null || true
 
 # Don't open "safe" files after downloading
-defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false 2>/dev/null || true
 
 ###############################################################################
 # Text Editing                                                                #
