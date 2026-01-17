@@ -495,11 +495,12 @@ main() {
   echo "   Bootstrap Complete!"
   echo "========================================"
   echo ""
-  echo "Next step:"
-  echo "  Run the install script to set up packages and languages:"
-  echo "    $DOTFILES_DIR/bin/install.sh"
-  echo ""
-  echo "If FileVault was enabled, a restart may be required first."
+  echo "Next steps:"
+  echo "  1. Restart your machine:"
+  echo "     a. If updates are pending: System Settings → General → Software Update → Restart"
+  echo "     b. Otherwise: restart normally"
+  echo "  2. Run the install script:"
+  echo "       $DOTFILES_DIR/bin/install.sh"
   echo ""
 }
 
