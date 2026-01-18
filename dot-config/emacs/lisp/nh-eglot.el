@@ -129,11 +129,22 @@
   (setq treesit-extra-load-path
         (list (expand-file-name "tree-sitter" user-emacs-directory)))
 
-  ;; Automatically use *-ts-mode when grammar is available
-  ;; e.g., ruby-ts-mode instead of ruby-mode
-  (treesit-auto-add-to-auto-mode-alist 'all)
+  ;; NOTE: We don't use global-treesit-auto-mode because it rebuilds
+  ;; the grammar availability list on EVERY file open, which is slow.
+  ;; Instead, we build the remap list once at startup.
+  ;; Run `nh/treesit-rebuild-remap` after installing new grammars.
+  (setq major-mode-remap-alist
+        (treesit-auto--build-major-mode-remap-alist)))
 
-  (global-treesit-auto-mode))
+(defun nh/treesit-rebuild-remap ()
+  "Rebuild the major-mode-remap-alist for treesitter modes.
+Run this after installing new treesitter grammars to use them
+without restarting Emacs."
+  (interactive)
+  (setq major-mode-remap-alist
+        (treesit-auto--build-major-mode-remap-alist))
+  (message "Treesitter mode remaps rebuilt. %d mappings active."
+           (length major-mode-remap-alist)))
 
 ;;;; Treesitter Grammar Sources
 ;;

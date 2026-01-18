@@ -58,12 +58,19 @@
   ;; Options: 'find-file, 'dired, 'commander, 'vc-dir, 'magit-status
   (setq projectile-switch-project-action #'projectile-find-file)
 
-  ;; Cache project files for faster access (especially in large projects)
-  (setq projectile-enable-caching t)
+  ;; Disable file list caching - always get fresh file listings
+  ;; This avoids stale results when files are created externally
+  (setq projectile-enable-caching nil)
 
-  ;; Auto-update cache when files are created/deleted
-  ;; Uses file system notifications to keep the cache fresh
-  (setq projectile-auto-update-cache t)
+  ;; But DO cache project roots to avoid repeated directory traversal
+  ;; This speeds up operations without causing stale file issues
+  (setq projectile-project-root-files-functions
+        '(projectile-root-local
+          projectile-root-marked
+          projectile-root-top-down
+          projectile-root-bottom-up
+          projectile-root-top-down-recurring))
+  (setq projectile-project-root-cache (make-hash-table :test 'equal))
 
   ;; Indexing method
   ;; 'alien = use external tools (fd, find) - faster for large projects
@@ -109,6 +116,10 @@
   :after (projectile counsel)
   :config
   (counsel-projectile-mode 1)
+
+  ;; Disable the find-file transformer - it calls projectile-project-root
+  ;; for every candidate on every keystroke, which is very slow
+  (setq counsel-projectile-find-file-transformer nil)
 
   ;; counsel-projectile provides enhanced versions:
   ;;   counsel-projectile-find-file    (C-c p f)

@@ -119,33 +119,24 @@
 ;;;; Load Language Modules
 ;;
 ;; Each language file configures mode, LSP, and helpers.
-;; We defer loading until you actually open a file of that type.
-;; This significantly speeds up startup.
+;;
+;; We load all lang files at startup so use-package can:
+;;   - Set up auto-mode-alist entries
+;;   - Ensure packages are installed
+;;
+;; But the actual mode code is deferred via :mode/:defer until
+;; you open a file of that type. Startup cost is minimal.
 
-;; Elisp - load eagerly (for editing this config!)
 (require 'nh-lang-elisp)
-
-;; Other languages - load lazily when the mode activates
-(with-eval-after-load 'ruby-mode     (require 'nh-lang-ruby))
-(with-eval-after-load 'ruby-ts-mode  (require 'nh-lang-ruby))
-(with-eval-after-load 'elixir-mode   (require 'nh-lang-elixir))
-(with-eval-after-load 'elixir-ts-mode (require 'nh-lang-elixir))
-(with-eval-after-load 'erlang        (require 'nh-lang-erlang))
-(with-eval-after-load 'go-mode       (require 'nh-lang-go))
-(with-eval-after-load 'go-ts-mode    (require 'nh-lang-go))
-(with-eval-after-load 'lua-mode      (require 'nh-lang-lua))
-(with-eval-after-load 'lua-ts-mode   (require 'nh-lang-lua))
-(with-eval-after-load 'js            (require 'nh-lang-web))
-(with-eval-after-load 'typescript-ts-mode (require 'nh-lang-web))
-(with-eval-after-load 'css-mode      (require 'nh-lang-web))
-(with-eval-after-load 'web-mode      (require 'nh-lang-web))
-(with-eval-after-load 'fish-mode     (require 'nh-lang-fish))
-(with-eval-after-load 'markdown-mode (require 'nh-lang-markdown))
-(with-eval-after-load 'yaml-mode     (require 'nh-lang-config))
-(with-eval-after-load 'yaml-ts-mode  (require 'nh-lang-config))
-(with-eval-after-load 'json-ts-mode  (require 'nh-lang-config))
-(with-eval-after-load 'sh-mode       (require 'nh-lang-config))
-(with-eval-after-load 'dockerfile-mode (require 'nh-lang-config))
+(require 'nh-lang-ruby)
+(require 'nh-lang-elixir)
+(require 'nh-lang-erlang)
+(require 'nh-lang-go)
+(require 'nh-lang-lua)
+(require 'nh-lang-web)
+(require 'nh-lang-fish)
+(require 'nh-lang-markdown)
+(require 'nh-lang-config)
 
 ;;;; Custom File
 ;;
