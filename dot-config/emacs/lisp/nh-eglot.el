@@ -76,33 +76,35 @@
   ;; Show documentation in the echo area (eldoc)
   (setq eglot-extend-to-xref t)
 
-  ;;;; Keybindings under C-c l prefix
-  ;;
-  ;; These are available when eglot is active in a buffer.
+)
 
-  :bind (:map eglot-mode-map
-              ;; Code actions and fixes
-              ("C-c l a" . eglot-code-actions)       ; Show available actions
-              ("C-c l r" . eglot-rename)             ; Rename symbol
-              ("C-c l f" . eglot-format)             ; Format buffer/region
-              ("C-c l F" . eglot-format-buffer)      ; Format entire buffer
+;;;; Keybindings under C-c l prefix
+;;
+;; These are available when eglot is active in a buffer.
+;; Using with-eval-after-load ensures the keymap exists before binding.
 
-              ;; Navigation
-              ("C-c l d" . xref-find-definitions)    ; Go to definition
-              ("C-c l D" . xref-find-references)     ; Find all references
-              ("C-c l i" . eglot-find-implementation); Find implementation
+(with-eval-after-load 'eglot
+  (define-key eglot-mode-map (kbd "C-c l a") #'eglot-code-actions)
+  (define-key eglot-mode-map (kbd "C-c l r") #'eglot-rename)
+  (define-key eglot-mode-map (kbd "C-c l f") #'eglot-format)
+  (define-key eglot-mode-map (kbd "C-c l F") #'eglot-format-buffer)
 
-              ;; Documentation
-              ("C-c l h" . eldoc-doc-buffer)         ; Show docs in buffer
+  ;; Navigation
+  (define-key eglot-mode-map (kbd "C-c l d") #'xref-find-definitions)
+  (define-key eglot-mode-map (kbd "C-c l D") #'xref-find-references)
+  (define-key eglot-mode-map (kbd "C-c l i") #'eglot-find-implementation)
 
-              ;; Diagnostics
-              ("C-c l e" . flymake-show-buffer-diagnostics) ; List errors
-              ("C-c l n" . flymake-goto-next-error)  ; Next error
-              ("C-c l p" . flymake-goto-prev-error)  ; Previous error
+  ;; Documentation
+  (define-key eglot-mode-map (kbd "C-c l h") #'eldoc-doc-buffer)
 
-              ;; Server management
-              ("C-c l R" . eglot-reconnect)          ; Reconnect to server
-              ("C-c l S" . eglot-shutdown)))         ; Shutdown server
+  ;; Diagnostics
+  (define-key eglot-mode-map (kbd "C-c l e") #'flymake-show-buffer-diagnostics)
+  (define-key eglot-mode-map (kbd "C-c l n") #'flymake-goto-next-error)
+  (define-key eglot-mode-map (kbd "C-c l p") #'flymake-goto-prev-error)
+
+  ;; Server management
+  (define-key eglot-mode-map (kbd "C-c l R") #'eglot-reconnect)
+  (define-key eglot-mode-map (kbd "C-c l S") #'eglot-shutdown))
 
 ;;;; Treesitter Setup
 ;;
