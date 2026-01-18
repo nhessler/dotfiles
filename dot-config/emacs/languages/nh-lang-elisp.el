@@ -19,23 +19,14 @@
 ;; emacs-lisp-mode is built-in and excellent.
 ;; We add some quality-of-life improvements.
 
-(use-package emacs-lisp-mode
-  :ensure nil  ; Built-in
-  :mode
-  (("\\.el\\'" . emacs-lisp-mode)
-   ("Cask\\'" . emacs-lisp-mode))
+;; emacs-lisp-mode is built-in (part of elisp-mode.el).
+;; .el files are already associated with it by default.
+;; We just add hooks for enhancements.
 
-  :hook
-  ;; Show function signatures in echo area
-  (emacs-lisp-mode . eldoc-mode)
-  ;; Highlight defined symbols
-  (emacs-lisp-mode . highlight-defined-mode)
+(add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
 
-  :config
-  ;; Indentation is already perfect for Lisp
-  ;; But we can customize a few things:
-
-  ;; When pressing RET, auto-indent the new line
+;; When pressing RET, auto-indent the new line
+(with-eval-after-load 'elisp-mode
   (define-key emacs-lisp-mode-map (kbd "RET") 'newline-and-indent))
 
 ;;;; Highlight Defined Symbols
@@ -125,10 +116,9 @@
 ;;;; Lisp Interaction Mode
 ;;
 ;; For *scratch* buffer and other interactive Lisp buffers.
+;; lisp-interaction-mode is built-in (part of elisp-mode.el).
 
-(use-package lisp-interaction-mode
-  :ensure nil  ; Built-in
-  :hook (lisp-interaction-mode . eldoc-mode))
+(add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
 
 ;;;; Smartparens for Lisp
 ;;
