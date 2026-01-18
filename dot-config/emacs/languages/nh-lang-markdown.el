@@ -61,21 +61,23 @@
 ;;
 ;; obsidian.el provides navigation and search for Obsidian vaults.
 
-(use-package obsidian
-  :demand t
-  :config
-  ;; Set your vault path (adjust to your actual vault location)
-  ;; This is typically in iCloud for sync
-  (obsidian-specify-path "~/Library/Mobile Documents/iCloud~md~obsidian/Documents")
+;; Only load obsidian.el if the vault directory exists
+(let ((obsidian-vault "~/Library/Mobile Documents/iCloud~md~obsidian/Documents"))
+  (when (file-directory-p (expand-file-name obsidian-vault))
+    (use-package obsidian
+      :demand t
+      :config
+      ;; Set your vault path
+      (obsidian-specify-path obsidian-vault)
 
-  ;; Enable obsidian-mode in markdown files within the vault
-  (global-obsidian-mode t)
+      ;; Enable obsidian-mode in markdown files within the vault
+      (global-obsidian-mode t)
 
-  :bind (:map obsidian-mode-map
-              ;; Navigate wiki links
-              ("C-c C-o" . obsidian-follow-link-at-point)
-              ("C-c C-b" . obsidian-backlink-jump)
-              ("C-c C-l" . obsidian-insert-link)))
+      :bind (:map obsidian-mode-map
+                  ;; Navigate wiki links
+                  ("C-c C-o" . obsidian-follow-link-at-point)
+                  ("C-c C-b" . obsidian-backlink-jump)
+                  ("C-c C-l" . obsidian-insert-link)))))
 
 ;;;; Keybindings Reference
 ;;
