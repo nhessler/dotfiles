@@ -54,8 +54,9 @@
 ;; Very handy when learning what a function does.
 
 (use-package elisp-demos
+  :after helpful  ; Only load after helpful is available
   :config
-  ;; Add demos to helpful (if installed) or standard help
+  ;; Add demos to helpful's help buffers
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 ;;;; Interactive Elisp (IELM)
