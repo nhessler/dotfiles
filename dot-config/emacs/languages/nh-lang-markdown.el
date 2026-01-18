@@ -52,32 +52,24 @@
 (with-eval-after-load 'visual-fill-column
   (add-hook 'markdown-mode-hook #'nh/markdown-mode-visual-fill))
 
-;;;; Obsidian Integration
+;;;; Obsidian Integration (Optional)
 ;;
+;; If you use Obsidian, you can add obsidian.el for wiki-link navigation.
 ;; Obsidian uses GFM with extensions:
 ;;   - [[wiki links]] for internal links
 ;;   - ![[embeds]] for embedding content
 ;;   - Tags like #tag
 ;;
-;; obsidian.el provides navigation and search for Obsidian vaults.
-
-;; Only load obsidian.el if the vault directory exists
-(let ((obsidian-vault "~/Library/Mobile Documents/iCloud~md~obsidian/Documents"))
-  (when (file-directory-p (expand-file-name obsidian-vault))
-    (use-package obsidian
-      :demand t
-      :config
-      ;; Set your vault path
-      (obsidian-specify-path obsidian-vault)
-
-      ;; Enable obsidian-mode in markdown files within the vault
-      (global-obsidian-mode t)
-
-      :bind (:map obsidian-mode-map
-                  ;; Navigate wiki links
-                  ("C-c C-o" . obsidian-follow-link-at-point)
-                  ("C-c C-b" . obsidian-backlink-jump)
-                  ("C-c C-l" . obsidian-insert-link)))))
+;; To enable, uncomment and adjust vault path:
+;;
+;; (use-package obsidian
+;;   :config
+;;   (obsidian-specify-path "~/path/to/your/vault")
+;;   (global-obsidian-mode t)
+;;   :bind (:map obsidian-mode-map
+;;               ("C-c C-o" . obsidian-follow-link-at-point)
+;;               ("C-c C-b" . obsidian-backlink-jump)
+;;               ("C-c C-l" . obsidian-insert-link)))
 
 ;;;; Keybindings Reference
 ;;
