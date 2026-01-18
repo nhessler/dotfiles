@@ -3,6 +3,7 @@ dot-config/fish/completions/asdf.fish
 dot-config/git/allowed_signers
 
 dot-config/emacs/auto-save-list/
+dot-config/emacs/custom.el
 dot-config/emacs/eln-cache/
 dot-config/emacs/elpa/
 dot-config/emacs/forge-database.sqlite
@@ -14,6 +15,7 @@ dot-config/emacs/recentf
 dot-config/emacs/request/
 dot-config/emacs/transient/
 dot-config/emacs/tramp
+dot-config/emacs/tree-sitter/
 dot-config/emacs/%backup%~
 
 caddy/Caddyfile
