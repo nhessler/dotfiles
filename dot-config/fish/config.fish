@@ -29,8 +29,11 @@ if not contains $_asdf_shims $PATH
 end
 set --erase _asdf_shims
 
-# Don't forget to manually link asdf completions 
+# Don't forget to manually link asdf completions
 # $> ln -s ~/.asdf/completions/asdf.fish ~/.config/fish/completions
+
+# asdf-ruby: auto-install these gems with each new Ruby version
+set -x ASDF_GEM_DEFAULT_PACKAGES_FILE "$HOME/.config/.default_gems"
 
 # Enable IEx shell history
 # set -Ux ERL_AFLAGS '-kernel shell_history enabled'

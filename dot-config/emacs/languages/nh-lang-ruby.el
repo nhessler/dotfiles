@@ -10,17 +10,13 @@
 ;;
 ;;;; LSP Setup
 ;;
-;; Install ruby-lsp via Homebrew (recommended):
-;;   brew install ruby-lsp
+;; Install ruby-lsp via asdf default-gems (NOT Homebrew!):
+;;   echo "ruby-lsp" >> ~/.config/.default_gems
+;;   gem install ruby-lsp
 ;;
-;; This is preferred over `gem install` because:
-;;   - Works across all Ruby versions (no reinstall needed when switching)
-;;   - Homebrew handles updates automatically
-;;   - No gemset/bundler conflicts
-;;
-;; Alternative: Add to ~/.default-gems for asdf:
-;;   echo "ruby-lsp" >> ~/.default-gems
-;;   (Installs automatically with each new Ruby version)
+;; Why not Homebrew? Homebrew's ruby-lsp is linked to Homebrew's Ruby,
+;; which conflicts with project Ruby versions managed by asdf.
+;; Using default-gems ensures ruby-lsp uses the correct Ruby for each project.
 ;;
 ;;; Code:
 
@@ -48,7 +44,7 @@
 
   :hook
   ;; Start Eglot automatically for Ruby files
-  (ruby-mode . eglot-ensure)
+  ((ruby-mode ruby-ts-mode) . eglot-ensure)
 
   :config
   ;; Indentation
@@ -81,7 +77,7 @@
 ;; ruby-lsp is auto-detected by Eglot, but we can configure it here.
 
 (with-eval-after-load 'eglot
-  ;; ruby-lsp should be found in PATH (brew install ruby-lsp)
+  ;; ruby-lsp should be found in PATH (via asdf shims)
   ;; Eglot has built-in support, but we ensure it's configured
   (add-to-list 'eglot-server-programs
                '((ruby-mode ruby-ts-mode) . ("ruby-lsp"))))

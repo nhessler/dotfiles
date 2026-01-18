@@ -47,7 +47,7 @@
 ;; version. Homebrew installs are system-wide and version-independent.
 ;;
 ;; Homebrew LSPs (preferred):
-;;   brew install ruby-lsp                    # Ruby
+;;   gem install ruby-lsp                     # Ruby (via asdf default-gems, NOT Homebrew!)
 ;;   brew install elixir-ls                   # Elixir
 ;;   brew install gopls                       # Go
 ;;   brew install typescript-language-server  # TypeScript/JavaScript
@@ -76,7 +76,11 @@
   ;; Show documentation in the echo area (eldoc)
   (setq eglot-extend-to-xref t)
 
-)
+  ;; Use minibuffer for xref results instead of separate *xref* buffer
+  ;; Jumps directly if only one result, shows completing-read if multiple
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+  (setq xref-show-xrefs-function #'xref-show-definitions-completing-read))
+
 
 ;;;; Keybindings under C-c l prefix
 ;;
