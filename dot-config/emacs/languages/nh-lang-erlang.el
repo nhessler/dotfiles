@@ -43,8 +43,11 @@
   (when (and erlang-emacs-dir (file-directory-p erlang-emacs-dir))
     (add-to-list 'load-path erlang-emacs-dir)))
 
-;; Now configure erlang-mode (from OTP or MELPA)
+;; Now configure erlang-mode (from OTP installation)
+;; We don't use :ensure t because MELPA's version can be unreliable.
+;; The OTP-bundled version (added to load-path above) is preferred.
 (use-package erlang
+  :ensure nil  ; Use OTP-bundled version, don't try MELPA
   :mode
   (("\\.erl\\'" . erlang-mode)
    ("\\.hrl\\'" . erlang-mode)      ; Header files
