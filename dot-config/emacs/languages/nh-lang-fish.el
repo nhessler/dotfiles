@@ -5,8 +5,10 @@
 ;; Fish shell script editing.
 ;; Fish is our default shell, so this gets used often.
 ;;
-;; No LSP available for Fish (it's a shell, not a programming language),
-;; but fish-mode provides good syntax highlighting and indentation.
+;;;; LSP Setup
+;;
+;; Install fish-lsp via Homebrew:
+;;   brew install fish-lsp
 ;;
 ;;; Code:
 
@@ -19,6 +21,10 @@
   (("\\.fish\\'" . fish-mode)
    ("/fish/config\\.fish\\'" . fish-mode)
    ("/fish/functions/.*\\.fish\\'" . fish-mode))
+
+  :hook
+  ;; Start Eglot automatically for Fish files
+  (fish-mode . eglot-ensure)
 
   :config
   ;; Indentation
@@ -41,6 +47,12 @@ Runs: source <current-file> in a fish shell."
 
 (with-eval-after-load 'fish-mode
   (define-key fish-mode-map (kbd "C-c m r") #'nh/fish-reload-function))
+
+;;;; Eglot: Fish Language Server Configuration
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(fish-mode . ("fish-lsp" "start"))))
 
 (provide 'nh-lang-fish)
 ;;; nh-lang-fish.el ends here

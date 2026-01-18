@@ -10,8 +10,11 @@
 ;;   - Shell scripts (.sh, .bash, .zsh)
 ;;   - .env files
 ;;
-;; These are "data" languages that don't typically need LSP support,
-;; though some (YAML, JSON) can benefit from schema validation.
+;; Many of these have LSP support for schema validation and diagnostics:
+;;   - YAML: yaml-language-server (brew install yaml-language-server)
+;;   - JSON: vscode-json-language-server (brew install vscode-langservers-extracted)
+;;   - Dockerfile: dockerfile-language-server (brew install dockerfile-language-server)
+;;   - Shell: bash-language-server (brew install bash-language-server)
 ;;
 ;;; Code:
 
@@ -37,6 +40,11 @@
    ;; Container/K8s configs
    ("docker-compose.*\\.yml\\'" . yaml-mode)
    ("compose.*\\.yml\\'" . yaml-mode))
+
+  :hook
+  ;; Start Eglot automatically for YAML files
+  ;; Include both modes since treesit-auto may use yaml-ts-mode
+  ((yaml-mode yaml-ts-mode) . eglot-ensure)
 
   :config
   ;; Indentation - YAML standard is 2 spaces
@@ -69,39 +77,43 @@
 ;;
 ;; JSON is used for package.json, tsconfig.json, .prettierrc, etc.
 ;;
-;; Emacs 29+ includes json-ts-mode, but json-mode provides good
-;; formatting and navigation features.
+;; Emacs 29+ includes json-ts-mode (treesitter-based), which we use.
 ;;
 ;; For LSP (provides JSON, HTML, CSS servers):
 ;;   brew install vscode-langservers-extracted
 
-(use-package json-mode
+(use-package json-ts-mode
+  :ensure nil  ; Built-in to Emacs 29+
   :mode
-  (("\\.json\\'" . json-mode)
-   ("\\.jsonc\\'" . json-mode)  ; JSON with comments (VS Code style)
-   ("\\.prettierrc\\'" . json-mode)
-   ("\\.eslintrc\\'" . json-mode)
-   ("\\.babelrc\\'" . json-mode)
-   ("tsconfig\\.json\\'" . json-mode)
-   ("package\\.json\\'" . json-mode)
-   ("package-lock\\.json\\'" . json-mode)
-   ("composer\\.json\\'" . json-mode))
+  (("\\.json\\'" . json-ts-mode)
+   ("\\.jsonc\\'" . json-ts-mode)  ; JSON with comments (VS Code style)
+   ("\\.prettierrc\\'" . json-ts-mode)
+   ("\\.eslintrc\\'" . json-ts-mode)
+   ("\\.babelrc\\'" . json-ts-mode)
+   ("tsconfig\\.json\\'" . json-ts-mode)
+   ("package\\.json\\'" . json-ts-mode)
+   ("package-lock\\.json\\'" . json-ts-mode)
+   ("composer\\.json\\'" . json-ts-mode))
+
+  :hook
+  ;; Start Eglot automatically for JSON files
+  (json-ts-mode . eglot-ensure)
 
   :config
-  ;; Indentation - 2 spaces is common
-  (setq js-indent-level 2)  ; json-mode uses js-mode indentation
+  ;; Indentation - 2 spaces
+  (setq json-ts-mode-indent-offset 2))
 
-  ;; Format JSON with jq if available
-  ;; Install: brew install jq
-  (defun nh/json-format-buffer ()
-    "Format current JSON buffer using jq."
-    (interactive)
-    (if (executable-find "jq")
-        (shell-command-on-region
-         (point-min) (point-max)
-         "jq ."
-         (current-buffer) t)
-      (message "jq not found. Install with: brew install jq"))))
+;; Format JSON with jq if available
+;; Install: brew install jq
+(defun nh/json-format-buffer ()
+  "Format current JSON buffer using jq."
+  (interactive)
+  (if (executable-find "jq")
+      (shell-command-on-region
+       (point-min) (point-max)
+       "jq ."
+       (current-buffer) t)
+    (message "jq not found. Install with: brew install jq")))
 
 ;;;; Dockerfile Mode
 ;;
@@ -112,7 +124,12 @@
   (("Dockerfile\\'" . dockerfile-mode)
    ("Dockerfile\\.[^/]+\\'" . dockerfile-mode)  ; Dockerfile.dev, etc.
    ("\\.dockerfile\\'" . dockerfile-mode)
-   ("Containerfile\\'" . dockerfile-mode)))  ; Podman equivalent
+   ("Containerfile\\'" . dockerfile-mode))  ; Podman equivalent
+
+  :hook
+  ;; Start Eglot automatically for Dockerfiles
+  ;; Include both modes since treesit-auto may use dockerfile-ts-mode
+  ((dockerfile-mode dockerfile-ts-mode) . eglot-ensure))
 
 ;;;; Shell Script Mode
 ;;
@@ -134,6 +151,11 @@
    ("\\.profile\\'" . sh-mode)
    ;; Scripts without extension (by shebang - handled by auto-mode-interpreter-regexp)
    )
+
+  :hook
+  ;; Start Eglot automatically for shell scripts
+  ;; Include both modes since treesit-auto may use bash-ts-mode
+  ((sh-mode bash-ts-mode) . eglot-ensure)
 
   :config
   ;; Indentation
@@ -256,8 +278,27 @@
 ;; JSON-specific:
 ;;   nh/json-format-buffer  Format JSON using jq
 
-(with-eval-after-load 'json-mode
-  (define-key json-mode-map (kbd "C-c m f") #'nh/json-format-buffer))
+(with-eval-after-load 'json-ts-mode
+  (define-key json-ts-mode-map (kbd "C-c m f") #'nh/json-format-buffer))
+
+;;;; Eglot: Config File Language Servers
+
+(with-eval-after-load 'eglot
+  ;; YAML language server
+  (add-to-list 'eglot-server-programs
+               '((yaml-mode yaml-ts-mode) . ("yaml-language-server" "--stdio")))
+
+  ;; JSON language server (from vscode-langservers-extracted)
+  (add-to-list 'eglot-server-programs
+               '(json-ts-mode . ("vscode-json-language-server" "--stdio")))
+
+  ;; Dockerfile language server
+  (add-to-list 'eglot-server-programs
+               '((dockerfile-mode dockerfile-ts-mode) . ("docker-langserver" "--stdio")))
+
+  ;; Bash language server
+  (add-to-list 'eglot-server-programs
+               '((sh-mode bash-ts-mode) . ("bash-language-server" "start"))))
 
 (provide 'nh-lang-config)
 ;;; nh-lang-config.el ends here
