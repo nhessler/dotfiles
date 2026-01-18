@@ -29,7 +29,8 @@
 
   :hook
   ;; Start Eglot automatically for Lua files
-  (lua-mode . eglot-ensure)
+  ;; Include both modes since treesit-auto may use lua-ts-mode
+  ((lua-mode lua-ts-mode) . eglot-ensure)
 
   :config
   ;; Indentation - 2 spaces is common in Lua
@@ -49,7 +50,7 @@
 (with-eval-after-load 'eglot
   ;; lua-language-server should be found in PATH via Homebrew
   (add-to-list 'eglot-server-programs
-               '(lua-mode . ("lua-language-server"))))
+               '((lua-mode lua-ts-mode) . ("lua-language-server"))))
 
 ;;;; Lua Commands
 ;;

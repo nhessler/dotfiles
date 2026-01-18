@@ -36,7 +36,8 @@
 
   :hook
   ;; Start Eglot automatically for Elixir files
-  (elixir-mode . eglot-ensure)
+  ;; Include both modes since treesit-auto may use elixir-ts-mode
+  ((elixir-mode elixir-ts-mode) . eglot-ensure)
 
   :bind (:map elixir-mode-map
               ;; Format buffer with mix format

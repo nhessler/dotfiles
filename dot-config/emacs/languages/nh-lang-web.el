@@ -63,7 +63,9 @@
 (use-package css-mode
   :ensure nil  ; Built-in
   :mode "\\.css\\'"
-  :hook (css-mode . eglot-ensure)
+  :hook
+  ;; Include both modes since treesit-auto may use css-ts-mode
+  ((css-mode css-ts-mode) . eglot-ensure)
   :config
   (setq css-indent-offset 2))
 
@@ -88,7 +90,9 @@
   :mode (("\\.js\\'" . js-mode)
          ("\\.mjs\\'" . js-mode)
          ("\\.cjs\\'" . js-mode))
-  :hook (js-mode . eglot-ensure)
+  :hook
+  ;; Include both modes since treesit-auto may use js-ts-mode
+  ((js-mode js-ts-mode) . eglot-ensure)
   :config
   (setq js-indent-level 2))
 
@@ -117,7 +121,7 @@
   (add-to-list 'eglot-server-programs
                '(html-mode . ("vscode-html-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
-               '((css-mode scss-mode) . ("vscode-css-language-server" "--stdio"))))
+               '((css-mode css-ts-mode scss-mode) . ("vscode-css-language-server" "--stdio"))))
 
 ;;;; Prettier Integration (Optional)
 ;;

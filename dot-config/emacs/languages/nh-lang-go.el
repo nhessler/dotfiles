@@ -32,7 +32,8 @@
 
   :hook
   ;; Start Eglot automatically
-  (go-mode . eglot-ensure)
+  ;; Include both modes since treesit-auto may use go-ts-mode
+  ((go-mode go-ts-mode) . eglot-ensure)
   ;; Format on save using gofmt
   (before-save . gofmt-before-save)
 
