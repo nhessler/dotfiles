@@ -147,7 +147,26 @@
 ;; Useful for complex workflows, but can be confusing if you forget where you are.
 (setq enable-recursive-minibuffers t)
 
-;;;; macOS Specific
+;;;; macOS: Shell Environment
+;;
+;; GUI Emacs on macOS doesn't inherit the shell's environment variables.
+;; This is a problem because:
+;;   - asdf shims won't be in PATH (wrong Ruby/Node/etc. version)
+;;   - Homebrew binaries might not be found
+;;   - LSPs won't be discoverable
+;;
+;; exec-path-from-shell starts a shell, sources your config, and copies
+;; the resulting PATH (and other env vars) into Emacs.
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :config
+  ;; Copy these environment variables from shell
+  (dolist (var '("PATH" "MANPATH" "GOPATH" "ASDF_DIR" "ASDF_DATA_DIR"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
+;;;; macOS: Keyboard
 ;;
 ;; Mac keyboard configuration for a 44-key keyboard with homerow mods.
 ;;
