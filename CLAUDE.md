@@ -66,6 +66,8 @@ source ~/.config/fish/functions/<name>.fish
 
 **Never push to GitHub** - Only commit locally. The user will decide when to push.
 
+**Stay in the project root** - Never cd into subdirectories. Always work from the dotfiles root and use relative paths from there.
+
 ## Architecture
 
 ### Directory Structure
