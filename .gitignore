@@ -8,6 +8,7 @@ dot-config/emacs/eln-cache/
 dot-config/emacs/elpa/
 dot-config/emacs/forge-database.sqlite
 dot-config/emacs/persist/
+dot-config/emacs/places
 dot-config/emacs/projectile-bookmarks.eld
 dot-config/emacs/projectile.cache
 dot-config/emacs/projects
