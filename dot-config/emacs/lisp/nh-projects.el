@@ -61,6 +61,10 @@
   ;; Cache project files for faster access (especially in large projects)
   (setq projectile-enable-caching t)
 
+  ;; Auto-update cache when files are created/deleted
+  ;; Uses file system notifications to keep the cache fresh
+  (setq projectile-auto-update-cache t)
+
   ;; Indexing method
   ;; 'alien = use external tools (fd, find) - faster for large projects
   ;; 'native = pure elisp - works everywhere but slower

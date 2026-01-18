@@ -119,18 +119,33 @@
 ;;;; Load Language Modules
 ;;
 ;; Each language file configures mode, LSP, and helpers.
-;; These are loaded eagerly to set up auto-mode-alist correctly.
+;; We defer loading until you actually open a file of that type.
+;; This significantly speeds up startup.
 
-(require 'nh-lang-elisp)    ; Emacs Lisp (for editing this config!)
-(require 'nh-lang-ruby)     ; Ruby
-(require 'nh-lang-elixir)   ; Elixir + HEEx
-(require 'nh-lang-erlang)   ; Erlang
-(require 'nh-lang-go)       ; Go
-(require 'nh-lang-lua)      ; Lua
-(require 'nh-lang-web)      ; HTML/CSS/JS/TS
-(require 'nh-lang-fish)     ; Fish shell
-(require 'nh-lang-markdown) ; Markdown + Obsidian
-(require 'nh-lang-config)   ; Config files (YAML, TOML, JSON, etc.)
+;; Elisp - load eagerly (for editing this config!)
+(require 'nh-lang-elisp)
+
+;; Other languages - load lazily when the mode activates
+(with-eval-after-load 'ruby-mode     (require 'nh-lang-ruby))
+(with-eval-after-load 'ruby-ts-mode  (require 'nh-lang-ruby))
+(with-eval-after-load 'elixir-mode   (require 'nh-lang-elixir))
+(with-eval-after-load 'elixir-ts-mode (require 'nh-lang-elixir))
+(with-eval-after-load 'erlang        (require 'nh-lang-erlang))
+(with-eval-after-load 'go-mode       (require 'nh-lang-go))
+(with-eval-after-load 'go-ts-mode    (require 'nh-lang-go))
+(with-eval-after-load 'lua-mode      (require 'nh-lang-lua))
+(with-eval-after-load 'lua-ts-mode   (require 'nh-lang-lua))
+(with-eval-after-load 'js            (require 'nh-lang-web))
+(with-eval-after-load 'typescript-ts-mode (require 'nh-lang-web))
+(with-eval-after-load 'css-mode      (require 'nh-lang-web))
+(with-eval-after-load 'web-mode      (require 'nh-lang-web))
+(with-eval-after-load 'fish-mode     (require 'nh-lang-fish))
+(with-eval-after-load 'markdown-mode (require 'nh-lang-markdown))
+(with-eval-after-load 'yaml-mode     (require 'nh-lang-config))
+(with-eval-after-load 'yaml-ts-mode  (require 'nh-lang-config))
+(with-eval-after-load 'json-ts-mode  (require 'nh-lang-config))
+(with-eval-after-load 'sh-mode       (require 'nh-lang-config))
+(with-eval-after-load 'dockerfile-mode (require 'nh-lang-config))
 
 ;;;; Custom File
 ;;
@@ -140,6 +155,21 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;;;; Garbage Collection Management
+;;
+;; gcmh (Garbage Collector Magic Hack) runs GC during idle time
+;; instead of interrupting your work. Much smoother experience.
+
+(use-package gcmh
+  :demand t
+  :config
+  ;; Run GC when idle for 5 seconds
+  (setq gcmh-idle-delay 5)
+  ;; High threshold during normal operation (16MB)
+  ;; This is still much lower than most-positive-fixnum
+  (setq gcmh-high-cons-threshold (* 16 1024 1024))
+  (gcmh-mode 1))
 
 ;;;; Startup Complete
 ;;
