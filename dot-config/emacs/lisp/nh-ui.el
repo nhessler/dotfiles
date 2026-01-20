@@ -176,6 +176,55 @@ it will just use Emacs defaults."
 
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t)))
 
+;;;; Document Margins (Gutters)
+;;
+;; For prose-heavy modes (org, markdown), add left/right margins to create
+;; a centered, comfortable reading width. Only applies when window is wide
+;; enough (>80 chars), otherwise uses full width.
+;;
+;; Usage: Call (nh/doc-margins-mode 1) in your mode hooks.
+
+(defvar nh/doc-margin-min-width 80
+  "Minimum window width before margins are applied.
+Windows narrower than this get no margins.")
+
+(defvar nh/doc-margin-percentage 0.10
+  "Percentage of window width to use for each margin (left and right).
+0.10 = 10% margin on each side, leaving 80% for content.")
+
+(defun nh/calculate-doc-margins ()
+  "Calculate symmetric margins as a percentage of window width.
+Returns (LEFT . RIGHT) margin values, or (0 . 0) if window is narrow."
+  (let* ((window-width (window-width))
+         (margin (if (> window-width nh/doc-margin-min-width)
+                     (floor (* window-width nh/doc-margin-percentage))
+                   0)))
+    (cons margin margin)))
+
+(defun nh/apply-doc-margins ()
+  "Apply document margins to current window based on width."
+  (when (bound-and-true-p nh/doc-margins-mode)
+    (let ((margins (nh/calculate-doc-margins)))
+      (setq left-margin-width (car margins))
+      (setq right-margin-width (cdr margins))
+      ;; Force window to update with new margins
+      (set-window-buffer (selected-window) (current-buffer)))))
+
+(define-minor-mode nh/doc-margins-mode
+  "Minor mode that adds centered margins for comfortable reading width.
+Only adds margins when window width exceeds `nh/doc-target-width'."
+  :init-value nil
+  :lighter nil
+  (if nh/doc-margins-mode
+      (progn
+        (nh/apply-doc-margins)
+        (add-hook 'window-state-change-hook #'nh/apply-doc-margins nil t))
+    ;; Disable: remove margins and hook
+    (setq left-margin-width 0)
+    (setq right-margin-width 0)
+    (remove-hook 'window-state-change-hook #'nh/apply-doc-margins t)
+    (set-window-buffer (selected-window) (current-buffer))))
+
 ;;;; Time Display
 ;;
 ;; Show time in modeline - useful if you hide the menu bar.

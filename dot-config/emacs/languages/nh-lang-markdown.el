@@ -39,18 +39,13 @@
   ;; Hide markup characters for cleaner look
   (setq markdown-hide-markup nil))  ; Set to t if you want hidden markup
 
-;;;; Visual Fill Column for Markdown
+;;;; Document Margins (Gutters)
 ;;
-;; Center text and wrap at a readable width, like we do for org-mode.
+;; Add left/right margins for comfortable reading, like we do for org-mode.
+;; Uses nh/doc-margins-mode from nh-ui.el.
+;; Margins only appear when window width exceeds 80 chars.
 
-(defun nh/markdown-mode-visual-fill ()
-  "Set up visual-fill-column for markdown-mode."
-  (setq visual-fill-column-width 100)
-  (setq visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(with-eval-after-load 'visual-fill-column
-  (add-hook 'markdown-mode-hook #'nh/markdown-mode-visual-fill))
+(add-hook 'markdown-mode-hook #'nh/doc-margins-mode)
 
 ;;;; Obsidian Integration (Optional)
 ;;

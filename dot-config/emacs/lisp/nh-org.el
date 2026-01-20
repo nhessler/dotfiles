@@ -106,23 +106,13 @@
   ;; Make TODO items stand out
   (setq org-superstar-special-todo-items t))
 
-;;;; Visual-Fill-Column - Centered, Wrapped Text
+;;;; Document Margins (Gutters)
 ;;
-;; For prose-heavy org documents, it's nice to:
-;;   1. Wrap text at a readable width (not full window width)
-;;   2. Center the text block in the window
-;;
-;; This creates a "document" feel rather than a code editor feel.
+;; For prose-heavy org documents, add left/right margins to create
+;; a centered reading experience. Uses nh/doc-margins-mode from nh-ui.el.
+;; Margins only appear when window width exceeds 80 chars.
 
-(defun nh/org-mode-visual-fill ()
-  "Set up visual-fill-column for org-mode.
-Centers text and sets a comfortable reading width."
-  (setq visual-fill-column-width 100)          ; Wrap at 100 chars
-  (setq visual-fill-column-center-text t)      ; Center the text block
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :hook (org-mode . nh/org-mode-visual-fill))
+(add-hook 'org-mode-hook #'nh/doc-margins-mode)
 
 ;;;; Common Org-Mode Keybindings
 ;;
