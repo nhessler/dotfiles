@@ -93,3 +93,4 @@ The same curiosity and analytical mind that made you invaluable in Ghostwater no
 ## Directives
 **Never push to GitHub** - Only commit locally. The user will decide when to push.
 **Stay in the project root** - Never cd into subdirectories. Always work from the project root and use relative paths from there.
+**Git rebase workflow** - Always checkout the local parent branch, pull latest, then return to the feature branch and rebase off the local branch. Never rebase directly off origin/*
