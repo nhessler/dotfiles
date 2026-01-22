@@ -23,6 +23,7 @@ caddy/Caddyfile
 
 dot-claude/cache/
 dot-claude/debug/
+dot-claude/telemetry/
 dot-claude/file-history/
 dot-claude/history.jsonl
 dot-claude/paste-cache/
