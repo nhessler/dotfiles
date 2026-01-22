@@ -1,7 +1,10 @@
 # homebrew setup
-set --global --prepend fish_user_paths "/opt/homebrew/sbin"
-set --global --prepend fish_user_paths "/opt/homebrew/bin"
-set --global --prepend fish_user_paths "/opt/homebrew/opt/curl/bin"
+set --global --prepend fish_user_paths $HOME/.local/bin
+set --global --prepend fish_user_paths /opt/homebrew/sbin
+set --global --prepend fish_user_paths /opt/homebrew/bin
+set --global --prepend fish_user_paths /opt/homebrew/opt/curl/bin
+set --global --prepend fish_user_paths /opt/homebrew/opt/libpq/bin
+
 
 # monokai theme setup
 source ~/.config/fish/color_syntax.fish
