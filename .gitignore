@@ -19,6 +19,8 @@ dot-config/emacs/tramp
 dot-config/emacs/tree-sitter/
 dot-config/emacs/%backup%~
 
+dot-config/cagent/
+
 caddy/Caddyfile
 
 dot-claude/cache/
@@ -33,4 +35,5 @@ dot-claude/projects/
 dot-claude/shell-snapshots/
 dot-claude/stats-cache.json
 dot-claude/statsig/
+dot-claude/tasks/
 dot-claude/todos/
