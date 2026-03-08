@@ -37,3 +37,5 @@ dot-claude/stats-cache.json
 dot-claude/statsig/
 dot-claude/tasks/
 dot-claude/todos/
+dot-claude/backups/
+dot-claude/mcp-needs-auth-cache.json
