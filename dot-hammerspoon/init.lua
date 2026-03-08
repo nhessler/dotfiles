@@ -1,3 +1,6 @@
+-- Enable IPC for CLI access (hs command)
+require("hs.ipc")
+
 -- Wave Link mic mute toggle
 local wavelink = require("wavelink")
 wavelink.connect()

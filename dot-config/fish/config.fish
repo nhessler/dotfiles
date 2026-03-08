@@ -8,6 +8,9 @@ set --global --prepend fish_user_paths /opt/homebrew/opt/libpq/bin
 # obsidian setup
 set --global --append fish_user_paths /Applications/Obsidian.app/Contents/MacOS
 
+# hammerspoon cli setup
+set --global --append fish_user_paths /Applications/Hammerspoon.app/Contents/Frameworks/hs
+
 # monokai theme setup
 source ~/.config/fish/color_syntax.fish
 
