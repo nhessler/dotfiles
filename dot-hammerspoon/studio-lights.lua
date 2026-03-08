@@ -81,8 +81,54 @@ function M.toggle()
   end
 end
 
+-- Camera watcher: auto-toggle lights when any camera turns on/off
+local function anyCameraInUse()
+  for _, cam in ipairs(hs.camera.allCameras()) do
+    if cam:isInUse() then return true end
+  end
+  return false
+end
+
+local function onCameraChange()
+  local inUse = anyCameraInUse()
+  log("Camera change detected, any in use:", tostring(inUse))
+  if inUse and not M.isOn then
+    M.on()
+    hs.alert("📷 Camera on — Studio Lights On")
+  elseif not inUse and M.isOn then
+    M.off()
+    hs.alert("📷 Camera off — Studio Lights Off")
+  end
+end
+
+local function watchCamera(camera)
+  if camera:isPropertyWatcherRunning() then
+    camera:stopPropertyWatcher()
+  end
+  camera:setPropertyWatcherCallback(function()
+    onCameraChange()
+  end)
+  camera:startPropertyWatcher()
+  log("Watching camera:", camera:name())
+end
+
 function M.init()
   discoverKeyLight()
+
+  -- Watch all existing cameras
+  for _, camera in ipairs(hs.camera.allCameras()) do
+    watchCamera(camera)
+  end
+
+  -- Watch for new cameras being added
+  hs.camera.setWatcherCallback(function(camera, state)
+    log("Camera", state .. ":", camera:name())
+    if state == "Added" then
+      watchCamera(camera)
+    end
+    onCameraChange()
+  end)
+  hs.camera.startWatcher()
 end
 
 return M
