@@ -5,6 +5,8 @@ set --global --prepend fish_user_paths /opt/homebrew/bin
 set --global --prepend fish_user_paths /opt/homebrew/opt/curl/bin
 set --global --prepend fish_user_paths /opt/homebrew/opt/libpq/bin
 
+# obsidian setup
+set --global --append fish_user_paths /Applications/Obsidian.app/Contents/MacOS
 
 # monokai theme setup
 source ~/.config/fish/color_syntax.fish
