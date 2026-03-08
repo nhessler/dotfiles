@@ -1,3 +1,10 @@
+-- Wave Link mic mute toggle
+local wavelink = require("wavelink")
+wavelink.connect()
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "m", function()
+  wavelink.toggleMute()
+end)
+
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "r", function()
   hs.reload()
   notification = hs.notify.new({title="Hammerspoon", informativeText="Config Reloaded", autoWithdraw=true})
