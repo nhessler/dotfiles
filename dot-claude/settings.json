@@ -8,6 +8,9 @@
       "Read(**/.envrc)",
       "Edit(**/.envrc)",
       "Write(**/.envrc)"
+    ],
+    "allow": [
+      "mcp__pencil"
     ]
   },
   "hooks": {
