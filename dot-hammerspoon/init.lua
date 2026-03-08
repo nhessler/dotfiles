@@ -41,6 +41,7 @@ end)
 
 -- Studio lights toggle
 local studioLights = require("studio-lights")
+studioLights.init()
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "l", function()
   studioLights.toggle()
 end)
