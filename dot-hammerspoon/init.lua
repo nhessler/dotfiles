@@ -39,6 +39,12 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "o", function()
 
 end)
 
+-- Studio lights toggle
+local studioLights = require("studio-lights")
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "l", function()
+  studioLights.toggle()
+end)
+
 -- Window management
 local wm = require("window-manager")
 
