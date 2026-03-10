@@ -3,7 +3,7 @@
 
 local M = {}
 
-M.port = 1824
+M.port = nil
 M.ws = nil
 M.msgId = 0
 M.micIdentifier = nil
@@ -80,10 +80,28 @@ local function fetchState()
   end)
 end
 
+local function discoverPort()
+  local output = hs.execute("lsof -i -P -n 2>/dev/null | grep WaveLink | grep LISTEN | grep '\\*:'")
+  if output then
+    local port = output:match("%*:(%d+)")
+    if port then
+      M.port = tonumber(port)
+      log("Discovered port:", M.port)
+      return true
+    end
+  end
+  log("Could not discover Wave Link port")
+  return false
+end
+
 function M.connect()
   if M.ws then
     M.ws:close()
     M.ws = nil
+  end
+
+  if not M.port then
+    if not discoverPort() then return end
   end
 
   local url = "ws://127.0.0.1:" .. M.port
@@ -100,6 +118,7 @@ function M.connect()
       handleMessage(message)
     elseif eventType == "closed" or eventType == "fail" then
       M.ws = nil
+      M.port = nil
       if not M.reconnectTimer then
         M.reconnectTimer = hs.timer.doEvery(10, function()
           M.connect()
