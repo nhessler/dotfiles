@@ -3,7 +3,6 @@ require("hs.ipc")
 
 -- Wave Link mic mute toggle
 local wavelink = require("wavelink")
-wavelink.connect()
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "m", function()
   wavelink.toggleMute()
 end)

@@ -9,7 +9,6 @@ M.msgId = 0
 M.micIdentifier = nil
 M.isMuted = false
 M.pendingCallbacks = {}
-M.reconnectTimer = nil
 
 local function log(...)
   print("[WaveLink]", ...)
@@ -65,6 +64,8 @@ local function handleMessage(msg)
   end
 end
 
+M._onReady = nil
+
 local function fetchState()
   send("getMicrophoneConfig", {}, function(result)
     if not result then return end
@@ -73,6 +74,10 @@ local function fetchState()
       M.micIdentifier = mic.identifier
       M.isMuted = mic.isMicMuted
       log("Found mic:", mic.name, "muted:", tostring(M.isMuted))
+      if M._onReady then
+        M._onReady()
+        M._onReady = nil
+      end
       return
     end
 
@@ -101,7 +106,7 @@ function M.connect()
   end
 
   if not M.port then
-    if not discoverPort() then return end
+    if not discoverPort() then return false end
   end
 
   local url = "ws://127.0.0.1:" .. M.port
@@ -109,31 +114,20 @@ function M.connect()
   M.ws = hs.websocket.new(url, function(eventType, message)
     if eventType == "open" then
       log("Connected")
-      if M.reconnectTimer then
-        M.reconnectTimer:stop()
-        M.reconnectTimer = nil
-      end
       fetchState()
     elseif eventType == "received" then
       handleMessage(message)
     elseif eventType == "closed" or eventType == "fail" then
       M.ws = nil
       M.port = nil
-      if not M.reconnectTimer then
-        M.reconnectTimer = hs.timer.doEvery(10, function()
-          M.connect()
-        end)
-      end
+      M.micIdentifier = nil
     end
   end)
+
+  return true
 end
 
-function M.toggleMute()
-  if not M.micIdentifier then
-    hs.alert("Mic not found — is Wave Link running?")
-    return
-  end
-
+local function doToggle()
   local newMuteState = not M.isMuted
 
   send("setMicrophoneConfig", {
@@ -148,6 +142,25 @@ function M.toggleMute()
   else
     hs.alert("🎙️ Mic Live")
   end
+end
+
+function M.toggleMute()
+  -- Already connected and mic known — toggle immediately
+  if M.ws and M.micIdentifier then
+    doToggle()
+    return
+  end
+
+  -- Try to connect if needed
+  if not M.ws then
+    if not M.connect() then
+      hs.alert("Wave Link not running")
+      return
+    end
+  end
+
+  -- Connection is async — queue toggle for when mic is discovered
+  M._onReady = doToggle
 end
 
 return M
