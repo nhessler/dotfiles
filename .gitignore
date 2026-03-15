@@ -38,4 +38,5 @@ dot-claude/statsig/
 dot-claude/tasks/
 dot-claude/todos/
 dot-claude/backups/
+dot-claude/sessions/
 dot-claude/mcp-needs-auth-cache.json
