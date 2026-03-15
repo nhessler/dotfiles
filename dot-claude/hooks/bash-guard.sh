@@ -18,7 +18,18 @@ if echo "$COMMAND" | grep -qE '(^|\s|;)(cd|z)\s'; then
 fi
 
 # Guard 3: No absolute paths (except /dev/null and /tmp)
-if echo "$COMMAND" | grep -oE '(^|\s)/[^\s]+' | grep -vE '^(\s)*/dev/null' | grep -vE '^(\s)*/tmp' | grep -q .; then
+# Strip quoted strings and heredocs first — paths in text content are fine
+STRIPPED="$COMMAND"
+# Remove heredoc bodies (<<'EOF'...EOF and <<EOF...EOF)
+STRIPPED=$(echo "$STRIPPED" | sed -E '/<<'\''?\\?[A-Za-z_]+'\''?/,/^[A-Za-z_]+$/d')
+# Remove double-quoted strings
+STRIPPED=$(echo "$STRIPPED" | sed -E 's/"[^"]*"//g')
+# Remove single-quoted strings
+STRIPPED=$(echo "$STRIPPED" | sed -E "s/'[^']*'//g")
+# Remove $() command substitutions containing heredocs (e.g. "$(cat <<'EOF'...)")
+STRIPPED=$(echo "$STRIPPED" | sed -E 's/\$\([^)]*\)//g')
+
+if echo "$STRIPPED" | grep -oE '(^|\s)/[^\s]+' | grep -vE '^(\s)*/dev/null' | grep -vE '^(\s)*/tmp' | grep -q .; then
   echo "Blocked: Don't use absolute paths. Use relative paths from the project root. (Exceptions: /dev/null, /tmp)" >&2
   exit 2
 fi
