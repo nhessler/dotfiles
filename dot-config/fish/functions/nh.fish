@@ -20,6 +20,8 @@ function nh -d "Nathan Hessler's personal CLI helper"
             _nh_outdated $args
         case add-keys
             _nh_add_keys $args
+        case claude
+            _nh_claude $args
         case help -h --help
             _nh_help
         case '*'
@@ -39,6 +41,7 @@ function _nh_help
     echo "  setup       Run the dotfiles setup script"
     echo "  outdated    Check for outdated dependencies"
     echo "  add-keys    Add SSH keys to agent using keychain"
+    echo "  claude      Open Claude Code in a named tab"
     echo "  help        Show this help message"
     echo ""
     echo "Run 'nh <command> --help' for command-specific help."
