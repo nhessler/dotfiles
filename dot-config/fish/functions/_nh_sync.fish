@@ -34,7 +34,7 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     _nh_sync_nerd_fonts
     echo ""
     echo "=== Mac App Store ==="
-    echo "  (not yet implemented)"
+    _nh_sync_mas $mode; or return
     echo ""
     echo "=== ASDF Plugins ==="
     echo "  (not yet implemented)"
@@ -100,6 +100,9 @@ function _nh_sync_show_skips
 
     set -l section_labels brew Brews cask Casks mas "App Store" asdf ASDF emacs Emacs
 
+    # Cache mas list for name lookups
+    set -l mas_cache (mas list 2>/dev/null)
+
     echo "=== Skipped Items ==="
     for i in (seq 1 2 (count $section_labels))
         set -l section $section_labels[$i]
@@ -108,7 +111,18 @@ function _nh_sync_show_skips
         if test (count $items) -gt 0
             echo "  $label:"
             for item in $items
-                echo "    $item"
+                if test $section = mas
+                    # Look up app name from mas list
+                    set -l mas_line (printf '%s\n' $mas_cache | string match -r "^\s*$item\s+.*" | head -1)
+                    set -l name (echo $mas_line | string replace -r '^\s*\d+\s+' '' | string replace -r '\s+\(.*\)$' '')
+                    if test -n "$name"
+                        echo "    $name ($item)"
+                    else
+                        echo "    $item"
+                    end
+                else
+                    echo "    $item"
+                end
             end
         end
     end
@@ -322,4 +336,140 @@ function _nh_sync_nerd_fonts
         echo ""
         echo "  Run: bin/install-nerd-fonts.sh"
     end
+end
+
+# --- MAS sync ---
+
+function _nh_sync_mas
+    set -l mode $argv[1]
+    set -l brewfile (_nh_sync_brewfile_path)
+
+    # Parse installed: "ID  Name (version)" → extract ID and name
+    set -l installed_ids
+    set -l installed_names
+    for line in (mas list 2>/dev/null)
+        set -l id (echo $line | string match -r '^\s*(\d+)' | tail -1)
+        set -l name (echo $line | string replace -r '^\s*\d+\s+' '' | string replace -r '\s+\(.*\)$' '')
+        if test -n "$id"
+            set -a installed_ids $id
+            set -a installed_names $name
+        end
+    end
+
+    # Parse tracked IDs from Brewfile
+    set -l tracked_ids (string match -r 'id:\s*(\d+)' < $brewfile | string match -r '\d+')
+
+    if test $mode = keep
+        set -l untracked_indices
+        for i in (seq (count $installed_ids))
+            set -l id $installed_ids[$i]
+            if not contains $id $tracked_ids; and not _nh_sync_is_skipped mas $id
+                set -a untracked_indices $i
+            end
+        end
+
+        if test (count $untracked_indices) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for i in $untracked_indices
+            set -l id $installed_ids[$i]
+            set -l name $installed_names[$i]
+            set -l answer (_nh_sync_prompt_keep "$name ($id)")
+            switch $answer
+                case keep
+                    _nh_sync_brewfile_add_mas $name $id
+                    echo "    Added to Brewfile"
+                case skip
+                    _nh_sync_add_skip mas $id
+                    echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    end
+end
+
+function _nh_sync_brewfile_add_mas
+    set -l name $argv[1]
+    set -l id $argv[2]
+    set -l brewfile (_nh_sync_brewfile_path)
+    set -l tmpfile (mktemp)
+
+    # Calculate alignment: find the column where "id:" should start
+    # by checking existing mas entries
+    set -l max_prefix_len 0
+    for line in (string match -r '^mas ".+",' $brewfile)
+        set -l prefix (echo $line | string match -r '^mas "[^"]+",')
+        set -l len (string length $prefix)
+        if test $len -gt $max_prefix_len
+            set max_prefix_len $len
+        end
+    end
+
+    set -l new_prefix "mas \"$name\","
+    set -l new_prefix_len (string length $new_prefix)
+
+    # If new entry is longer than existing max, we need to repad all entries
+    if test $new_prefix_len -gt $max_prefix_len
+        set max_prefix_len $new_prefix_len
+    end
+
+    # Pad to max + 1 space minimum
+    set -l align_col (math $max_prefix_len + 1)
+
+    set -l in_section 0
+    set -l inserted 0
+    set -l needs_repad (test $new_prefix_len -ge $max_prefix_len; and echo 1; or echo 0)
+
+    for line in (cat $brewfile)
+        if string match -qr '^mas ' $line
+            set in_section 1
+
+            # Repad existing entry if needed
+            if test $needs_repad -eq 1
+                set -l existing_name (echo $line | string match -r '^mas "([^"]+)"' | tail -1)
+                set -l existing_id (echo $line | string match -r 'id:\s*(\d+)' | tail -1)
+                if test -n "$existing_name" -a -n "$existing_id"
+                    set -l ep "mas \"$existing_name\","
+                    set -l pad_len (math $align_col - (string length $ep))
+                    set -l padding (string repeat -n $pad_len ' ')
+                    set line "$ep$padding""id: $existing_id"
+                end
+            end
+
+            # Insert new entry in sorted position
+            if test $inserted -eq 0
+                set -l existing_name_lower (echo $line | string match -r '^mas "([^"]+)"' | tail -1 | string lower)
+                set -l new_name_lower (string lower $name)
+                set -l sorted (printf '%s\n' $new_name_lower $existing_name_lower | sort)
+                if test "$sorted[1]" = "$new_name_lower"; and test "$new_name_lower" != "$existing_name_lower"
+                    set -l pad_len (math $align_col - $new_prefix_len)
+                    set -l padding (string repeat -n $pad_len ' ')
+                    echo "$new_prefix$padding""id: $id" >> $tmpfile
+                    set inserted 1
+                end
+            end
+        else if test $in_section -eq 1
+            # End of mas section — insert at end if not yet inserted
+            if test $inserted -eq 0
+                set -l pad_len (math $align_col - $new_prefix_len)
+                set -l padding (string repeat -n $pad_len ' ')
+                echo "$new_prefix$padding""id: $id" >> $tmpfile
+                set inserted 1
+            end
+            set in_section 0
+        end
+        echo $line >> $tmpfile
+    end
+
+    # Handle mas section at end of file
+    if test $inserted -eq 0; and test $in_section -eq 1
+        set -l pad_len (math $align_col - $new_prefix_len)
+        set -l padding (string repeat -n $pad_len ' ')
+        echo "$new_prefix$padding""id: $id" >> $tmpfile
+    end
+
+    mv $tmpfile $brewfile
 end
