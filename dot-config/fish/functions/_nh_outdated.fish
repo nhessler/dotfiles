@@ -184,7 +184,26 @@ end
 function _nh_outdated_emacs
     set -l last_checked (_nh_get_last_checked emacs)
     echo "Emacs packages ($last_checked):"
-    echo "  Check manually in Emacs:"
-    echo "    M-x list-packages, then U to mark upgrades"
-    echo "    Or M-x package-refresh-contents, then M-x package-upgrade-all"
+
+    if not command -q emacs
+        echo "  emacs not installed"
+        return 1
+    end
+
+    echo "  Checking for updates..."
+    set -l outdated (emacs --batch \
+        --eval '(package-refresh-contents)' \
+        --eval '(let ((upgrades (package--upgradeable-packages))) (if upgrades (dolist (pkg upgrades) (message "%s" (package-desc-name pkg))) (message "ALL_UP_TO_DATE")))' \
+        2>&1 | grep -v "^Contacting\|^Package\|^Done\|^Importing\|^\$")
+
+    if test (count $outdated) -eq 1; and test "$outdated[1]" = "ALL_UP_TO_DATE"
+        echo "  Everything up to date"
+    else
+        echo "  "(count $outdated)" packages outdated:"
+        for pkg in $outdated
+            echo "    $pkg"
+        end
+        echo ""
+        echo "  Run: nh upgrade"
+    end
 end

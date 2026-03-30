@@ -6,8 +6,7 @@ function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest 
         echo "  - Homebrew formulae and casks"
         echo "  - Mac App Store apps (via mas)"
         echo "  - ASDF: sets global versions to latest installed"
-        echo ""
-        echo "Emacs packages must be upgraded manually."
+        echo "  - Emacs packages (via batch mode)"
         return 0
     end
 
@@ -46,7 +45,16 @@ function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest 
 
     echo ""
     echo "=== Emacs ==="
-    echo "  Upgrade manually: M-x package-upgrade-all"
+    if command -q emacs
+        echo "  Refreshing package index..."
+        emacs --batch \
+            --eval '(package-refresh-contents)' \
+            --eval '(package-upgrade-all)' \
+            2>&1 | grep -v "^Contacting\|^Package\|^Done\|^Importing\|^\$"
+        _nh_set_last_checked emacs
+    else
+        echo "  emacs not installed, skipping"
+    end
 
     echo ""
     echo "Done!"
