@@ -18,6 +18,8 @@ function nh -d "Nathan Hessler's personal CLI helper"
             _nh_setup $args
         case outdated
             _nh_outdated $args
+        case upgrade
+            _nh_upgrade $args
         case add-keys
             _nh_add_keys $args
         case claude
@@ -40,6 +42,7 @@ function _nh_help
     echo "Commands:"
     echo "  setup       Run the dotfiles setup script"
     echo "  outdated    Check for outdated dependencies"
+    echo "  upgrade     Upgrade brew, App Store, and asdf globals"
     echo "  add-keys    Add SSH keys to agent using keychain"
     echo "  claude      Open Claude Code in a named tab"
     echo "  help        Show this help message"
