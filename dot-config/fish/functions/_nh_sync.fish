@@ -28,7 +28,7 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     _nh_sync_taps $mode; or return
     echo ""
     echo "=== Brew Formulae ==="
-    echo "  (not yet implemented)"
+    _nh_sync_brews $mode; or return
     echo ""
     echo "=== Brew Casks ==="
     echo "  (not yet implemented)"
@@ -62,7 +62,27 @@ end
 function _nh_sync_add_skip
     set -l type $argv[1]
     set -l item $argv[2]
-    echo "$type:$item" >> (_nh_sync_skip_file)
+    set -l skip_file (_nh_sync_skip_file)
+    set -l new_entry "$type:$item"
+    set -l section_order tap brew cask mas asdf emacs
+
+    # Read existing entries
+    set -l entries
+    if test -f $skip_file
+        set entries (cat $skip_file)
+    end
+
+    # Add the new entry
+    set -a entries $new_entry
+
+    # Write back sorted by section order, then alphabetically within section
+    set -l tmpfile (mktemp)
+    for section in $section_order
+        for entry in (printf '%s\n' $entries | grep "^$section:" | sort)
+            echo $entry >> $tmpfile
+        end
+    end
+    mv $tmpfile $skip_file
 end
 
 function _nh_sync_clear_skips
@@ -78,11 +98,19 @@ function _nh_sync_show_skips
         return 0
     end
 
+    set -l section_labels tap Taps brew Brews cask Casks mas "App Store" asdf ASDF emacs Emacs
+
     echo "=== Skipped Items ==="
-    for line in (cat $skip_file | sort)
-        set -l type (echo $line | string split ':')[1]
-        set -l item (echo $line | string split ':')[2]
-        echo "  $type: $item"
+    for i in (seq 1 2 (count $section_labels))
+        set -l section $section_labels[$i]
+        set -l label $section_labels[(math $i + 1)]
+        set -l items (grep "^$section:" $skip_file | string replace "$section:" "")
+        if test (count $items) -gt 0
+            echo "  $label:"
+            for item in $items
+                echo "    $item"
+            end
+        end
     end
     echo ""
     echo "  To re-prompt for these, run: nh sync --reset"
@@ -142,9 +170,13 @@ function _nh_sync_brewfile_add
         if string match -qr "^$section_prefix " $line
             set in_section 1
             # Insert before this line if new_line sorts before it and not yet inserted
-            if test $inserted -eq 0; and test "$new_line" '<' "$line"
-                echo $new_line >> $tmpfile
-                set inserted 1
+            if test $inserted -eq 0
+                # Fish string comparison: first in sort order wins
+                set -l sorted (printf '%s\n' $new_line $line | sort)
+                if test "$sorted[1]" = "$new_line"; and test "$new_line" != "$line"
+                    echo $new_line >> $tmpfile
+                    set inserted 1
+                end
             end
         else if test $in_section -eq 1
             # We just left the section — insert at end of section if not yet inserted
@@ -230,6 +262,44 @@ function _nh_sync_taps
                     echo "    Added to Brewfile"
                 case skip
                     _nh_sync_add_skip tap $tap
+                    echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    end
+end
+
+# --- Brew formulae sync ---
+
+function _nh_sync_brews
+    set -l mode $argv[1]
+    set -l brewfile (_nh_sync_brewfile_path)
+
+    set -l installed (brew leaves 2>/dev/null)
+    set -l tracked (string match -r '^brew "(.+)"' < $brewfile | string match -v '^brew')
+
+    if test $mode = keep
+        set -l untracked
+        for formula in $installed
+            if not contains $formula $tracked; and not _nh_sync_is_skipped brew $formula
+                set -a untracked $formula
+            end
+        end
+
+        if test (count $untracked) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for formula in $untracked
+            set -l answer (_nh_sync_prompt_keep $formula)
+            switch $answer
+                case keep
+                    _nh_sync_brewfile_add brew "brew \"$formula\""
+                    echo "    Added to Brewfile"
+                case skip
+                    _nh_sync_add_skip brew $formula
                     echo "    Skipped"
                 case quit
                     return 1
