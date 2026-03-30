@@ -25,7 +25,7 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     _nh_ensure_state_dir
 
     echo "=== Brew Taps ==="
-    echo "  (not yet implemented)"
+    _nh_sync_taps $mode; or return
     echo ""
     echo "=== Brew Formulae ==="
     echo "  (not yet implemented)"
@@ -125,4 +125,115 @@ end
 
 function _nh_sync_brewfile_path
     echo "$HOME/.config/homebrew/Brewfile"
+end
+
+function _nh_sync_brewfile_add
+    set -l section_prefix $argv[1]
+    set -l new_line $argv[2]
+    set -l brewfile (_nh_sync_brewfile_path)
+    set -l tmpfile (mktemp)
+
+    set -l in_section 0
+    set -l inserted 0
+    set -l past_section 0
+
+    for line in (cat $brewfile)
+        # Detect if we're in the target section
+        if string match -qr "^$section_prefix " $line
+            set in_section 1
+            # Insert before this line if new_line sorts before it and not yet inserted
+            if test $inserted -eq 0; and test "$new_line" '<' "$line"
+                echo $new_line >> $tmpfile
+                set inserted 1
+            end
+        else if test $in_section -eq 1
+            # We just left the section — insert at end of section if not yet inserted
+            if test $inserted -eq 0
+                echo $new_line >> $tmpfile
+                set inserted 1
+            end
+            set in_section 0
+            set past_section 1
+        end
+        echo $line >> $tmpfile
+    end
+
+    # Handle case where section is at end of file
+    if test $inserted -eq 0; and test $in_section -eq 1
+        echo $new_line >> $tmpfile
+    end
+
+    # Handle case where section doesn't exist yet
+    if test $inserted -eq 0; and test $in_section -eq 0; and test $past_section -eq 0
+        echo "" >> $tmpfile
+        echo $new_line >> $tmpfile
+    end
+
+    mv $tmpfile $brewfile
+end
+
+function _nh_sync_brewfile_remove
+    set -l pattern $argv[1]
+    set -l brewfile (_nh_sync_brewfile_path)
+    set -l tmpfile (mktemp)
+
+    for line in (cat $brewfile)
+        if not string match -qr $pattern $line
+            echo $line >> $tmpfile
+        end
+    end
+
+    mv $tmpfile $brewfile
+end
+
+# --- Tap sync ---
+
+function _nh_sync_taps
+    set -l mode $argv[1]
+    set -l brewfile (_nh_sync_brewfile_path)
+
+    set -l installed (brew tap 2>/dev/null)
+    set -l tracked (string match -r '^tap "(.+)"' < $brewfile | string match -v '^tap')
+
+    if test $mode = keep
+        # Log homebrew/* taps but don't prompt for them
+        set -l homebrew_taps
+        for tap in $installed
+            if string match -q 'homebrew/*' $tap
+                set -a homebrew_taps $tap
+            end
+        end
+        if test (count $homebrew_taps) -gt 0
+            echo "  Skipping homebrew taps: "(string join ", " $homebrew_taps)
+        end
+
+        set -l untracked
+        for tap in $installed
+            if string match -q 'homebrew/*' $tap
+                continue
+            end
+            if not contains $tap $tracked; and not _nh_sync_is_skipped tap $tap
+                set -a untracked $tap
+            end
+        end
+
+        if test (count $untracked) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for tap in $untracked
+            set -l answer (_nh_sync_prompt_keep $tap)
+            switch $answer
+                case keep
+                    _nh_sync_brewfile_add tap "tap \"$tap\""
+                    echo "    Added to Brewfile"
+                case skip
+                    _nh_sync_add_skip tap $tap
+                    echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    end
 end
