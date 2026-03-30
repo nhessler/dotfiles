@@ -40,7 +40,7 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     _nh_sync_asdf $mode; or return
     echo ""
     echo "=== Emacs Packages (informational) ==="
-    echo "  (not yet implemented)"
+    _nh_sync_emacs
     echo ""
 
     _nh_sync_show_skips
@@ -537,4 +537,84 @@ function _nh_sync_asdf
             end
         end
     end
+end
+
+# --- Emacs drift detection (informational) ---
+
+function _nh_sync_emacs
+    if not command -q emacs
+        echo "  emacs not installed"
+        return 0
+    end
+
+    set -l emacs_dir "$HOME/.config/emacs"
+
+    # Built-in packages (use-package with :ensure nil or known built-ins)
+    set -l builtins recentf saveplace uniquify time eglot flymake eldoc org \
+        css-mode js typescript-ts-mode json-ts-mode sh-script conf-mode \
+        ruby-mode ielm erlang heex-ts-mode
+
+    # Get installed packages from elpa
+    set -l installed (emacs --batch \
+        --eval '(package-initialize)' \
+        --eval '(dolist (pkg package-alist) (message "%s" (car pkg)))' \
+        2>&1 | grep -v '^\s*$' | sort)
+
+    # Get declared packages from use-package
+    set -l declared (grep -h '(use-package ' \
+        $emacs_dir/init.el $emacs_dir/lisp/*.el $emacs_dir/languages/*.el \
+        2>/dev/null | grep -v '^\s*;' | \
+        sed 's/.*use-package //' | sed 's/[) ].*//' | sort -u)
+
+    # Filter out built-ins from declared
+    set -l declared_external
+    for pkg in $declared
+        if not contains $pkg $builtins
+            set -a declared_external $pkg
+        end
+    end
+
+    # Get packages that are dependencies of other packages
+    set -l deps (emacs --batch \
+        --eval '(package-initialize)' \
+        --eval '(dolist (pkg package-alist) (let ((reqs (package-desc-reqs (cadr pkg)))) (dolist (req reqs) (message "%s" (car req)))))' \
+        2>&1 | grep -v '^\s*$' | sort -u)
+
+    # Installed but not declared (excluding dependencies)
+    set -l undeclared
+    for pkg in $installed
+        if not contains $pkg $declared_external; and not contains $pkg $deps
+            set -a undeclared $pkg
+        end
+    end
+
+    # Declared but not installed
+    set -l missing
+    for pkg in $declared_external
+        if not contains $pkg $installed
+            set -a missing $pkg
+        end
+    end
+
+    if test (count $undeclared) -eq 0; and test (count $missing) -eq 0
+        echo "  Everything in sync"
+        return 0
+    end
+
+    if test (count $undeclared) -gt 0
+        echo "  Installed but not declared ("(count $undeclared)"):"
+        for pkg in $undeclared
+            echo "    $pkg"
+        end
+    end
+
+    if test (count $missing) -gt 0
+        echo "  Declared but not installed ("(count $missing)"):"
+        for pkg in $missing
+            echo "    $pkg"
+        end
+    end
+
+    echo ""
+    echo "  (Manual action required — edit Emacs config files directly)"
 end
