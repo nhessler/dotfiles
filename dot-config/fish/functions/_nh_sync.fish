@@ -9,7 +9,7 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
         echo "  --remove    Find tracked-but-not-installed items (remove/keep)"
         echo "  --reset     Clear skip list, then run default sync"
         echo ""
-        echo "Categories checked: brew taps, formulae, casks, MAS, ASDF, Emacs"
+        echo "Categories checked: brew formulae, casks, MAS, ASDF, Emacs"
         return 0
     end
 
@@ -24,14 +24,14 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
 
     _nh_ensure_state_dir
 
-    echo "=== Brew Taps ==="
-    _nh_sync_taps $mode; or return
-    echo ""
     echo "=== Brew Formulae ==="
     _nh_sync_brews $mode; or return
     echo ""
     echo "=== Brew Casks ==="
-    echo "  (not yet implemented)"
+    _nh_sync_casks $mode; or return
+    echo ""
+    echo "=== Nerd Fonts (informational) ==="
+    _nh_sync_nerd_fonts
     echo ""
     echo "=== Mac App Store ==="
     echo "  (not yet implemented)"
@@ -64,7 +64,7 @@ function _nh_sync_add_skip
     set -l item $argv[2]
     set -l skip_file (_nh_sync_skip_file)
     set -l new_entry "$type:$item"
-    set -l section_order tap brew cask mas asdf emacs
+    set -l section_order brew cask mas asdf emacs
 
     # Read existing entries
     set -l entries
@@ -98,7 +98,7 @@ function _nh_sync_show_skips
         return 0
     end
 
-    set -l section_labels tap Taps brew Brews cask Casks mas "App Store" asdf ASDF emacs Emacs
+    set -l section_labels brew Brews cask Casks mas "App Store" asdf ASDF emacs Emacs
 
     echo "=== Skipped Items ==="
     for i in (seq 1 2 (count $section_labels))
@@ -218,58 +218,6 @@ function _nh_sync_brewfile_remove
     mv $tmpfile $brewfile
 end
 
-# --- Tap sync ---
-
-function _nh_sync_taps
-    set -l mode $argv[1]
-    set -l brewfile (_nh_sync_brewfile_path)
-
-    set -l installed (brew tap 2>/dev/null)
-    set -l tracked (string match -r '^tap "(.+)"' < $brewfile | string match -v '^tap')
-
-    if test $mode = keep
-        # Log homebrew/* taps but don't prompt for them
-        set -l homebrew_taps
-        for tap in $installed
-            if string match -q 'homebrew/*' $tap
-                set -a homebrew_taps $tap
-            end
-        end
-        if test (count $homebrew_taps) -gt 0
-            echo "  Skipping homebrew taps: "(string join ", " $homebrew_taps)
-        end
-
-        set -l untracked
-        for tap in $installed
-            if string match -q 'homebrew/*' $tap
-                continue
-            end
-            if not contains $tap $tracked; and not _nh_sync_is_skipped tap $tap
-                set -a untracked $tap
-            end
-        end
-
-        if test (count $untracked) -eq 0
-            echo "  Everything in sync"
-            return 0
-        end
-
-        for tap in $untracked
-            set -l answer (_nh_sync_prompt_keep $tap)
-            switch $answer
-                case keep
-                    _nh_sync_brewfile_add tap "tap \"$tap\""
-                    echo "    Added to Brewfile"
-                case skip
-                    _nh_sync_add_skip tap $tap
-                    echo "    Skipped"
-                case quit
-                    return 1
-            end
-        end
-    end
-end
-
 # --- Brew formulae sync ---
 
 function _nh_sync_brews
@@ -305,5 +253,73 @@ function _nh_sync_brews
                     return 1
             end
         end
+    end
+end
+
+# --- Brew casks sync ---
+
+function _nh_sync_casks
+    set -l mode $argv[1]
+    set -l brewfile (_nh_sync_brewfile_path)
+
+    # Exclude nerd font casks — managed by bin/install-nerd-fonts.sh
+    # Regex from: https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
+    set -l installed (brew list --cask 2>/dev/null | string match -v -r '^font-.*(nerd-font|nerd$|-nf$|-nf-)')
+    # Strip tap prefix from tracked names (e.g., "d12frosted/emacs-plus/emacs-plus-app" → "emacs-plus-app")
+    set -l tracked (string match -r '^cask "(.+)"' < $brewfile | string match -v '^cask' | string replace -r '.+/' '')
+
+    if test $mode = keep
+        set -l untracked
+        for cask in $installed
+            if not contains $cask $tracked; and not _nh_sync_is_skipped cask $cask
+                set -a untracked $cask
+            end
+        end
+
+        if test (count $untracked) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for cask in $untracked
+            set -l answer (_nh_sync_prompt_keep $cask)
+            switch $answer
+                case keep
+                    _nh_sync_brewfile_add cask "cask \"$cask\""
+                    echo "    Added to Brewfile"
+                case skip
+                    _nh_sync_add_skip cask $cask
+                    echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    end
+end
+
+# --- Nerd fonts (informational) ---
+
+function _nh_sync_nerd_fonts
+    # Same regex as bin/install-nerd-fonts.sh
+    # Based on: https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
+    set -l available (brew search '/font-.*(nerd-font|nerd$|-nf$|-nf-)/' 2>/dev/null | awk '{ print $1 }')
+    set -l installed (brew list --cask 2>/dev/null | string match -r '^font-.*(nerd-font|nerd$|-nf$|-nf-)')
+
+    set -l not_installed
+    for font in $available
+        if not contains $font $installed
+            set -a not_installed $font
+        end
+    end
+
+    if test (count $not_installed) -eq 0
+        echo "  All "(count $available)" nerd fonts installed"
+    else
+        echo "  "(count $not_installed)" of "(count $available)" nerd fonts not installed:"
+        for font in $not_installed
+            echo "    $font"
+        end
+        echo ""
+        echo "  Run: bin/install-nerd-fonts.sh"
     end
 end
