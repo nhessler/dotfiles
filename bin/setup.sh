@@ -31,8 +31,22 @@ done
 HOMEBREW_PREFIX_ARM64="/opt/homebrew"
 HOMEBREW_PREFIX_INTEL="/usr/local"
 
-# ASDF plugins to install (order matters: erlang before elixir)
-ASDF_PLUGINS="ruby erlang elixir nodejs"
+# ASDF plugins to install
+# Reads from dot-config/asdf/plugins, managed by `nh sync`
+# Erlang is installed before elixir (dependency)
+ASDF_PLUGINS_FILE="$DOTFILES_DIR/dot-config/asdf/plugins"
+if [ -f "$ASDF_PLUGINS_FILE" ]; then
+  # Ensure erlang comes before elixir
+  ASDF_PLUGINS=$(grep -v '^erlang$\|^elixir$' "$ASDF_PLUGINS_FILE" | tr '\n' ' ')
+  if grep -q '^erlang$' "$ASDF_PLUGINS_FILE"; then
+    ASDF_PLUGINS="erlang $ASDF_PLUGINS"
+  fi
+  if grep -q '^elixir$' "$ASDF_PLUGINS_FILE"; then
+    ASDF_PLUGINS="$ASDF_PLUGINS elixir"
+  fi
+else
+  ASDF_PLUGINS="ruby erlang elixir nodejs"
+fi
 
 # State tracking
 STEP=""

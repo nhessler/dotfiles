@@ -37,7 +37,7 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     _nh_sync_mas $mode; or return
     echo ""
     echo "=== ASDF Plugins ==="
-    echo "  (not yet implemented)"
+    _nh_sync_asdf $mode; or return
     echo ""
     echo "=== Emacs Packages (informational) ==="
     echo "  (not yet implemented)"
@@ -472,4 +472,69 @@ function _nh_sync_brewfile_add_mas
     end
 
     mv $tmpfile $brewfile
+end
+
+# --- ASDF sync ---
+
+function _nh_sync_asdf_plugins_file
+    echo "$HOME/.config/asdf/plugins"
+end
+
+function _nh_sync_asdf_add
+    set -l plugin $argv[1]
+    set -l plugins_file (_nh_sync_asdf_plugins_file)
+    echo $plugin >> $plugins_file
+    sort -o $plugins_file $plugins_file
+end
+
+function _nh_sync_asdf_remove
+    set -l plugin $argv[1]
+    set -l plugins_file (_nh_sync_asdf_plugins_file)
+    set -l tmpfile (mktemp)
+    grep -vxF $plugin $plugins_file > $tmpfile
+    mv $tmpfile $plugins_file
+end
+
+function _nh_sync_asdf
+    set -l mode $argv[1]
+    set -l plugins_file (_nh_sync_asdf_plugins_file)
+
+    if not command -q asdf
+        echo "  asdf not installed"
+        return 0
+    end
+
+    set -l installed (asdf plugin list 2>/dev/null)
+    set -l tracked
+    if test -f $plugins_file
+        set tracked (cat $plugins_file | string match -v -r '^\s*$')
+    end
+
+    if test $mode = keep
+        set -l untracked
+        for plugin in $installed
+            if not contains $plugin $tracked; and not _nh_sync_is_skipped asdf $plugin
+                set -a untracked $plugin
+            end
+        end
+
+        if test (count $untracked) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for plugin in $untracked
+            set -l answer (_nh_sync_prompt_keep $plugin)
+            switch $answer
+                case keep
+                    _nh_sync_asdf_add $plugin
+                    echo "    Added to plugins file"
+                case skip
+                    _nh_sync_add_skip asdf $plugin
+                    echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    end
 end
