@@ -18,8 +18,8 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
         set mode remove
     else if contains -- --reset $argv
         _nh_sync_clear_skips
-        echo "Skip list cleared."
-        echo ""
+        echo "Skip list cleared. Run 'nh sync' to re-evaluate."
+        return 0
     end
 
     _nh_ensure_state_dir
