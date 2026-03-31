@@ -238,10 +238,11 @@ function _nh_sync_brews
     set -l mode $argv[1]
     set -l brewfile (_nh_sync_brewfile_path)
 
-    set -l installed (brew leaves 2>/dev/null)
-    set -l tracked (string match -r '^brew "(.+)"' < $brewfile | string match -v '^brew')
+    set -l tracked (string match -r '^brew "(.+)"' < $brewfile | string match -v -r '^brew')
 
     if test $mode = keep
+        # Use brew leaves for keep mode — only top-level packages
+        set -l installed (brew leaves 2>/dev/null)
         set -l untracked
         for formula in $installed
             if not contains $formula $tracked; and not _nh_sync_is_skipped brew $formula
@@ -267,6 +268,34 @@ function _nh_sync_brews
                     return 1
             end
         end
+    else if test $mode = remove
+        # Use brew list for remove mode — all installed including dependencies
+        set -l all_installed (brew list --formula 2>/dev/null)
+
+        set -l not_installed
+        for formula in $tracked
+            if not contains $formula $all_installed
+                set -a not_installed $formula
+            end
+        end
+
+        if test (count $not_installed) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for formula in $not_installed
+            set -l answer (_nh_sync_prompt_remove $formula)
+            switch $answer
+                case remove
+                    _nh_sync_brewfile_remove "^brew \"$formula\"\$"
+                    echo "    Removed from Brewfile"
+                case keep
+                    echo "    Kept"
+                case quit
+                    return 1
+            end
+        end
     end
 end
 
@@ -280,7 +309,7 @@ function _nh_sync_casks
     # Regex from: https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
     set -l installed (brew list --cask 2>/dev/null | string match -v -r '^font-.*(nerd-font|nerd$|-nf$|-nf-)')
     # Strip tap prefix from tracked names (e.g., "d12frosted/emacs-plus/emacs-plus-app" → "emacs-plus-app")
-    set -l tracked (string match -r '^cask "(.+)"' < $brewfile | string match -v '^cask' | string replace -r '.+/' '')
+    set -l tracked (string match -r '^cask "(.+)"' < $brewfile | string match -v -r '^cask' | string replace -r '.+/' '')
 
     if test $mode = keep
         set -l untracked
@@ -304,6 +333,31 @@ function _nh_sync_casks
                 case skip
                     _nh_sync_add_skip cask $cask
                     echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    else if test $mode = remove
+        set -l not_installed
+        for cask in $tracked
+            if not contains $cask $installed
+                set -a not_installed $cask
+            end
+        end
+
+        if test (count $not_installed) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for cask in $not_installed
+            set -l answer (_nh_sync_prompt_remove $cask)
+            switch $answer
+                case remove
+                    _nh_sync_brewfile_remove "^cask \".*$cask\"\$"
+                    echo "    Removed from Brewfile"
+                case keep
+                    echo "    Kept"
                 case quit
                     return 1
             end
@@ -357,7 +411,7 @@ function _nh_sync_mas
     end
 
     # Parse tracked IDs from Brewfile
-    set -l tracked_ids (string match -r 'id:\s*(\d+)' < $brewfile | string match -r '\d+')
+    set -l tracked_ids (grep '^mas ' $brewfile | string match -r 'id:\s*(\d+)' | string match -r '^\d+$')
 
     if test $mode = keep
         set -l untracked_indices
@@ -384,6 +438,40 @@ function _nh_sync_mas
                 case skip
                     _nh_sync_add_skip mas $id
                     echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    else if test $mode = remove
+        # Parse tracked names and IDs from Brewfile
+        set -l tracked_names (string match -r '^mas "([^"]+)"' < $brewfile | string match -v -r '^mas')
+        set -l tracked_id_list (grep '^mas ' $brewfile | string match -r 'id:\s*(\d+)' | string match -r '^\d+$')
+
+        set -l not_installed
+        set -l not_installed_names
+        for i in (seq (count $tracked_id_list))
+            set -l id $tracked_id_list[$i]
+            if not contains $id $installed_ids
+                set -a not_installed $id
+                set -a not_installed_names $tracked_names[$i]
+            end
+        end
+
+        if test (count $not_installed) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for i in (seq (count $not_installed))
+            set -l id $not_installed[$i]
+            set -l name $not_installed_names[$i]
+            set -l answer (_nh_sync_prompt_remove "$name ($id)")
+            switch $answer
+                case remove
+                    _nh_sync_brewfile_remove "id:\\s*$id"
+                    echo "    Removed from Brewfile"
+                case keep
+                    echo "    Kept"
                 case quit
                     return 1
             end
@@ -532,6 +620,31 @@ function _nh_sync_asdf
                 case skip
                     _nh_sync_add_skip asdf $plugin
                     echo "    Skipped"
+                case quit
+                    return 1
+            end
+        end
+    else if test $mode = remove
+        set -l not_installed
+        for plugin in $tracked
+            if not contains $plugin $installed
+                set -a not_installed $plugin
+            end
+        end
+
+        if test (count $not_installed) -eq 0
+            echo "  Everything in sync"
+            return 0
+        end
+
+        for plugin in $not_installed
+            set -l answer (_nh_sync_prompt_remove $plugin)
+            switch $answer
+                case remove
+                    _nh_sync_asdf_remove $plugin
+                    echo "    Removed from plugins file"
+                case keep
+                    echo "    Kept"
                 case quit
                     return 1
             end
