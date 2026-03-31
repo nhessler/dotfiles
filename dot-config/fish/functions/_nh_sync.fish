@@ -30,7 +30,15 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
                 set remaining $remaining[2..-1]
             case skipped
                 _nh_ensure_state_dir
-                _nh_sync_show_skips
+                set -l skip_only ""
+                for i in (seq 2 (count $remaining))
+                    if begin; test "$remaining[$i]" = "-o"; or test "$remaining[$i]" = "--only"; end
+                        if test (count $remaining) -ge (math $i + 1)
+                            set skip_only $remaining[(math $i + 1)]
+                        end
+                    end
+                end
+                _nh_sync_show_skips $skip_only
                 return 0
             case reset
                 _nh_sync_clear_skips
@@ -132,8 +140,11 @@ function _nh_sync_clear_skips
 end
 
 function _nh_sync_show_skips
+    set -l only $argv[1]
     set -l skip_file (_nh_sync_skip_file)
     if not test -f $skip_file; or test (wc -l < $skip_file | string trim) -eq 0
+        echo "=== Skipped Items ==="
+        echo "  No items skipped"
         return 0
     end
 
@@ -146,6 +157,10 @@ function _nh_sync_show_skips
     for i in (seq 1 2 (count $section_labels))
         set -l section $section_labels[$i]
         set -l label $section_labels[(math $i + 1)]
+        # Skip sections not matching -o filter
+        if test -n "$only"; and test "$only" != "$section"
+            continue
+        end
         set -l items (grep "^$section:" $skip_file | string replace "$section:" "")
         if test (count $items) -gt 0
             echo "  $label:"
