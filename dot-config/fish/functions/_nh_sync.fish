@@ -1,47 +1,79 @@
 function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     if contains -- --help $argv; or contains -- -h $argv
-        echo "Usage: nh sync [--remove] [--reset]"
+        echo "Usage: nh sync [keep|remove|reset] [-o category]"
         echo ""
         echo "Reconcile installed packages vs tracked config files."
         echo ""
-        echo "Modes:"
-        echo "  (default)   Find installed-but-not-tracked items (keep/skip)"
-        echo "  --remove    Find tracked-but-not-installed items (remove/keep)"
-        echo "  --reset     Clear skip list, then run default sync"
+        echo "Subcommands:"
+        echo "  keep      Find installed-but-not-tracked items (default)"
+        echo "  remove    Find tracked-but-not-installed items"
+        echo "  reset     Clear skip list"
+        echo ""
+        echo "Options:"
+        echo "  -o <cat>  Only run one category: brew, cask, mas, asdf, emacs"
         echo ""
         echo "Categories checked: brew formulae, casks, MAS, ASDF, Emacs"
         return 0
     end
 
+    # Parse subcommand
     set -l mode keep
-    if contains -- --remove $argv
-        set mode remove
-    else if contains -- --reset $argv
-        _nh_sync_clear_skips
-        echo "Skip list cleared. Run 'nh sync' to re-evaluate."
-        return 0
+    set -l remaining $argv
+    if test (count $remaining) -gt 0
+        switch $remaining[1]
+            case keep
+                set mode keep
+                set remaining $remaining[2..-1]
+            case remove
+                set mode remove
+                set remaining $remaining[2..-1]
+            case reset
+                _nh_sync_clear_skips
+                echo "Skip list cleared. Run 'nh sync' to re-evaluate."
+                return 0
+        end
+    end
+
+    # Parse -o flag
+    set -l only ""
+    for i in (seq (count $remaining))
+        if test "$remaining[$i]" = "-o"; and test (count $remaining) -ge (math $i + 1)
+            set only $remaining[(math $i + 1)]
+        end
     end
 
     _nh_ensure_state_dir
 
-    echo "=== Brew Formulae ==="
-    _nh_sync_brews $mode; or return
-    echo ""
-    echo "=== Brew Casks ==="
-    _nh_sync_casks $mode; or return
-    echo ""
-    echo "=== Nerd Fonts (informational) ==="
-    _nh_sync_nerd_fonts
-    echo ""
-    echo "=== Mac App Store ==="
-    _nh_sync_mas $mode; or return
-    echo ""
-    echo "=== ASDF Plugins ==="
-    _nh_sync_asdf $mode; or return
-    echo ""
-    echo "=== Emacs Packages (informational) ==="
-    _nh_sync_emacs
-    echo ""
+    if test -z "$only" -o "$only" = brew
+        echo "=== Brew Formulae ==="
+        _nh_sync_brews $mode; or return
+        echo ""
+    end
+    if test -z "$only" -o "$only" = cask
+        echo "=== Brew Casks ==="
+        _nh_sync_casks $mode; or return
+        echo ""
+    end
+    if test -z "$only" -o "$only" = cask; and test $mode = keep
+        echo "=== Nerd Fonts (informational) ==="
+        _nh_sync_nerd_fonts
+        echo ""
+    end
+    if test -z "$only" -o "$only" = mas
+        echo "=== Mac App Store ==="
+        _nh_sync_mas $mode; or return
+        echo ""
+    end
+    if test -z "$only" -o "$only" = asdf
+        echo "=== ASDF Plugins ==="
+        _nh_sync_asdf $mode; or return
+        echo ""
+    end
+    if test -z "$only" -o "$only" = emacs
+        echo "=== Emacs Packages (informational) ==="
+        _nh_sync_emacs
+        echo ""
+    end
 
     _nh_sync_show_skips
 end
