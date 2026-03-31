@@ -62,35 +62,72 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     _nh_ensure_state_dir
 
     if test -z "$only" -o "$only" = brew
-        echo "=== Brew Formulae ==="
+        _nh_sync_header "Brew Formulae"
         _nh_sync_brews $mode; or return
         echo ""
     end
     if test -z "$only" -o "$only" = cask
-        echo "=== Brew Casks ==="
+        _nh_sync_header "Brew Casks"
         _nh_sync_casks $mode; or return
         echo ""
     end
     if test -z "$only" -o "$only" = cask; and test $mode = keep
-        echo "=== Nerd Fonts (informational) ==="
-        _nh_sync_nerd_fonts
+        _nh_sync_header "Nerd Fonts (informational)"
+        _nh_sync_nerd_fonts $only
         echo ""
     end
     if test -z "$only" -o "$only" = mas
-        echo "=== Mac App Store ==="
+        _nh_sync_header "Mac App Store"
         _nh_sync_mas $mode; or return
         echo ""
     end
     if test -z "$only" -o "$only" = asdf
-        echo "=== ASDF Plugins ==="
+        _nh_sync_header "ASDF Plugins"
         _nh_sync_asdf $mode; or return
         echo ""
     end
     if test -z "$only" -o "$only" = emacs
-        echo "=== Emacs Packages (informational) ==="
-        _nh_sync_emacs
+        _nh_sync_header "Emacs Packages (informational)"
+        _nh_sync_emacs $only
         echo ""
     end
+end
+
+# --- Output helpers ---
+
+function _nh_sync_header
+    set_color --bold cyan
+    echo "=== $argv ==="
+    set_color normal
+end
+
+function _nh_sync_in_sync
+    set_color green
+    echo "  ✓ Everything in sync"
+    set_color normal
+end
+
+function _nh_sync_added
+    set_color green
+    echo "    ✓ Added"
+    set_color normal
+end
+
+function _nh_sync_skipped_msg
+    set_color yellow
+    echo "    → Skipped"
+    set_color normal
+end
+
+function _nh_sync_removed
+    set_color red
+    echo "    ✓ Removed"
+    set_color normal
+end
+
+function _nh_sync_kept
+    set_color normal
+    echo "    → Kept"
 end
 
 # --- Skip list helpers ---
@@ -143,7 +180,7 @@ function _nh_sync_show_skips
     set -l only $argv[1]
     set -l skip_file (_nh_sync_skip_file)
     if not test -f $skip_file; or test (wc -l < $skip_file | string trim) -eq 0
-        echo "=== Skipped Items ==="
+        _nh_sync_header "Skipped Items"
         echo "  No items skipped"
         return 0
     end
@@ -153,7 +190,7 @@ function _nh_sync_show_skips
     # Cache mas list for name lookups
     set -l mas_cache (mas list 2>/dev/null)
 
-    echo "=== Skipped Items ==="
+    _nh_sync_header "Skipped Items"
     for i in (seq 1 2 (count $section_labels))
         set -l section $section_labels[$i]
         set -l label $section_labels[(math $i + 1)]
@@ -305,7 +342,7 @@ function _nh_sync_brews
         end
 
         if test (count $untracked) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -314,10 +351,10 @@ function _nh_sync_brews
             switch $answer
                 case keep
                     _nh_sync_brewfile_add brew "brew \"$formula\""
-                    echo "    Added to Brewfile"
+                    _nh_sync_added
                 case skip
                     _nh_sync_add_skip brew $formula
-                    echo "    Skipped"
+                    _nh_sync_skipped_msg
                 case quit
                     return 1
             end
@@ -334,7 +371,7 @@ function _nh_sync_brews
         end
 
         if test (count $not_installed) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -343,9 +380,9 @@ function _nh_sync_brews
             switch $answer
                 case remove
                     _nh_sync_brewfile_remove "^brew \"$formula\"\$"
-                    echo "    Removed from Brewfile"
+                    _nh_sync_removed
                 case keep
-                    echo "    Kept"
+                    _nh_sync_kept
                 case quit
                     return 1
             end
@@ -374,7 +411,7 @@ function _nh_sync_casks
         end
 
         if test (count $untracked) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -383,10 +420,10 @@ function _nh_sync_casks
             switch $answer
                 case keep
                     _nh_sync_brewfile_add cask "cask \"$cask\""
-                    echo "    Added to Brewfile"
+                    _nh_sync_added
                 case skip
                     _nh_sync_add_skip cask $cask
-                    echo "    Skipped"
+                    _nh_sync_skipped_msg
                 case quit
                     return 1
             end
@@ -400,7 +437,7 @@ function _nh_sync_casks
         end
 
         if test (count $not_installed) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -409,9 +446,9 @@ function _nh_sync_casks
             switch $answer
                 case remove
                     _nh_sync_brewfile_remove "^cask \".*$cask\"\$"
-                    echo "    Removed from Brewfile"
+                    _nh_sync_removed
                 case keep
-                    echo "    Kept"
+                    _nh_sync_kept
                 case quit
                     return 1
             end
@@ -422,6 +459,7 @@ end
 # --- Nerd fonts (informational) ---
 
 function _nh_sync_nerd_fonts
+    set -l only $argv[1]
     # Same regex as bin/install-nerd-fonts.sh
     # Based on: https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
     set -l available (brew search '/font-.*(nerd-font|nerd$|-nf$|-nf-)/' 2>/dev/null | awk '{ print $1 }')
@@ -435,14 +473,18 @@ function _nh_sync_nerd_fonts
     end
 
     if test (count $not_installed) -eq 0
-        echo "  All "(count $available)" nerd fonts installed"
+        _nh_sync_in_sync
     else
-        echo "  "(count $not_installed)" of "(count $available)" nerd fonts not installed:"
-        for font in $not_installed
-            echo "    $font"
+        set_color yellow
+        echo "  "(count $not_installed)" of "(count $available)" nerd fonts not installed"
+        set_color normal
+        if test "$only" = cask
+            for font in $not_installed
+                echo "    $font"
+            end
+            echo ""
+            echo "  Run: bin/install-nerd-fonts.sh"
         end
-        echo ""
-        echo "  Run: bin/install-nerd-fonts.sh"
     end
 end
 
@@ -477,7 +519,7 @@ function _nh_sync_mas
         end
 
         if test (count $untracked_indices) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -488,10 +530,10 @@ function _nh_sync_mas
             switch $answer
                 case keep
                     _nh_sync_brewfile_add_mas $name $id
-                    echo "    Added to Brewfile"
+                    _nh_sync_added
                 case skip
                     _nh_sync_add_skip mas $id
-                    echo "    Skipped"
+                    _nh_sync_skipped_msg
                 case quit
                     return 1
             end
@@ -512,7 +554,7 @@ function _nh_sync_mas
         end
 
         if test (count $not_installed) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -523,9 +565,9 @@ function _nh_sync_mas
             switch $answer
                 case remove
                     _nh_sync_brewfile_remove "id:\\s*$id"
-                    echo "    Removed from Brewfile"
+                    _nh_sync_removed
                 case keep
-                    echo "    Kept"
+                    _nh_sync_kept
                 case quit
                     return 1
             end
@@ -676,7 +718,7 @@ function _nh_sync_asdf
         end
 
         if test (count $untracked) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -685,10 +727,10 @@ function _nh_sync_asdf
             switch $answer
                 case keep
                     _nh_sync_asdf_add $plugin
-                    echo "    Added to plugins file"
+                    _nh_sync_added
                 case skip
                     _nh_sync_add_skip asdf $plugin
-                    echo "    Skipped"
+                    _nh_sync_skipped_msg
                 case quit
                     return 1
             end
@@ -702,7 +744,7 @@ function _nh_sync_asdf
         end
 
         if test (count $not_installed) -eq 0
-            echo "  Everything in sync"
+            _nh_sync_in_sync
             return 0
         end
 
@@ -711,9 +753,9 @@ function _nh_sync_asdf
             switch $answer
                 case remove
                     _nh_sync_asdf_remove $plugin
-                    echo "    Removed from plugins file"
+                    _nh_sync_removed
                 case keep
-                    echo "    Kept"
+                    _nh_sync_kept
                 case quit
                     return 1
             end
@@ -724,6 +766,8 @@ end
 # --- Emacs drift detection (informational) ---
 
 function _nh_sync_emacs
+    set -l only $argv[1]
+
     if not command -q emacs
         echo "  emacs not installed"
         return 0
@@ -779,24 +823,34 @@ function _nh_sync_emacs
     end
 
     if test (count $undeclared) -eq 0; and test (count $missing) -eq 0
-        echo "  Everything in sync"
+        _nh_sync_in_sync
         return 0
     end
 
     if test (count $undeclared) -gt 0
-        echo "  Installed but not declared ("(count $undeclared)"):"
-        for pkg in $undeclared
-            echo "    $pkg"
+        set_color yellow
+        echo "  "(count $undeclared)" installed but not declared"
+        set_color normal
+        if test "$only" = emacs
+            for pkg in $undeclared
+                echo "    $pkg"
+            end
         end
     end
 
     if test (count $missing) -gt 0
-        echo "  Declared but not installed ("(count $missing)"):"
-        for pkg in $missing
-            echo "    $pkg"
+        set_color red
+        echo "  "(count $missing)" declared but not installed"
+        set_color normal
+        if test "$only" = emacs
+            for pkg in $missing
+                echo "    $pkg"
+            end
         end
     end
 
-    echo ""
-    echo "  (Manual action required — edit Emacs config files directly)"
+    if test "$only" = emacs
+        echo ""
+        echo "  (Manual action required — edit Emacs config files directly)"
+    end
 end
