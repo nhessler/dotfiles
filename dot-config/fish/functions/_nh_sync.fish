@@ -1,16 +1,17 @@
 function _nh_sync -d "Interactively reconcile installed vs tracked packages"
     if contains -- --help $argv; or contains -- -h $argv
-        echo "Usage: nh sync [keep|remove|reset] [-o category]"
+        echo "Usage: nh sync [keep|remove|reset|skipped] [-o|--only category]"
         echo ""
         echo "Reconcile installed packages vs tracked config files."
         echo ""
         echo "Subcommands:"
         echo "  keep      Find installed-but-not-tracked items (default)"
         echo "  remove    Find tracked-but-not-installed items"
+        echo "  skipped   Show currently skipped items"
         echo "  reset     Clear skip list"
         echo ""
         echo "Options:"
-        echo "  -o <cat>  Only run one category: brew, cask, mas, asdf, emacs"
+        echo "  -o, --only <cat>  Only run one category: brew, cask, mas, asdf, emacs"
         echo ""
         echo "Categories checked: brew formulae, casks, MAS, ASDF, Emacs"
         return 0
@@ -27,6 +28,10 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
             case remove
                 set mode remove
                 set remaining $remaining[2..-1]
+            case skipped
+                _nh_ensure_state_dir
+                _nh_sync_show_skips
+                return 0
             case reset
                 _nh_sync_clear_skips
                 echo "Skip list cleared. Run 'nh sync' to re-evaluate."
@@ -34,11 +39,15 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
         end
     end
 
-    # Parse -o flag
+    # Parse -o/--only flag
     set -l only ""
-    for i in (seq (count $remaining))
-        if test "$remaining[$i]" = "-o"; and test (count $remaining) -ge (math $i + 1)
-            set only $remaining[(math $i + 1)]
+    if test (count $remaining) -ge 1
+        for i in (seq 1 (count $remaining))
+            if begin; test "$remaining[$i]" = "-o"; or test "$remaining[$i]" = "--only"; end
+                if test (count $remaining) -ge (math $i + 1)
+                    set only $remaining[(math $i + 1)]
+                end
+            end
         end
     end
 
@@ -74,8 +83,6 @@ function _nh_sync -d "Interactively reconcile installed vs tracked packages"
         _nh_sync_emacs
         echo ""
     end
-
-    _nh_sync_show_skips
 end
 
 # --- Skip list helpers ---
@@ -211,40 +218,40 @@ function _nh_sync_brewfile_add
     set -l inserted 0
     set -l past_section 0
 
-    for line in (cat $brewfile)
+    while read -l line
         # Detect if we're in the target section
-        if string match -qr "^$section_prefix " $line
+        if string match -qr "^$section_prefix " "$line"
             set in_section 1
             # Insert before this line if new_line sorts before it and not yet inserted
             if test $inserted -eq 0
                 # Fish string comparison: first in sort order wins
-                set -l sorted (printf '%s\n' $new_line $line | sort)
+                set -l sorted (printf '%s\n' "$new_line" "$line" | sort)
                 if test "$sorted[1]" = "$new_line"; and test "$new_line" != "$line"
-                    echo $new_line >> $tmpfile
+                    printf '%s\n' "$new_line" >> $tmpfile
                     set inserted 1
                 end
             end
         else if test $in_section -eq 1
             # We just left the section — insert at end of section if not yet inserted
             if test $inserted -eq 0
-                echo $new_line >> $tmpfile
+                printf '%s\n' "$new_line" >> $tmpfile
                 set inserted 1
             end
             set in_section 0
             set past_section 1
         end
-        echo $line >> $tmpfile
-    end
+        printf '%s\n' "$line" >> $tmpfile
+    end < $brewfile
 
     # Handle case where section is at end of file
     if test $inserted -eq 0; and test $in_section -eq 1
-        echo $new_line >> $tmpfile
+        printf '%s\n' "$new_line" >> $tmpfile
     end
 
     # Handle case where section doesn't exist yet
     if test $inserted -eq 0; and test $in_section -eq 0; and test $past_section -eq 0
-        echo "" >> $tmpfile
-        echo $new_line >> $tmpfile
+        printf '\n' >> $tmpfile
+        printf '%s\n' "$new_line" >> $tmpfile
     end
 
     mv $tmpfile $brewfile
@@ -255,11 +262,11 @@ function _nh_sync_brewfile_remove
     set -l brewfile (_nh_sync_brewfile_path)
     set -l tmpfile (mktemp)
 
-    for line in (cat $brewfile)
-        if not string match -qr $pattern $line
-            echo $line >> $tmpfile
+    while read -l line
+        if not string match -qr "$pattern" "$line"
+            printf '%s\n' "$line" >> $tmpfile
         end
-    end
+    end < $brewfile
 
     mv $tmpfile $brewfile
 end
@@ -517,78 +524,93 @@ function _nh_sync_brewfile_add_mas
     set -l brewfile (_nh_sync_brewfile_path)
     set -l tmpfile (mktemp)
 
-    # Calculate alignment: find the column where "id:" should start
-    # by checking existing mas entries
-    set -l max_prefix_len 0
-    for line in (string match -r '^mas ".+",' $brewfile)
-        set -l prefix (echo $line | string match -r '^mas "[^"]+",')
-        set -l len (string length $prefix)
-        if test $len -gt $max_prefix_len
-            set max_prefix_len $len
-        end
-    end
-
     set -l new_prefix "mas \"$name\","
-    set -l new_prefix_len (string length $new_prefix)
+    set -l new_prefix_len (string length "$new_prefix")
 
-    # If new entry is longer than existing max, we need to repad all entries
-    if test $new_prefix_len -gt $max_prefix_len
-        set max_prefix_len $new_prefix_len
+    # Detect alignment column from existing entries by finding where "id:" starts
+    set -l align_col 0
+    while read -l line
+        if string match -qr '^mas ' "$line"
+            set -l before (echo "$line" | string split "id:" | head -1)
+            set -l col (string length "$before")
+            if test $col -gt $align_col
+                set align_col $col
+            end
+        end
+    end < $brewfile
+
+    # If new entry's prefix is longer, bump the alignment column
+    # +1 for at least one space after comma
+    if test (math $new_prefix_len + 1) -gt $align_col
+        set align_col (math $new_prefix_len + 1)
     end
 
-    # Pad to max + 1 space minimum
-    set -l align_col (math $max_prefix_len + 1)
+    # If no existing entries, use prefix + reasonable padding
+    if test $align_col -eq 0
+        set align_col (math $new_prefix_len + 1)
+    end
 
+    set -l needs_repad (test (math $new_prefix_len + 1) -ge $align_col; and echo 1; or echo 0)
     set -l in_section 0
     set -l inserted 0
-    set -l needs_repad (test $new_prefix_len -ge $max_prefix_len; and echo 1; or echo 0)
 
-    for line in (cat $brewfile)
-        if string match -qr '^mas ' $line
+    while read -l line
+        if string match -qr '^mas ' "$line"
             set in_section 1
 
-            # Repad existing entry if needed
-            if test $needs_repad -eq 1
-                set -l existing_name (echo $line | string match -r '^mas "([^"]+)"' | tail -1)
-                set -l existing_id (echo $line | string match -r 'id:\s*(\d+)' | tail -1)
-                if test -n "$existing_name" -a -n "$existing_id"
-                    set -l ep "mas \"$existing_name\","
-                    set -l pad_len (math $align_col - (string length $ep))
-                    set -l padding (string repeat -n $pad_len ' ')
-                    set line "$ep$padding""id: $existing_id"
+            # Extract name and id from existing entry
+            set -l existing_name (echo "$line" | string match -r '^mas "([^"]+)"' | tail -1)
+            set -l existing_id (echo "$line" | string match -r 'id:\s*(\d+)' | tail -1)
+
+            # Repad existing entry if alignment changed
+            if test $needs_repad -eq 1; and test -n "$existing_name" -a -n "$existing_id"
+                set -l ep "mas \"$existing_name\","
+                set -l pad_len (math $align_col - (string length "$ep"))
+                if test $pad_len -lt 1
+                    set pad_len 1
                 end
+                set -l padding (string repeat -n $pad_len ' ')
+                set line "$ep$padding""id: $existing_id"
             end
 
             # Insert new entry in sorted position
             if test $inserted -eq 0
-                set -l existing_name_lower (echo $line | string match -r '^mas "([^"]+)"' | tail -1 | string lower)
-                set -l new_name_lower (string lower $name)
-                set -l sorted (printf '%s\n' $new_name_lower $existing_name_lower | sort)
+                set -l existing_name_lower (string lower "$existing_name")
+                set -l new_name_lower (string lower "$name")
+                set -l sorted (printf '%s\n' "$new_name_lower" "$existing_name_lower" | sort)
                 if test "$sorted[1]" = "$new_name_lower"; and test "$new_name_lower" != "$existing_name_lower"
                     set -l pad_len (math $align_col - $new_prefix_len)
+                    if test $pad_len -lt 1
+                        set pad_len 1
+                    end
                     set -l padding (string repeat -n $pad_len ' ')
-                    echo "$new_prefix$padding""id: $id" >> $tmpfile
+                    printf '%s\n' "$new_prefix$padding""id: $id" >> $tmpfile
                     set inserted 1
                 end
             end
         else if test $in_section -eq 1
-            # End of mas section — insert at end if not yet inserted
             if test $inserted -eq 0
                 set -l pad_len (math $align_col - $new_prefix_len)
+                if test $pad_len -lt 1
+                    set pad_len 1
+                end
                 set -l padding (string repeat -n $pad_len ' ')
-                echo "$new_prefix$padding""id: $id" >> $tmpfile
+                printf '%s\n' "$new_prefix$padding""id: $id" >> $tmpfile
                 set inserted 1
             end
             set in_section 0
         end
-        echo $line >> $tmpfile
-    end
+        printf '%s\n' "$line" >> $tmpfile
+    end < $brewfile
 
     # Handle mas section at end of file
     if test $inserted -eq 0; and test $in_section -eq 1
         set -l pad_len (math $align_col - $new_prefix_len)
+        if test $pad_len -lt 1
+            set pad_len 1
+        end
         set -l padding (string repeat -n $pad_len ' ')
-        echo "$new_prefix$padding""id: $id" >> $tmpfile
+        printf '%s\n' "$new_prefix$padding""id: $id" >> $tmpfile
     end
 
     mv $tmpfile $brewfile
