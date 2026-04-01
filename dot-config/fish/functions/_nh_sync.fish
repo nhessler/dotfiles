@@ -201,17 +201,29 @@ function _nh_sync_show_skips
         set -l items (grep "^$section:" $skip_file | string replace "$section:" "")
         if test (count $items) -gt 0
             echo "  $label:"
-            for item in $items
-                if test $section = mas
-                    # Look up app name from mas list
+            if test $section = mas
+                # Look up names and calculate alignment
+                set -l names
+                set -l max_name_len 0
+                for item in $items
                     set -l mas_line (printf '%s\n' $mas_cache | string match -r "^\s*$item\s+.*" | head -1)
                     set -l name (echo $mas_line | string replace -r '^\s*\d+\s+' '' | string replace -r '\s+\(.*\)$' '')
-                    if test -n "$name"
-                        echo "    $name ($item)"
-                    else
-                        echo "    $item"
+                    if test -z "$name"
+                        set name "Unknown"
                     end
-                else
+                    set -a names $name
+                    set -l len (string length "$name")
+                    if test $len -gt $max_name_len
+                        set max_name_len $len
+                    end
+                end
+                for i in (seq (count $items))
+                    set -l pad_len (math $max_name_len - (string length "$names[$i]") + 2)
+                    set -l padding (string repeat -n $pad_len ' ')
+                    echo "    $names[$i]$padding($items[$i])"
+                end
+            else
+                for item in $items
                     echo "    $item"
                 end
             end
@@ -226,31 +238,37 @@ end
 
 function _nh_sync_prompt_keep
     set -l item $argv[1]
-    read -P "  $item [k]eep / [s]kip / [q]uit? " -l answer
-    switch (string lower $answer)
-        case '' k
-            echo keep
-        case s
-            echo skip
-        case q
-            echo quit
-        case '*'
-            echo skip
+    while true
+        read -P "  $item [k]eep / [s]kip / [q]uit? " -l answer
+        switch (string lower $answer)
+            case k
+                echo keep
+                return
+            case s
+                echo skip
+                return
+            case q
+                echo quit
+                return
+        end
     end
 end
 
 function _nh_sync_prompt_remove
     set -l item $argv[1]
-    read -P "  $item [r]emove / [k]eep / [q]uit? " -l answer
-    switch (string lower $answer)
-        case '' r
-            echo remove
-        case k
-            echo keep
-        case q
-            echo quit
-        case '*'
-            echo keep
+    while true
+        read -P "  $item [r]emove / [k]eep / [q]uit? " -l answer
+        switch (string lower $answer)
+            case r
+                echo remove
+                return
+            case k
+                echo keep
+                return
+            case q
+                echo quit
+                return
+        end
     end
 end
 
