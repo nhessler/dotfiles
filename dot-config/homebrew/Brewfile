@@ -37,6 +37,7 @@ brew "openssl"
 brew "prettier"
 brew "readline"
 brew "ripgrep"
+brew "ruby-lsp"
 brew "shellcheck"
 brew "sqlite"
 brew "starship"
@@ -82,9 +83,11 @@ cask "fluid"
 cask "ghostty"
 cask "google-chrome"
 cask "hammerspoon"
+cask "hoppscotch"
 cask "istat-menus"
 cask "keybase"
 cask "kiwi-for-gmail"
+cask "livebook"
 cask "miro"
 cask "nanoleaf"
 cask "nordvpn"
@@ -95,6 +98,7 @@ cask "selfcontrol"
 cask "shortcat"
 cask "unite"
 cask "utm"
+cask "zen-browser"
 cask "zen"
 cask "zoom"
 
@@ -113,4 +117,5 @@ mas "Perplexity",     id: 6714467650
 mas "Sip",            id: 507257563
 mas "Slack",          id: 803453959
 mas "Twitter",        id: 1482454543
+mas "WhatsApp",       id: 310633997
 mas "Xcode",          id: 497799835
