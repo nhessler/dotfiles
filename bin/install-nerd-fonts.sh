@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # Install all Nerd Fonts via Homebrew
+# Based on: https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
 #
 # Usage:
 #   ./bin/install-nerd-fonts.sh
@@ -26,7 +27,7 @@ else
 fi
 
 echo "--> Searching for Nerd Fonts..."
-fonts=$(brew search '/font-.*-(nerd-font|nf)/' | awk '{ print $1 }')
+fonts=$(brew search '/font-.*(nerd-font|nerd$|-nf$|-nf-)/' | awk '{ print $1 }')
 font_count=$(echo "$fonts" | wc -l | tr -d ' ')
 
 echo "    Found $font_count fonts"

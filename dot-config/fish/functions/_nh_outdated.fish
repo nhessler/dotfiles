@@ -109,14 +109,16 @@ function _nh_outdated_asdf
         return 1
     end
 
-    # Update plugins first to get latest version info
-    echo "  Updating plugins..."
-    asdf plugin update --all >/dev/null 2>&1
-
     set -l plugins (asdf plugin list 2>/dev/null)
     if test (count $plugins) -eq 0
         echo "  No plugins installed"
         return 0
+    end
+
+    # Update plugins individually (--all hangs in asdf 0.18.x)
+    echo "  Updating plugins..."
+    for plugin in $plugins
+        asdf plugin update $plugin >/dev/null 2>&1
     end
 
     set -l has_outdated 0
@@ -130,8 +132,22 @@ function _nh_outdated_asdf
         # Get installed versions, stripping the * prefix from current version
         set -l installed (asdf list $plugin 2>/dev/null | string trim | string replace -r '^\*' '')
 
-        if contains $latest $installed
-            echo "  $plugin: up to date ($latest)"
+        # Check if latest matches any installed version
+        # Also compare base versions (strip -otp-XX suffix) for elixir-style versioning
+        set -l latest_base (echo $latest | string replace -r -- '-otp-.*' '')
+        set -l is_current 0
+        set -l matched_ver ""
+        for ver in $installed
+            set -l ver_base (echo $ver | string replace -r -- '-otp-.*' '')
+            if test "$ver" = "$latest"; or test "$ver_base" = "$latest_base"
+                set is_current 1
+                set matched_ver $ver
+                break
+            end
+        end
+
+        if test $is_current -eq 1
+            echo "  $plugin: up to date ($matched_ver)"
         else
             set has_outdated 1
             set -l current_versions (string join ", " $installed)
