@@ -1,11 +1,67 @@
 {
   "permissions": {
     "deny": [
-      "Read(dot-claude/**)",
-      "Edit(dot-claude/**)",
-      "Write(dot-claude/**)"
+      "Edit(.claude/settings.json)",
+      "Write(.claude/settings.json)",
+
+      "Edit(dot-claude/settings.json)",
+      "Write(dot-claude/settings.json)",
+
+      "Read(dot-claude/backups/**)",
+      "Edit(dot-claude/backups/**)",
+      "Write(dot-claude/backups/**)",
+
+      "Read(dot-claude/cache/**)",
+      "Edit(dot-claude/cache/**)",
+      "Write(dot-claude/cache/**)",
+
+      "Read(dot-claude/debug/**)",
+      "Edit(dot-claude/debug/**)",
+      "Write(dot-claude/debug/**)",
+
+      "Read(dot-claude/file-history/**)",
+      "Edit(dot-claude/file-history/**)",
+      "Write(dot-claude/file-history/**)",
+
+      "Read(dot-claude/history.jsonl)",
+      "Edit(dot-claude/history.jsonl)",
+      "Write(dot-claude/history.jsonl)",
+
+      "Read(dot-claude/mcp-needs-auth-cache.json)",
+      "Edit(dot-claude/mcp-needs-auth-cache.json)",
+      "Write(dot-claude/mcp-needs-auth-cache.json)",
+
+      "Read(dot-claude/paste-cache/**)",
+      "Edit(dot-claude/paste-cache/**)",
+      "Write(dot-claude/paste-cache/**)",
+
+      "Read(dot-claude/plugins/**)",
+      "Edit(dot-claude/plugins/**)",
+      "Write(dot-claude/plugins/**)",
+
+      "Read(dot-claude/session-env/**)",
+      "Edit(dot-claude/session-env/**)",
+      "Write(dot-claude/session-env/**)",
+
+      "Read(dot-claude/sessions/**)",
+      "Edit(dot-claude/sessions/**)",
+      "Write(dot-claude/sessions/**)",
+
+      "Read(dot-claude/shell-snapshots/**)",
+      "Edit(dot-claude/shell-snapshots/**)",
+      "Write(dot-claude/shell-snapshots/**)",
+
+      "Read(dot-claude/stats-cache.json)",
+      "Edit(dot-claude/stats-cache.json)",
+      "Write(dot-claude/stats-cache.json)",
+
+      "Read(dot-claude/statsig/**)",
+      "Edit(dot-claude/statsig/**)",
+      "Write(dot-claude/statsig/**)",
+
+      "Read(dot-claude/telemetry/**)",
+      "Edit(dot-claude/telemetry/**)",
+      "Write(dot-claude/telemetry/**)"
     ]
   }
 }
-
-    
