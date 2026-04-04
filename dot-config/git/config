@@ -11,7 +11,7 @@
   logg = "log --graph --oneline"
   secure = "!fish -c 'git-secure $argv' --"
 [core]
-  editor = emacs
+  editor = emacsclient -c
 [github]
   user = nhessler
 [pull]

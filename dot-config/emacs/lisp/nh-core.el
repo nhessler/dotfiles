@@ -213,5 +213,25 @@
 (setq undo-strong-limit 120000000)  ; ~120MB
 (setq undo-outer-limit 360000000)   ; ~360MB
 
+;;;; Emacs Server
+;;
+;; Start the server so emacsclient can connect to this running instance.
+;; Use C-c C-c (or C-x #) to finish editing emacsclient buffers.
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
+;; Auto-save before server-edit so C-c C-c doesn't prompt to save
+(advice-add 'server-edit :before
+            (lambda (&rest _)
+              (when (buffer-file-name)
+                (save-buffer))))
+
+(add-hook 'server-switch-hook
+          (lambda ()
+            (when server-buffer-clients
+              (local-set-key (kbd "C-c C-c") #'server-edit))))
+
 (provide 'nh-core)
 ;;; nh-core.el ends here

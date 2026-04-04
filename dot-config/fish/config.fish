@@ -58,6 +58,10 @@ fzf --fish | source
 
 # for future potential ENV_VAR needs -- https://stackoverflow.com/questions/25632846/how-to-set-environment-variables-in-fish-shell
 
+# default editor — emacsclient connects to running Emacs instance
+set -gx EDITOR "emacsclient -t"
+set -gx VISUAL "emacsclient -c"
+
 # set gpg to look at terminal for passphrase
 set -x GPG_TTY $(tty)
 

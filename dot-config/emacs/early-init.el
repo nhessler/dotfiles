@@ -51,9 +51,7 @@
 (setq inhibit-startup-screen t)    ; Same thing (alias)
 
 ;; Configure the *scratch* buffer
-;; This buffer exists when Emacs starts - we'll use it as a markdown scratchpad
 (setq initial-scratch-message nil) ; No default message in scratch buffer
-(setq initial-major-mode 'markdown-mode) ; Use markdown instead of lisp-interaction
 
 ;; Disable UI chrome via frame parameters (before frame is created)
 ;; Format: (push '(PARAMETER . VALUE) default-frame-alist)
