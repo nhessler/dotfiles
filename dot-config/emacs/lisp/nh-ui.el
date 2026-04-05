@@ -89,10 +89,14 @@ it will just use Emacs defaults."
 ;;;; Theme
 ;;
 ;; Using Monokai - a classic dark theme from Sublime Text era.
-;; doom-themes provides an enhanced version with better org-mode support.
+;; monokai-theme provides the theme, doom-themes provides enhanced
+;; org-mode fontification and visual bell config.
 ;;
 ;; Theme loading is wrapped in condition-case to prevent errors from
 ;; breaking the rest of the config.
+
+(use-package monokai-theme
+  :demand t)
 
 (use-package doom-themes
   :config
@@ -101,8 +105,8 @@ it will just use Emacs defaults."
   (setq doom-themes-enable-italic t)   ; Enable italics where appropriate
 
   ;; Load the theme (safely)
-  ;; Using 'monokai' - if you want a different doom theme, change it here
-  ;; Popular options: doom-one, doom-dracula, doom-nord, doom-gruvbox
+  ;; Using 'monokai' from monokai-theme package (not the doom variant)
+  ;; Popular doom options: doom-one, doom-dracula, doom-nord, doom-gruvbox
   (condition-case err
       (load-theme 'monokai t)
     (error (message "Failed to load theme: %s" err)))

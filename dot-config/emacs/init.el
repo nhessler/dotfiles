@@ -30,9 +30,9 @@
 ;;;; File Organization
 ;;
 ;; lisp/
-;;   nh-core.el       - Fundamental settings (backups, encoding, macOS)
+;;   nh-core.el       - Fundamental settings (backups, editing, macOS, server)
 ;;   nh-ui.el         - Visual appearance (theme, fonts, modeline)
-;;   nh-keys.el       - Global keybindings and which-key
+;;   nh-keys.el       - Global keybindings, which-key, and Dash
 ;;   nh-completion.el - Ivy/Counsel/Swiper completion
 ;;   nh-projects.el   - Projectile project management
 ;;   nh-git.el        - Magit and Forge
@@ -76,7 +76,7 @@
   (package-refresh-contents))
 
 ;; use-package configuration
-;; use-package is built into Emacs 29+
+;; use-package is built into Emacs 29+ (includes bind-key)
 (require 'use-package)
 
 ;; Always install packages if not present

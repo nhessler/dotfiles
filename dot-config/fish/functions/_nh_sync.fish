@@ -793,10 +793,11 @@ function _nh_sync_emacs
 
     set -l emacs_dir "$HOME/.config/emacs"
 
-    # Built-in packages (use-package with :ensure nil or known built-ins)
-    set -l builtins recentf saveplace uniquify time eglot flymake eldoc org \
-        css-mode js typescript-ts-mode json-ts-mode sh-script conf-mode \
-        ruby-mode ielm erlang heex-ts-mode
+    # Built-in packages: dynamically find use-package declarations with :ensure nil
+    set -l builtins (grep -A1 '(use-package ' \
+        $emacs_dir/init.el $emacs_dir/lisp/*.el $emacs_dir/languages/*.el \
+        2>/dev/null | grep -B1 ':ensure nil' | grep 'use-package' | \
+        sed 's/.*use-package //' | sed 's/[) ].*//' | sort -u)
 
     # Get installed packages from elpa
     set -l installed (emacs --batch \

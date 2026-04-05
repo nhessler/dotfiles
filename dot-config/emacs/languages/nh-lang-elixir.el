@@ -56,6 +56,7 @@
 ;; Falls back to web-mode if treesitter grammar isn't available.
 
 (use-package heex-ts-mode
+  :ensure nil  ; Built-in since Emacs 30
   :mode "\\.heex\\'"
   :hook (heex-ts-mode . eglot-ensure))
 

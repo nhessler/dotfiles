@@ -9,6 +9,11 @@
 ;;   - Dockerfile
 ;;   - Shell scripts (.sh, .bash, .zsh)
 ;;   - .env files
+;;   - Caddyfile (Caddy web server)
+;;   - SSH config
+;;   - Nginx, Apache
+;;   - Mermaid diagrams
+;;   - Justfile
 ;;
 ;; Many of these have LSP support for schema validation and diagnostics:
 ;;   - YAML: yaml-language-server (brew install yaml-language-server)
@@ -247,12 +252,11 @@
 ;;;; Caddyfile Mode
 ;;
 ;; For Caddy web server configuration (from your caddy/ directory).
-;; Note: There isn't a well-maintained caddyfile-mode package,
-;; but we can use a simple conf-mode derivative.
 
-;; Simple Caddyfile support using conf-mode
-(add-to-list 'auto-mode-alist '("Caddyfile\\'" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.caddyfile\\'" . conf-mode))
+(use-package caddyfile-mode
+  :mode
+  (("Caddyfile\\'" . caddyfile-mode)
+   ("\\.caddyfile\\'" . caddyfile-mode)))
 
 ;;;; Just Mode
 ;;

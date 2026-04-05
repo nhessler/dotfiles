@@ -7,10 +7,12 @@
 ;;
 ;; Sections:
 ;;   - File Handling (backups, autosave, recent files)
-;;   - Editing Behavior (tabs, whitespace, selection)
+;;   - Editing Behavior (tabs, whitespace, selection, smartparens, delimiters)
 ;;   - Buffer Behavior (auto-revert, uniquify)
 ;;   - Minibuffer & Prompts
+;;   - Emacs Server (emacsclient support)
 ;;   - macOS Specific
+;;   - Miscellaneous
 ;;
 ;;; Code:
 
@@ -136,6 +138,26 @@
 (setq select-enable-clipboard t)   ; Use system clipboard for cut/paste
 (setq select-enable-primary t)     ; Also use primary selection (X11 middle-click)
 
+;;;; Editing Behavior: Smartparens
+;;
+;; Structural editing for balanced delimiters (parens, brackets, quotes).
+;; Automatically inserts closing delimiters and provides navigation commands.
+;; Language-specific configs in nh-lang-elisp.el and nh-lang-ruby.el.
+
+(use-package smartparens
+  :demand t
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode 1))
+
+;;;; Editing Behavior: Rainbow Delimiters
+;;
+;; Color-codes nested delimiters so matching pairs are visually distinct.
+;; Makes it easier to see nesting depth in code, especially Lisp.
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 ;;;; Minibuffer & Prompts
 ;;
 ;; Small quality-of-life improvements for the minibuffer.
@@ -146,6 +168,26 @@
 ;; Allow recursive minibuffers (using M-x while already in minibuffer)
 ;; Useful for complex workflows, but can be confusing if you forget where you are.
 (setq enable-recursive-minibuffers t)
+
+;;;; Emacs Server
+;;
+;; Start the server so emacsclient can connect to this running instance.
+;; Use C-c C-c (or C-x #) to finish editing emacsclient buffers.
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
+;; Auto-save before server-edit so C-c C-c doesn't prompt to save
+(advice-add 'server-edit :before
+            (lambda (&rest _)
+              (when (buffer-file-name)
+                (save-buffer))))
+
+(add-hook 'server-switch-hook
+          (lambda ()
+            (when server-buffer-clients
+              (local-set-key (kbd "C-c C-c") #'server-edit))))
 
 ;;;; macOS: Shell Environment
 ;;
@@ -213,25 +255,11 @@
 (setq undo-strong-limit 120000000)  ; ~120MB
 (setq undo-outer-limit 360000000)   ; ~360MB
 
-;;;; Emacs Server
-;;
-;; Start the server so emacsclient can connect to this running instance.
-;; Use C-c C-c (or C-x #) to finish editing emacsclient buffers.
-
-(require 'server)
-(unless (server-running-p)
-  (server-start))
-
-;; Auto-save before server-edit so C-c C-c doesn't prompt to save
-(advice-add 'server-edit :before
-            (lambda (&rest _)
-              (when (buffer-file-name)
-                (save-buffer))))
-
-(add-hook 'server-switch-hook
-          (lambda ()
-            (when server-buffer-clients
-              (local-set-key (kbd "C-c C-c") #'server-edit))))
+;; Command log mode — logs executed commands in a buffer.
+;; Useful for demos, debugging keybindings, and understanding what Emacs does.
+;; Toggle with M-x command-log-mode or M-x clm/toggle-command-log-buffer.
+(use-package command-log-mode
+  :commands (command-log-mode global-command-log-mode clm/toggle-command-log-buffer))
 
 (provide 'nh-core)
 ;;; nh-core.el ends here

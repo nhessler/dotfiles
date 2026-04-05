@@ -40,6 +40,7 @@
 ;; Incredibly useful for learning Emacs and discovering commands.
 
 (use-package which-key
+  :ensure nil  ; Built-in since Emacs 30
   :config
   (setq which-key-idle-delay 0.5)      ; Show popup after 0.5s pause
   (setq which-key-idle-secondary-delay 0.1) ; Subsequent popups faster
@@ -133,6 +134,46 @@ Uses completing-read for selection."
           "^\\*swiper\\*$"
           "^\\*Messages\\*$"
           "^\\*Compile-Log\\*$")))
+
+;;;; Dash Documentation
+;;
+;; Dash.app integration for quick documentation lookup.
+;; C-c d d to search at point, C-c d s to search with input.
+
+(use-package dash-at-point
+  :bind
+  (("C-c d d" . dash-at-point)
+   ("C-c d s" . dash-at-point-with-docset))
+  :config
+  ;; Map major modes to Dash docsets for automatic lookup
+  ;; Includes both classic and treesitter (-ts-mode) variants
+  (dolist (mapping '((ruby-mode . "ruby")
+                     (ruby-ts-mode . "ruby")
+                     (elixir-mode . "elixir")
+                     (elixir-ts-mode . "elixir")
+                     (erlang-mode . "erlang")
+                     (go-mode . "go")
+                     (go-ts-mode . "go")
+                     (lua-mode . "lua")
+                     (lua-ts-mode . "lua")
+                     (js-mode . "javascript")
+                     (js-ts-mode . "javascript")
+                     (typescript-ts-mode . "typescript")
+                     (css-mode . "css")
+                     (css-ts-mode . "css")
+                     (html-mode . "html")
+                     (html-ts-mode . "html")
+                     (web-mode . "html")
+                     (fish-mode . "fish")
+                     (emacs-lisp-mode . "elisp")
+                     (markdown-mode . "markdown")
+                     (sh-mode . "bash")
+                     (bash-ts-mode . "bash")
+                     (dockerfile-mode . "docker")
+                     (dockerfile-ts-mode . "docker")
+                     (yaml-mode . "yaml")
+                     (yaml-ts-mode . "yaml")))
+    (add-to-list 'dash-at-point-mode-alist mapping)))
 
 ;;;; Super Key (macOS Command) Bindings
 ;;

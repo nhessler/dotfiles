@@ -92,6 +92,11 @@
   ;; Show issues/PRs in status buffer
   (setq forge-add-default-bindings t))
 
+;; sqlite3 — dependency of Forge for its local SQLite database.
+;; System library: brew install sqlite
+(use-package sqlite3
+  :after forge)
+
 ;;;; Git Modes - Syntax Highlighting for Git Files
 ;;
 ;; Provides major modes for .gitconfig, .gitignore, etc.
