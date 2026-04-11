@@ -14,7 +14,7 @@ trigger: when the user mentions nh, dotfiles management, SSH key issues, outdate
 Runs the dotfiles setup script (`bin/setup.sh`). Used for initial machine setup or after major config changes.
 
 ### nh outdated
-Checks for outdated dependencies across: Homebrew, ASDF, Mac App Store, macOS, and Emacs packages. Shows last-checked timestamps per category.
+Checks for outdated dependencies across: Homebrew, ASDF, Mac App Store, macOS, and Emacs packages. Each category shows two timestamps: last checked and last upgraded. Each `_nh_outdated_*` function calls `_nh_set_last_checked` after running. macOS check actually runs `softwareupdate -l` (slow but accurate).
 
 ### nh upgrade
 Upgrades packages across the system:
@@ -22,6 +22,13 @@ Upgrades packages across the system:
 - `mas upgrade` (Mac App Store)
 - Sets ASDF globals to latest installed versions
 - Emacs `package-upgrade-all` in batch mode
+- macOS: reminder only (not auto-upgraded due to potential restarts; use `nh outdated mark macos` after applying manually)
+
+Each section calls `_nh_set_last_upgraded` to track upgrade timestamps separately from check timestamps.
+
+### State Files
+- `~/.local/state/nh/outdated-checks` — last check timestamp per category
+- `~/.local/state/nh/upgrade-runs` — last upgrade timestamp per category
 
 ### nh sync
 Interactive reconciliation of installed vs tracked packages. **Has its own skill (`nh-sync`) with detailed usage.**

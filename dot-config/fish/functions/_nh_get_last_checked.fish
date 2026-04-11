@@ -15,5 +15,5 @@ function _nh_get_last_checked -a category
         return
     end
 
-    _nh_format_days_ago $timestamp
+    echo "checked "(_nh_format_days_ago $timestamp)
 end

@@ -14,7 +14,9 @@ function _nh_outdated
         echo ""
         echo "Categories: homebrew, asdf, appstore, macos, emacs"
         echo ""
-        echo "Timestamps are stored in ~/.local/state/nh/outdated-checks"
+        echo "Timestamps:"
+        echo "  ~/.local/state/nh/outdated-checks  (last check)"
+        echo "  ~/.local/state/nh/upgrade-runs     (last upgrade)"
         return 0
     end
 
@@ -69,13 +71,19 @@ function _nh_outdated_mark
     echo "Marked $category as checked."
 end
 
+# Format the section header with both check and upgrade timestamps
+function _nh_outdated_header -a label category
+    set -l checked (_nh_get_last_checked $category)
+    set -l upgraded (_nh_get_last_upgraded $category)
+    echo "$label ($checked, $upgraded):"
+end
+
 #
 # Individual checkers
 #
 
 function _nh_outdated_homebrew
-    set -l last_checked (_nh_get_last_checked homebrew)
-    echo "Homebrew ($last_checked):"
+    _nh_outdated_header "Homebrew" homebrew
 
     if not command -q brew
         echo "  brew not installed"
@@ -98,11 +106,12 @@ function _nh_outdated_homebrew
         echo ""
         echo "  Run: brew upgrade"
     end
+
+    _nh_set_last_checked homebrew
 end
 
 function _nh_outdated_asdf
-    set -l last_checked (_nh_get_last_checked asdf)
-    echo "ASDF ($last_checked):"
+    _nh_outdated_header "ASDF" asdf
 
     if not command -q asdf
         echo "  asdf not installed"
@@ -112,6 +121,7 @@ function _nh_outdated_asdf
     set -l plugins (asdf plugin list 2>/dev/null)
     if test (count $plugins) -eq 0
         echo "  No plugins installed"
+        _nh_set_last_checked asdf
         return 0
     end
 
@@ -159,20 +169,36 @@ function _nh_outdated_asdf
         echo ""
         echo "  Run: asdf install <plugin> <version>"
     end
+
+    _nh_set_last_checked asdf
 end
 
 function _nh_outdated_macos
-    set -l last_checked (_nh_get_last_checked macos)
-    echo "macOS ($last_checked):"
+    _nh_outdated_header "macOS" macos
 
-    # softwareupdate -l can be slow, so just remind
-    echo "  Run 'softwareupdate -l' to check for updates"
-    echo "  Or check System Settings → General → Software Update"
+    echo "  Checking for updates (this may take a moment)..."
+
+    # softwareupdate -l prints labels of available updates
+    set -l output (softwareupdate -l 2>&1)
+    set -l available (printf '%s\n' $output | grep -E '^\s*\*' | sed 's/^[[:space:]]*\*[[:space:]]*//')
+
+    if test (count $available) -eq 0
+        echo "  Everything up to date"
+    else
+        echo "  "(count $available)" updates available:"
+        for update in $available
+            echo "    $update"
+        end
+        echo ""
+        echo "  Apply via System Settings → General → Software Update"
+        echo "  Or: softwareupdate -i -a (may require restart)"
+    end
+
+    _nh_set_last_checked macos
 end
 
 function _nh_outdated_appstore
-    set -l last_checked (_nh_get_last_checked appstore)
-    echo "App Store ($last_checked):"
+    _nh_outdated_header "App Store" appstore
 
     if command -q mas
         set -l outdated (mas outdated 2>/dev/null)
@@ -195,11 +221,12 @@ function _nh_outdated_appstore
         echo "  Check manually: open -a 'App Store'"
         echo "  (Install 'mas' for CLI access: brew install mas)"
     end
+
+    _nh_set_last_checked appstore
 end
 
 function _nh_outdated_emacs
-    set -l last_checked (_nh_get_last_checked emacs)
-    echo "Emacs packages ($last_checked):"
+    _nh_outdated_header "Emacs packages" emacs
 
     if not command -q emacs
         echo "  emacs not installed"
@@ -222,4 +249,6 @@ function _nh_outdated_emacs
         echo ""
         echo "  Run: nh upgrade"
     end
+
+    _nh_set_last_checked emacs
 end

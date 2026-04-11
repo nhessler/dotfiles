@@ -7,6 +7,7 @@ function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest 
         echo "  - Mac App Store apps (via mas)"
         echo "  - ASDF: sets global versions to latest installed"
         echo "  - Emacs packages (via batch mode)"
+        echo "  - macOS: reminder only (manual due to potential restarts)"
         return 0
     end
 
@@ -14,7 +15,7 @@ function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest 
     if command -q brew
         brew update
         brew upgrade
-        _nh_set_last_checked homebrew
+        _nh_set_last_upgraded homebrew
     else
         echo "  brew not installed, skipping"
     end
@@ -23,7 +24,7 @@ function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest 
     echo "=== App Store ==="
     if command -q mas
         mas upgrade
-        _nh_set_last_checked appstore
+        _nh_set_last_upgraded appstore
     else
         echo "  mas not installed, skipping"
     end
@@ -38,7 +39,7 @@ function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest 
                 asdf set --home $plugin $latest
             end
         end
-        _nh_set_last_checked asdf
+        _nh_set_last_upgraded asdf
     else
         echo "  asdf not installed, skipping"
     end
@@ -51,10 +52,16 @@ function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest 
             --eval '(package-refresh-contents)' \
             --eval '(package-upgrade-all)' \
             2>&1 | grep -v "^Contacting\|^Package\|^Done\|^Importing\|^\$"
-        _nh_set_last_checked emacs
+        _nh_set_last_upgraded emacs
     else
         echo "  emacs not installed, skipping"
     end
+
+    echo ""
+    echo "=== macOS ==="
+    echo "  Apply manually via System Settings → General → Software Update"
+    echo "  (Skipped here because updates may require restarts)"
+    echo "  Mark as upgraded after applying: nh outdated mark macos"
 
     echo ""
     echo "Done!"
