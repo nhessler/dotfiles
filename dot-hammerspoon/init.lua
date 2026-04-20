@@ -45,6 +45,12 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "l", function()
   studioLights.toggle()
 end)
 
+-- Camera watcher: auto-toggle lights on camera on/off
+local cameraWatcher = require("camera-watcher")
+cameraWatcher.onCameraOn(studioLights.on)
+cameraWatcher.onCameraOff(studioLights.off)
+cameraWatcher.init()
+
 -- Window management
 local wm = require("window-manager")
 
