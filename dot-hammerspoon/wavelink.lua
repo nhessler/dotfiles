@@ -127,40 +127,54 @@ function M.connect()
   return true
 end
 
-local function doToggle()
-  local newMuteState = not M.isMuted
-
+local function setMute(muted)
   send("setMicrophoneConfig", {
     identifier = M.micIdentifier,
     property = "Microphone Mute",
-    value = newMuteState
+    value = muted
   })
-
-  M.isMuted = newMuteState
-  if newMuteState then
-    hs.alert("🔇 Mic Muted")
-  else
-    hs.alert("🎙️ Mic Live")
-  end
+  M.isMuted = muted
 end
 
-function M.toggleMute()
-  -- Already connected and mic known — toggle immediately
+local function withMic(fn)
   if M.ws and M.micIdentifier then
-    doToggle()
+    fn()
     return
   end
 
-  -- Try to connect if needed
   if not M.ws then
     if not M.connect() then
-      hs.alert("Wave Link not running")
+      log("Wave Link not running")
       return
     end
   end
 
-  -- Connection is async — queue toggle for when mic is discovered
-  M._onReady = doToggle
+  M._onReady = fn
+end
+
+function M.mute()
+  withMic(function()
+    setMute(true)
+    log("Muted")
+  end)
+end
+
+function M.unmute()
+  withMic(function()
+    setMute(false)
+    log("Unmuted")
+  end)
+end
+
+function M.toggleMute()
+  withMic(function()
+    setMute(not M.isMuted)
+    if M.isMuted then
+      hs.alert("🔇 Mic Muted")
+    else
+      hs.alert("🎙️ Mic Live")
+    end
+  end)
 end
 
 return M
