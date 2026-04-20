@@ -13,4 +13,6 @@ complete -c nh -n "__fish_seen_subcommand_from sync; and not __fish_seen_subcomm
 complete -c nh -n "__fish_seen_subcommand_from sync" -s o -l only -xa "brew cask mas asdf emacs" -d "Only run one category"
 complete -c nh -n "not __fish_seen_subcommand_from setup outdated upgrade sync add-keys claude help" -a add-keys -d "Add SSH keys to agent using keychain"
 complete -c nh -n "not __fish_seen_subcommand_from setup outdated upgrade sync add-keys claude help" -a claude -d "Open Claude Code in a named tab"
+complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from continue new" -a continue -d "Resume the most recent conversation (default)"
+complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from continue new" -a new -d "Start a fresh conversation"
 complete -c nh -n "not __fish_seen_subcommand_from setup outdated upgrade sync add-keys claude help" -a help -d "Show help message"
