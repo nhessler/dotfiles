@@ -154,6 +154,10 @@ end
 
 function M.mute()
   withMic(function()
+    if M.isMuted then
+      log("Already muted, skipping")
+      return
+    end
     setMute(true)
     log("Muted")
   end)
@@ -161,6 +165,10 @@ end
 
 function M.unmute()
   withMic(function()
+    if not M.isMuted then
+      log("Already unmuted, skipping")
+      return
+    end
     setMute(false)
     log("Unmuted")
   end)
