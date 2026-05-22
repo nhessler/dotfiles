@@ -26,6 +26,10 @@ function nh -d "Nathan Hessler's personal CLI helper"
             _nh_add_keys $args
         case claude
             _nh_claude $args
+        case caddy
+            _nh_caddy $args
+        case projects
+            _nh_projects $args
         case help -h --help
             _nh_help
         case '*'
@@ -48,6 +52,8 @@ function _nh_help
     echo "  sync        Reconcile installed vs tracked packages"
     echo "  add-keys    Add SSH keys to agent using keychain"
     echo "  claude      Open Claude Code in a named tab"
+    echo "  caddy       Manage per-project Caddyfile.local imports"
+    echo "  projects    List projects under ~/Projects/<org>/<name>"
     echo "  help        Show this help message"
     echo ""
     echo "Run 'nh <command> --help' for command-specific help."
