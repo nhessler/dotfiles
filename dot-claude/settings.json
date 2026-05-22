@@ -55,13 +55,14 @@
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,
     "chrome-devtools-mcp@chrome-devtools-plugins": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",
   "autoUpdatesChannel": "stable",
+  "skipAutoPermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754257352941
-  },
-  "skipAutoPermissionPrompt": true
+  }
 }
