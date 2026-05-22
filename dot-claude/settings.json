@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "autoUpdatesChannel": "stable",
   "permissions": {
     "allow": [
       "mcp__pencil"
@@ -59,7 +58,10 @@
     "lua-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "medium",
+  "autoUpdatesChannel": "stable",
   "feedbackSurveyState": {
     "lastShownTime": 1754257352941
-  }
+  },
+  "skipAutoPermissionPrompt": true
 }
