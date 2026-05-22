@@ -256,7 +256,13 @@
 (use-package caddyfile-mode
   :mode
   (("Caddyfile\\'" . caddyfile-mode)
-   ("\\.caddyfile\\'" . caddyfile-mode)))
+   ("Caddyfile\\..*\\'" . caddyfile-mode)
+   ("\\.caddyfile\\'" . caddyfile-mode))
+  :hook
+  ;; Use 2 spaces instead of the mode's default tab-width 8 with literal TABs.
+  (caddyfile-mode . (lambda ()
+                      (setq-local indent-tabs-mode nil
+                                  tab-width 2))))
 
 ;;;; Just Mode
 ;;

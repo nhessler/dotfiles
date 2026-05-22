@@ -23,6 +23,7 @@ dot-config/cagent/
 
 caddy/Caddyfile
 
+dot-claude/.last-cleanup
 dot-claude/cache/
 dot-claude/debug/
 dot-claude/telemetry/

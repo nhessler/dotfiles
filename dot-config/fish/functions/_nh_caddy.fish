@@ -328,5 +328,7 @@ function _nh_caddy_reload
         return 1
     end
 
-    caddy reload --config $master
+    # Force IPv4 admin address: macOS resolves `localhost` to `[::1]` first,
+    # but Caddy's admin binds only to 127.0.0.1, causing "connection refused".
+    caddy reload --config $master --address 127.0.0.1:2019
 end

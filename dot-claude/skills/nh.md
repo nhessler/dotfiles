@@ -1,7 +1,7 @@
 ---
 name: nh
-description: Nathan's personal CLI helper (nh command) for dotfiles management — subcommands for setup, outdated, upgrade, sync, add-keys, and claude.
-trigger: when the user mentions nh, dotfiles management, SSH key issues, outdated packages, upgrading packages, or system setup
+description: Nathan's personal CLI helper (nh command) for dotfiles management — subcommands for setup, outdated, upgrade, sync, add-keys, claude, caddy, and projects.
+trigger: when the user mentions nh, dotfiles management, SSH key issues, outdated packages, upgrading packages, local Caddy setup, project listing, or system setup
 ---
 
 # nh — Personal CLI Helper
@@ -38,6 +38,12 @@ Adds SSH keys to the agent using macOS keychain. **Suggest this when the user hi
 
 ### nh claude
 Opens Claude Code in the current directory with a named Ghostty tab (`<folder> - CC`). Uses `claude --continue --name`.
+
+### nh caddy
+Manages per-project `Caddyfile.local` imports against a master Caddyfile. Subcommands: `new`, `remove`, `list`, `reload`. **Has its own skill (`nh-caddy`) with detailed usage.**
+
+### nh projects
+Lists projects under `~/Projects/<org>/<name>`. With no args, prints all projects as `<org>/<name>`. With an org argument, scopes to that org and prints just `<name>`. `--paths` adds the full filesystem path (tab-separated).
 
 ## Key Files
 - `dot-config/fish/functions/nh.fish` — main dispatcher
