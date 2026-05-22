@@ -97,11 +97,8 @@ function _nh_outdated_homebrew
         echo "  Everything up to date"
     else
         echo "  $count packages outdated:"
-        for pkg in $outdated[1..10]  # Show first 10
+        for pkg in $outdated
             echo "    $pkg"
-        end
-        if test $count -gt 10
-            echo "    ... and "(math $count - 10)" more"
         end
         echo ""
         echo "  Run: brew upgrade"
@@ -208,11 +205,8 @@ function _nh_outdated_appstore
             echo "  Everything up to date"
         else
             echo "  $count apps outdated:"
-            for app in $outdated[1..5]
+            for app in $outdated
                 echo "    $app"
-            end
-            if test $count -gt 5
-                echo "    ... and "(math $count - 5)" more"
             end
             echo ""
             echo "  Run: mas upgrade"
