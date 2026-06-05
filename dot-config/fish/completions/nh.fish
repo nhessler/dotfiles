@@ -22,8 +22,35 @@ complete -c nh -n "__fish_seen_subcommand_from sync; and not __fish_seen_subcomm
 complete -c nh -n "__fish_seen_subcommand_from sync" -s o -l only -xa "brew cask mas asdf emacs" -d "Only run one category"
 
 # claude sub-subcommands
-complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from continue new" -a continue -d "Resume the most recent conversation (default)"
-complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from continue new" -a new -d "Start a fresh conversation"
+set -l claude_subs continue new account org help
+complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from $claude_subs" -a continue -d "Resume the most recent conversation (default)"
+complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from $claude_subs" -a new -d "Start a fresh conversation"
+complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from $claude_subs" -a account -d "Manage Claude Code accounts"
+complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from $claude_subs" -a org -d "Manage path → account routing"
+complete -c nh -n "__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from $claude_subs" -a help -d "Show help message"
+
+# claude account sub-sub-subcommands
+set -l acct_subs add remove rm list ls help
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from account; and not __fish_seen_subcommand_from $acct_subs" -a add -d "Register an account from dot-claude.d/<name>/"
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from account; and not __fish_seen_subcommand_from $acct_subs" -a remove -d "Unregister an account"
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from account; and not __fish_seen_subcommand_from $acct_subs" -a list -d "Show all accounts and their org mappings"
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from account; and not __fish_seen_subcommand_from $acct_subs" -a help -d "Show account help"
+
+# claude account add — complete from dot-claude.d/ entries (those not yet linked)
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from account; and __fish_seen_subcommand_from add" -a "(command ls ~/Projects/nhessler/dotfiles/dot-claude.d 2>/dev/null)" -d "available account"
+
+# claude account remove — complete from currently-registered accounts (excluding nh)
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from account; and __fish_seen_subcommand_from remove rm" -a "(command ls ~/.claude.d 2>/dev/null | grep -v '^nh\$')" -d "registered account"
+
+# claude org sub-sub-subcommands
+set -l org_subs map unmap list ls help
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from org; and not __fish_seen_subcommand_from $org_subs" -a map -d "Route ~/Projects/<path>/ to an account"
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from org; and not __fish_seen_subcommand_from $org_subs" -a unmap -d "Remove a mapping"
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from org; and not __fish_seen_subcommand_from $org_subs" -a list -d "Show all mappings"
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from org; and not __fish_seen_subcommand_from $org_subs" -a help -d "Show org help"
+
+# claude org unmap — complete from existing mappings
+complete -c nh -n "__fish_seen_subcommand_from claude; and __fish_seen_subcommand_from org; and __fish_seen_subcommand_from unmap" -a "(cut -d= -f1 ~/.local/state/nh/account-orgs 2>/dev/null)" -d "mapped path"
 
 # caddy sub-subcommands
 set -l caddy_subs new remove rm list ls reload help
