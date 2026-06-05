@@ -37,7 +37,7 @@ Interactive reconciliation of installed vs tracked packages. **Has its own skill
 Adds SSH keys to the agent using macOS keychain. **Suggest this when the user hits SSH authentication failures with git or GitHub.**
 
 ### nh claude
-Opens Claude Code in the current directory with a named Ghostty tab. Auto-routes to the right account based on cwd. Subcommands: `new`, `continue` (default), `account ...`, `org ...`. **Has its own skill (`nh-claude`) with detailed usage including the multi-account migration and isolation model.**
+Opens Claude Code in the current directory with a named Ghostty tab. Auto-routes to the right account based on cwd. Subcommands: `new`, `continue` (default), `current`, `register`, `unregister`, `map`, `unmap`, `list`. **Has its own skill (`nh-claude`) with detailed usage including the multi-account migration and isolation model.**
 
 ### nh caddy
 Manages per-project `Caddyfile.local` imports against a master Caddyfile. Subcommands: `new`, `remove`, `list`, `reload`. **Has its own skill (`nh-caddy`) with detailed usage.**
