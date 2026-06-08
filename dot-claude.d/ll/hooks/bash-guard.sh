@@ -1,0 +1,1 @@
+../../_shared/hooks/bash-guard.sh
