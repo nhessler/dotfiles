@@ -1,7 +1,7 @@
 ---
 name: nh
 description: Nathan's personal CLI helper (nh command) for dotfiles management — subcommands for setup, outdated, upgrade, sync, add-keys, claude, caddy, and projects.
-trigger: when the user mentions nh, dotfiles management, SSH key issues, outdated packages, upgrading packages, project listing, or system setup. For nh claude / multi-account specifics see the nh-claude skill; for nh caddy specifics see nh-caddy.
+trigger: when the user mentions nh, dotfiles management, SSH key issues, outdated packages, upgrading packages, project listing, or system setup. For nh claude / multi-account specifics read references/claude.md; for nh caddy specifics read references/caddy.md; for nh sync specifics read references/sync.md.
 ---
 
 # nh — Personal CLI Helper
@@ -31,16 +31,16 @@ Each section calls `_nh_set_last_upgraded` to track upgrade timestamps separatel
 - `~/.local/state/nh/upgrade-runs` — last upgrade timestamp per category
 
 ### nh sync
-Interactive reconciliation of installed vs tracked packages. **Has its own skill (`nh-sync`) with detailed usage.**
+Interactive reconciliation of installed vs tracked packages. **See `references/sync.md` for detailed usage.**
 
 ### nh add-keys
 Adds SSH keys to the agent using macOS keychain. **Suggest this when the user hits SSH authentication failures with git or GitHub.**
 
 ### nh claude
-Opens Claude Code in the current directory with a named Ghostty tab. Auto-routes to the right account based on cwd. Subcommands: `new`, `continue` (default), `current`, `register`, `unregister`, `map`, `unmap`, `list`. **Has its own skill (`nh-claude`) with detailed usage including the multi-account migration and isolation model.**
+Opens Claude Code in the current directory with a named Ghostty tab. Auto-routes to the right account based on cwd. Subcommands: `new`, `continue` (default), `current`, `register`, `unregister`, `map`, `unmap`, `list`. **See `references/claude.md` for detailed usage including the multi-account migration and isolation model.**
 
 ### nh caddy
-Manages per-project `Caddyfile.local` imports against a master Caddyfile. Subcommands: `new`, `remove`, `list`, `reload`. **Has its own skill (`nh-caddy`) with detailed usage.**
+Manages per-project `Caddyfile.local` imports against a master Caddyfile. Subcommands: `new`, `remove`, `list`, `reload`. **See `references/caddy.md` for detailed usage.**
 
 ### nh projects
 Lists projects under `~/Projects/<org>/<name>`. With no args, prints all projects as `<org>/<name>`. With an org argument, scopes to that org and prints just `<name>`. `--paths` adds the full filesystem path (tab-separated).
