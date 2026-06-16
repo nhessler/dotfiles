@@ -1,2 +1,12 @@
 font-family = "MesloLGMDZ Nerd Font Mono"
 theme = "Monokai Classic"
+
+# Auto-install Ghostty terminfo on remote hosts via `ssh` from interactive
+# shells. First connect: pipes infocmp through tic on the remote (needs tic
+# present) and caches the success keyed by user@hostname. Subsequent connects
+# skip. Manage cache with `ghostty +ssh-cache`.
+#
+# ssh-env is intentionally omitted: <=1.3.1 used `-o SetEnv`, which silently
+# overrode per-host SetEnv in ~/.ssh/config. Fixed in PR #11518 and tagged
+# for 1.3.2 — add ssh-env to the list once Ghostty is on 1.3.2 or later.
+shell-integration-features = ssh-terminfo
