@@ -1,159 +1,129 @@
--- Wave Link WebSocket API integration
--- Controls mute state via Elgato Wave Link's local JSON-RPC API
+-- Wave Link 3 integration via the Stream Deck plugin protocol
+--
+-- Wave Link 3.x removed its public WebSocket API and now only accepts
+-- connections that identify themselves as Stream Deck plugins via the
+-- `Origin: streamdeck://` HTTP header during the WebSocket handshake.
+-- We replicate that handshake so the Hammerspoon integration keeps
+-- working (including the Wave XLR's red LED indicator when muted).
+--
+-- Dependency: websocat (brew install websocat). Hammerspoon's built-in
+-- `hs.websocket.new` cannot set custom headers, so we shell out.
+--
+-- See dot-claude.d/_shared/skills/nh/references/ if more context lands
+-- there later; or check the Stream Deck Wave Link plugin's bundled
+-- bin/plugin.js for the upstream protocol.
 
 local M = {}
 
-M.port = nil
-M.ws = nil
-M.msgId = 0
-M.micIdentifier = nil
-M.isMuted = false
-M.pendingCallbacks = {}
+M.port = 1884
+M.deviceId = nil  -- auto-discovered
+M.inputId = nil   -- auto-discovered
+M.isMuted = nil   -- known after first query
+
+local WEBSOCAT_PATHS = {
+  "/opt/homebrew/bin/websocat",
+  "/usr/local/bin/websocat",
+}
+
+local function findWebsocat()
+  for _, p in ipairs(WEBSOCAT_PATHS) do
+    if hs.fs.attributes(p) then return p end
+  end
+  return nil
+end
+
+local WEBSOCAT = findWebsocat()
+local rpcId = 0
 
 local function log(...)
   print("[WaveLink]", ...)
 end
 
 local function nextId()
-  M.msgId = M.msgId + 1
-  return M.msgId
+  rpcId = rpcId + 1
+  return rpcId
 end
 
-local function send(method, params, callback)
-  if not M.ws then
-    hs.alert("Wave Link not connected")
+-- Send a JSON-RPC request via websocat. Callback (optional) receives the
+-- parsed response object.
+local function rpc(method, params, callback)
+  if not WEBSOCAT then
+    hs.alert("websocat not installed (brew install websocat)")
     return
   end
 
-  local id = nextId()
-  if callback then
-    M.pendingCallbacks[id] = callback
-  end
-
-  local msg = hs.json.encode({
-    id = id,
+  local payload = hs.json.encode({
     jsonrpc = "2.0",
-    method = method,
-    params = params or {}
+    id      = nextId(),
+    method  = method,
+    params  = params or {},
   })
 
-  M.ws:send(msg, false)
+  -- Pipe payload via stdin. websocat flags:
+  --   --no-close            don't send a Close frame on stdin EOF (otherwise
+  --                         we'd race the server's response and lose it)
+  --   --max-messages-rev=1  exit after one received message (our response)
+  -- The trailing \n in the printf format is required: websocat is line-buffered
+  -- on stdin and won't send the payload as a WS message until it sees newline
+  -- or EOF — and with --no-close we avoid relying on EOF. %q in string.format
+  -- produces a shell-safe quoted form for the payload.
+  local cmd = string.format(
+    [[printf '%%s\n' %q | %s --origin 'streamdeck://' --no-close --max-messages-rev=1 'ws://127.0.0.1:%d' 2>&1]],
+    payload, WEBSOCAT, M.port
+  )
+
+  hs.task.new("/bin/sh", function(_, stdout, _)
+    if not callback then return end
+    local firstLine = stdout and stdout:match("([^\n]+)")
+    if not firstLine then return callback(nil) end
+    local ok, resp = pcall(hs.json.decode, firstLine)
+    if ok then callback(resp) end
+  end, {"-c", cmd}):start()
 end
 
-local function handleMessage(msg)
-  local data = hs.json.decode(msg)
-  if not data then return end
-
-  -- Handle responses to our requests
-  if data.id and M.pendingCallbacks[data.id] then
-    if data.error then
-      log("RPC ERROR:", hs.json.encode(data.error))
-    else
-      M.pendingCallbacks[data.id](data.result)
-    end
-    M.pendingCallbacks[data.id] = nil
-    return
-  end
-
-  -- Track mic mute state from push events
-  if data.method == "microphoneConfigChanged" and data.params then
-    local p = data.params
-    if p.property == "Microphone Mute" and p.identifier == M.micIdentifier then
-      M.isMuted = p.value
-    end
-  end
-end
-
-M._onReady = nil
-
-local function fetchState()
-  send("getMicrophoneConfig", {}, function(result)
-    if not result then return end
-
-    for _, mic in ipairs(result) do
-      M.micIdentifier = mic.identifier
-      M.isMuted = mic.isMicMuted
-      log("Found mic:", mic.name, "muted:", tostring(M.isMuted))
-      if M._onReady then
-        M._onReady()
-        M._onReady = nil
-      end
+-- Find the Wave XLR (or other Wave device) and cache its identifiers.
+local function discover(then_fn)
+  rpc("getInputDevices", nil, function(resp)
+    if not resp or not resp.result then
+      log("Discovery failed — is Wave Link running?")
       return
     end
-
-    hs.alert("Wave XLR mic not found in Wave Link")
+    for _, dev in ipairs(resp.result.inputDevices or {}) do
+      if dev.isWaveDevice then
+        local input = (dev.inputs or {})[1]
+        if input then
+          M.deviceId = dev.id
+          M.inputId  = input.id
+          M.isMuted  = input.isMuted
+          log("Discovered:", dev.name, "input:", input.name,
+              "muted:", tostring(input.isMuted))
+          if then_fn then then_fn() end
+          return
+        end
+      end
+    end
+    log("No Wave device found in Wave Link")
   end)
 end
 
-local function discoverPort()
-  local output = hs.execute("lsof -i -P -n 2>/dev/null | grep WaveLink | grep LISTEN | grep '\\*:'")
-  if output then
-    local port = output:match("%*:(%d+)")
-    if port then
-      M.port = tonumber(port)
-      log("Discovered port:", M.port)
-      return true
-    end
+local function withDevice(fn)
+  if M.deviceId and M.inputId then
+    fn()
+  else
+    discover(fn)
   end
-  log("Could not discover Wave Link port")
-  return false
-end
-
-function M.connect()
-  if M.ws then
-    M.ws:close()
-    M.ws = nil
-  end
-
-  if not M.port then
-    if not discoverPort() then return false end
-  end
-
-  local url = "ws://127.0.0.1:" .. M.port
-
-  M.ws = hs.websocket.new(url, function(eventType, message)
-    if eventType == "open" then
-      log("Connected")
-      fetchState()
-    elseif eventType == "received" then
-      handleMessage(message)
-    elseif eventType == "closed" or eventType == "fail" then
-      M.ws = nil
-      M.port = nil
-      M.micIdentifier = nil
-    end
-  end)
-
-  return true
 end
 
 local function setMute(muted)
-  send("setMicrophoneConfig", {
-    identifier = M.micIdentifier,
-    property = "Microphone Mute",
-    value = muted
+  rpc("setInputDevice", {
+    id     = M.deviceId,
+    inputs = { { id = M.inputId, isMuted = muted } },
   })
   M.isMuted = muted
 end
 
-local function withMic(fn)
-  if M.ws and M.micIdentifier then
-    fn()
-    return
-  end
-
-  if not M.ws then
-    if not M.connect() then
-      log("Wave Link not running")
-      return
-    end
-  end
-
-  M._onReady = fn
-end
-
 function M.mute()
-  withMic(function()
+  withDevice(function()
     if M.isMuted then
       log("Already muted, skipping")
       return
@@ -164,7 +134,7 @@ function M.mute()
 end
 
 function M.unmute()
-  withMic(function()
+  withDevice(function()
     if not M.isMuted then
       log("Already unmuted, skipping")
       return
@@ -175,14 +145,16 @@ function M.unmute()
 end
 
 function M.toggleMute()
-  withMic(function()
+  withDevice(function()
     setMute(not M.isMuted)
-    if M.isMuted then
-      hs.alert("🔇 Mic Muted")
-    else
-      hs.alert("🎙️ Mic Live")
-    end
+    hs.alert(M.isMuted and "🔇 Mic Muted" or "🎙️ Mic Live")
   end)
+end
+
+-- Resync state from Wave Link (e.g., after the user toggled the hardware
+-- mute button, since we don't subscribe to push events).
+function M.refresh()
+  discover()
 end
 
 return M
