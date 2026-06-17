@@ -57,6 +57,8 @@ dot-claude/plugins/
 dot-claude.d/*/plugins/
 dot-claude/policy-limits.json
 dot-claude.d/*/policy-limits.json
+dot-claude/remote-settings.json
+dot-claude.d/*/remote-settings.json
 dot-claude/projects/
 dot-claude.d/*/projects/
 dot-claude/session-env/
