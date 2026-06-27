@@ -241,7 +241,7 @@ function _nh_outdated_emacs
             echo "    $pkg"
         end
         echo ""
-        echo "  Run: nh upgrade"
+        echo "  Run: nh update"
     end
 
     _nh_set_last_checked emacs

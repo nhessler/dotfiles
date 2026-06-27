@@ -1,6 +1,6 @@
 ---
 name: nh
-description: Nathan's personal CLI helper (nh command) for dotfiles management — subcommands for setup, outdated, upgrade, sync, add-keys, claude, caddy, and projects.
+description: Nathan's personal CLI helper (nh command) for dotfiles management — subcommands for setup, outdated, update, sync, add-keys, claude, caddy, and projects.
 trigger: when the user mentions nh, dotfiles management, SSH key issues, outdated packages, upgrading packages, project listing, or system setup. For nh claude / multi-account specifics read references/claude.md; for nh caddy specifics read references/caddy.md; for nh sync specifics read references/sync.md.
 ---
 
@@ -16,8 +16,8 @@ Runs the dotfiles setup script (`bin/setup.sh`). Used for initial machine setup 
 ### nh outdated
 Checks for outdated dependencies across: Homebrew, ASDF, Mac App Store, macOS, and Emacs packages. Each category shows two timestamps: last checked and last upgraded. Each `_nh_outdated_*` function calls `_nh_set_last_checked` after running. macOS check actually runs `softwareupdate -l` (slow but accurate).
 
-### nh upgrade
-Upgrades packages across the system:
+### nh update
+Updates packages across the system:
 - `brew update && brew upgrade`
 - `mas upgrade` (Mac App Store)
 - Sets ASDF globals to latest installed versions

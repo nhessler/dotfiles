@@ -1,8 +1,8 @@
-function _nh_upgrade -d "Upgrade system packages and set asdf globals to latest installed"
+function _nh_update -d "Update system packages and set asdf globals to latest installed"
     if contains -- --help $argv; or contains -- -h $argv
-        echo "Usage: nh upgrade"
+        echo "Usage: nh update"
         echo ""
-        echo "Upgrades packages across your system:"
+        echo "Updates packages across your system:"
         echo "  - Homebrew formulae and casks"
         echo "  - Mac App Store apps (via mas)"
         echo "  - ASDF: sets global versions to latest installed"

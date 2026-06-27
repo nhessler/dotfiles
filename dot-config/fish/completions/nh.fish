@@ -1,12 +1,12 @@
 # Completions for nh command
 complete -c nh -f
 
-set -l top_cmds setup outdated upgrade sync add-keys claude caddy projects help
+set -l top_cmds setup outdated update sync add-keys claude caddy projects help
 
 # Top-level subcommands
 complete -c nh -n "not __fish_seen_subcommand_from $top_cmds" -a setup -d "Run the dotfiles setup script"
 complete -c nh -n "not __fish_seen_subcommand_from $top_cmds" -a outdated -d "Check for outdated dependencies"
-complete -c nh -n "not __fish_seen_subcommand_from $top_cmds" -a upgrade -d "Upgrade brew, App Store, and asdf globals"
+complete -c nh -n "not __fish_seen_subcommand_from $top_cmds" -a update -d "Update brew, App Store, and asdf globals"
 complete -c nh -n "not __fish_seen_subcommand_from $top_cmds" -a sync -d "Reconcile installed vs tracked packages"
 complete -c nh -n "not __fish_seen_subcommand_from $top_cmds" -a add-keys -d "Add SSH keys to agent using keychain"
 complete -c nh -n "not __fish_seen_subcommand_from $top_cmds" -a claude -d "Open Claude Code in a named tab"
