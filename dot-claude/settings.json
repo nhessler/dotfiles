@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "default",
   "permissions": {
     "allow": [
       "mcp__pencil"
@@ -14,6 +13,7 @@
       "Write(**/.envrc)"
     ]
   },
+  "model": "default",
   "hooks": {
     "PreToolUse": [
       {
@@ -40,9 +40,11 @@
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",
   "autoUpdatesChannel": "stable",
+  "tui": "fullscreen",
   "theme": "auto",
   "skipAutoPermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754257352941
-  }
+  },
+  "skipWorkflowUsageWarning": true
 }
