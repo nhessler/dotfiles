@@ -4,7 +4,8 @@
 # Wired via settings.json:  "statusLine": { "command": "$CLAUDE_CONFIG_DIR/scripts/statusline.sh" }
 # Reads the statusline JSON payload on stdin, prints one formatted line.
 #
-# Layout:  project on branch | account | model | <context bar> | 5h <used>%·<min>m | 7d <used>%·<hr>h
+# Layout:  project on branch | account | model | <context bar> | 5h <left>%·<min>m | 7d <left>%·<hr>h
+#          rate-limit percents show quota REMAINING (like the context bar), colored by usage severity.
 
 input=$(cat)
 
@@ -22,13 +23,16 @@ C_MODEL='\033[1;34m'          # blue
 C_GREEN='\033[1;92m'
 C_YELLOW='\033[1;93m'
 C_RED='\033[1;91m'
+C_GRAY='\033[90m'             # comment gray — recedes into the background
 
-# Color a value by how "used" it is (low = green, high = red).
+# Color the rate-limit windows by usage severity (% used):
+#   <75 → gray (recedes), 75-89 → yellow, >=90 → pink.
+# (The context bar uses its own green.)
 usage_color() {
     local pct=$1
-    if [ "$pct" -ge 80 ]; then echo "$C_RED"
-    elif [ "$pct" -ge 50 ]; then echo "$C_YELLOW"
-    else echo "$C_GREEN"
+    if [ "$pct" -ge 90 ]; then echo "$C_RED"
+    elif [ "$pct" -ge 75 ]; then echo "$C_YELLOW"
+    else echo "$C_GRAY"
     fi
 }
 
@@ -93,16 +97,18 @@ five_pct=$(echo "$input" | jq -r ".rate_limits.five_hour.used_percentage // empt
 five_reset=$(echo "$input" | jq -r ".rate_limits.five_hour.resets_at // empty")
 if [ -n "$five_pct" ] && [ -n "$five_reset" ]; then
     five_min=$(( (five_reset - now) / 60 )); [ $five_min -lt 0 ] && five_min=0
+    five_left=$((100 - five_pct))                 # show quota remaining, color by usage
     fc=$(usage_color "$five_pct")
-    rate_display="${rate_display} ${SEP} ${fc}5h ${five_pct}%·${five_min}m${RESET}"
+    rate_display="${rate_display} ${SEP} ${fc}5h ${five_left}%·${five_min}m${RESET}"
 fi
 
 seven_pct=$(echo "$input" | jq -r ".rate_limits.seven_day.used_percentage // empty")
 seven_reset=$(echo "$input" | jq -r ".rate_limits.seven_day.resets_at // empty")
 if [ -n "$seven_pct" ] && [ -n "$seven_reset" ]; then
     seven_hr=$(( (seven_reset - now) / 3600 )); [ $seven_hr -lt 0 ] && seven_hr=0
+    seven_left=$((100 - seven_pct))               # show quota remaining, color by usage
     sc=$(usage_color "$seven_pct")
-    rate_display="${rate_display} ${SEP} ${sc}7d ${seven_pct}%·${seven_hr}h${RESET}"
+    rate_display="${rate_display} ${SEP} ${sc}7d ${seven_left}%·${seven_hr}h${RESET}"
 fi
 
 # ─── Render ──────────────────────────────────────────────────────────────────
