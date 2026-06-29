@@ -13,7 +13,6 @@
       "Write(**/.envrc)"
     ]
   },
-  "model": "default",
   "hooks": {
     "PreToolUse": [
       {
