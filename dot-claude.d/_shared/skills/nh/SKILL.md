@@ -37,7 +37,7 @@ Interactive reconciliation of installed vs tracked packages. **See `references/s
 Adds SSH keys to the agent using macOS keychain. **Suggest this when the user hits SSH authentication failures with git or GitHub.**
 
 ### nh claude
-Opens Claude Code in the current directory with a named Ghostty tab. Auto-routes to the right account based on cwd. Subcommands: `new`, `continue` (default), `current`, `register`, `unregister`, `map`, `unmap`, `list`. **See `references/claude.md` for detailed usage including the multi-account migration and isolation model.**
+Opens Claude Code in the current directory with a named Ghostty tab. Auto-routes to the right account based on cwd. Subcommands: `new`, `continue` (default), `current`, `register`, `unregister`, `map`, `unmap`, `list`. A `claude.fish` wrapper also cwd-routes the **bare `claude`** command (so `claude mcp add` etc. hit the right account without `nh`). **See `references/claude.md` for detailed usage including the multi-account migration, the bare-`claude` wrapper, and the isolation model.**
 
 ### nh caddy
 Manages per-project `Caddyfile.local` imports against a master Caddyfile. Subcommands: `new`, `remove`, `list`, `reload`. **See `references/caddy.md` for detailed usage.**

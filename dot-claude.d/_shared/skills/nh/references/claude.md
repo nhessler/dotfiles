@@ -54,6 +54,56 @@ Registry LHS forms:
 - `<org>/<repo>` (e.g., `lolollc/qrlite`) — matches that specific repo's subtree.
 - Absolute paths are **not** supported.
 
+## Bare `claude` Wrapper
+
+`dot-config/fish/functions/claude.fish` wraps the `claude` command itself so
+that *every* invocation — not just `nh claude` — routes to the right account.
+Before exec'ing the real binary it sets `CLAUDE_CONFIG_DIR` via the same
+`_nh_account_for_cwd` resolver, so ad-hoc commands like `claude mcp add` or
+`claude config` land on whichever account owns the current directory.
+
+- **Only injected when `CLAUDE_CONFIG_DIR` is unset.** An explicit
+  `set -x CLAUDE_CONFIG_DIR …` / `env … claude …`, or a running session's
+  already-exported var, wins and is not overridden.
+- **Falls back to `nh`** when cwd maps to nothing.
+- Uses `command claude` internally to reach the real binary (no recursion).
+- **`nh claude` is unaffected** — it execs the binary through `env`, which
+  bypasses the fish function entirely.
+
+Why it exists: a raw `claude` in a plain shell has no `CLAUDE_CONFIG_DIR` set
+(the `nh claude` launcher only sets it for its own subprocess), so without the
+wrapper it would fall back to a stray `~/.claude` — neither account. The
+wrapper makes ad-hoc commands route correctly and stops that orphan config
+from being created/written. (Added 2026-06-30.)
+
+To force a specific account regardless of cwd, set it explicitly:
+`env CLAUDE_CONFIG_DIR=$HOME/.claude.d/ll claude mcp add …`
+
+### Why two commands (`claude` wrapper *and* `nh claude`)?
+
+They're layers, not duplicates — deliberately kept separate (decided
+2026-06-30):
+
+- **`claude` (wrapper) = correctness layer.** Transparent: behaves exactly
+  like real claude, just pinned to the right account. Use for `claude mcp
+  add`, `claude config`, `claude -p …`, tooling, and habit. Transparency is
+  the whole point, so it must NOT grow opinions (no `--continue`, no tab
+  rename) — those would surprise scripts/tools and there's no reliable way to
+  tell a session launch from `claude mcp …`/`claude -p …`.
+- **`nh claude` = ergonomics + admin layer.** Opinionated session launcher
+  (tab naming, `--continue` by default, account banner) plus the account
+  subcommands (`register`/`map`/`list`/…). Use it to *start work* and *manage
+  accounts*.
+
+Not consolidated because each full merge is worse: folding everything into
+`claude` breaks its transparency; folding everything into `nh claude`
+reintroduces the stray-`~/.claude` footgun (any raw `claude` would misroute)
+and forces an `nh ` prefix on every command. Crucially there's **no routing
+logic to consolidate** — both delegate to `_nh_account_for_cwd` +
+`_nh_account_config_dir`, so they cannot disagree about which account a
+directory belongs to. `nh claude` also stays self-contained (sets the dir via
+its own `env`) so it works even if the wrapper is removed.
+
 ## Two Modes of Operation
 
 Convention mode (one account, default):
@@ -178,7 +228,9 @@ non-default account, the system demigrates back to convention mode.
 
 - **`~/.claude` and `~/.claude.d/` should never coexist.** If they do (e.g.,
   half-finished manual edit), `register` will refuse to migrate. Inspect with
-  `ls -la ~/.claude*` and reconcile manually.
+  `ls -la ~/.claude*` and reconcile manually. (The `claude` fish wrapper, added
+  2026-06-30, prevents a bare `claude` from *creating* this stray dir — see
+  "Bare `claude` Wrapper" — but won't remove one that already exists.)
 - **`add <account>` fails if `dot-claude.d/<account>/` doesn't exist.** Deliberate
   guardrail — forces you to set up the destination first rather than silently
   creating an empty dir that would auto-populate with random account state on
@@ -208,6 +260,8 @@ non-default account, the system demigrates back to convention mode.
   optional override registry).
 - `dot-config/fish/completions/nh.fish` — completions for the full claude
   surface.
+- `dot-config/fish/functions/claude.fish` — wraps the bare `claude` command to
+  auto-set `CLAUDE_CONFIG_DIR` by cwd (see "Bare `claude` Wrapper" above).
 - `dot-claude/` — source of the `nh` (default) account's tracked config.
 - `dot-claude.d/<account>/` — source of each non-default account's tracked
   config.
